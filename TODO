@@ -1,0 +1,17 @@
+* build test framework
+* build a receiver for standard monome OSC messages
+* echo messages to monome
+* create a thread and listening port for virtual monomes
+* echo messages from currently active application to monome
+* create switcher to switch between virtual monome screens (slide in / out) 
+* receive more advanced messages - boxes, shapes, patterns etc.
+* split a monome into separate monomes (e.g. the 256 can become two 128s)
+
+
+
+
+   
+   
+   
+   
+   
