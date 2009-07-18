@@ -1,5 +1,4 @@
----------------------------------------------------------------------
- , __       _                                    
+  , __       _                                    
  /|/  \     | |                                   
   |___/ __  | |        _  _    __   _  _  _    _  
   |    /  \_|/  |   | / |/ |  /  \_/ |/ |/ |  |/  
@@ -9,12 +8,20 @@
 
   "letting multiple monome apps play and share together, nicely"
 
----------------------------------------------------------------------
+  
 
-Polynome is a monome driver, extended emulator, switcher and splitter.
+           +--------+    ---- molar
+           |oooooooo|   /
+           |oooooooo|  ------ mlr
+           |oooooooo|   \  
+           +--------+    ---- Extended Emulator App
+
 
 Polynome is still in a very early phase of development. The following
 are the goals of the application:
+
+
+Polynome is a monome driver, extended emulator, switcher and splitter.
 
 A Driver
 --------
