@@ -10,11 +10,11 @@
 
   
 
-           +--------+    ---- molar
-           |oooooooo|   /
-           |oooooooo|  ------ mlr
-           |oooooooo|   \  
-           +--------+    ---- Extended Emulator App
+      +---------+                 ----- molar
+      |ooooooooo|     +========+ /
+      |ooooooooo| --- |Polynome| ------ mlr
+      |ooooooooo|     +========+ \  
+      +---------+                 ----- Extended Emulator App
 
 
 Polynome is still in a very early phase of development. The following
