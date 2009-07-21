@@ -1,4 +1,35 @@
 * build test framework
+
+The importance here is ease of testing: both for polynome itself and for apps that use polynome (if they wish to test their interaction with polynome).
+
+Given an OSC message as input, there are two aspects that I can see that need testing:
+  1) The OSC output of polynome
+  2) The internal messages for the associated Virtual Monome
+
+Both of these message types could be received by the testing application via OSC.
+
+So, to test application A:
+
+    - A registers that it wants Polynome to enter test mode
+    - A tells Polynome where it wants the test OSC messages to be sent to    
+      /polynome/internal/test/on "localhost", 1234  ; for internal test mode
+      /polynome/config/outport "localhost", 1234    ; for regular OSC output
+    - A sends OSC messages to Polynome
+    - Polynome sends OSC messages back to A on the appropriate ports
+
+It would be useful to build a test harness:
+
+  describe "simple led lighting" do
+    it "should be possible to light an led" do
+      @app.send("/polynome/led", 0, 5, 1)
+      @message = app.receive(:num_messages => 1)
+      @message.should == ["/polynome/led", 0, 5, 1]
+    end
+  end        
+
+
+
+
 * build a receiver for standard monome OSC messages
 * echo messages to monome
 * create a thread and listening port for virtual monomes
