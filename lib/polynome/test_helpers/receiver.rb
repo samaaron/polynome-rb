@@ -21,11 +21,11 @@ module Polynome
           listener.serve
         end
 
-        yield
-        
+        yield if block_given?
+        time = Time.now
         while(num_messages_to_receive > messages.size)
+          raise "Taking too long!" if Time.now - time > 0.5
         end
-        
         
         listener.close
         messages

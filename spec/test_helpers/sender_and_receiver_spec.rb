@@ -35,7 +35,7 @@ describe Polynome::TestHelpers, "Sender and Receiver" do
     describe "receive" do
       it "should raise an exception if it is asked to receive fewer than one message" do
         receiver = Polynome::TestHelpers::Receiver.new(99999)
-        lambda{receiver.receive(0)}.should raise_error
+        lambda{receiver.receive(0) }.should raise_error
         lambda{receiver.receive(-1)}.should raise_error
       end
     end
@@ -56,7 +56,7 @@ describe Polynome::TestHelpers, "Sender and Receiver" do
       messages.should == [["/foo/bar", [1]]]
     end
 
-    it "should be possible to send and reseive two messages" do
+    it "should be possible to send and receive two messages" do
       messages = @receiver.wait_for(2) do
         @sender.send("/foo/bar", 1)
         @sender.send("/quux/baz", 2)
@@ -66,6 +66,10 @@ describe Polynome::TestHelpers, "Sender and Receiver" do
                           ["/foo/bar",  [1]],
                           ["/quux/baz", [2]]
                          ]
+    end
+
+    it "should time out safely if an adequate number of messages aren't received" do
+      lambda{@receiver.wait_for(1)}.should raise_error
     end
   end
 end
