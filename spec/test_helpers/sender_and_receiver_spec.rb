@@ -32,11 +32,11 @@ describe Polynome::TestHelpers, "Sender and Receiver" do
       end
     end
 
-    describe "receive" do
+    describe "wait_for" do
       it "should raise an exception if it is asked to receive fewer than one message" do
         receiver = Polynome::TestHelpers::Receiver.new(99999)
-        lambda{receiver.receive(0) }.should raise_error
-        lambda{receiver.receive(-1)}.should raise_error
+        lambda{receiver.wait_for(0) }.should raise_error(ArgumentError)
+        lambda{receiver.wait_for(-1)}.should raise_error(ArgumentError)
       end
     end
   end
@@ -69,7 +69,7 @@ describe Polynome::TestHelpers, "Sender and Receiver" do
     end
 
     it "should time out safely if an adequate number of messages aren't received" do
-      lambda{@receiver.wait_for(1)}.should raise_error
+      lambda{@receiver.wait_for(1)}.should raise_error(Polynome::TestHelpers::Receiver::TimeOut)
     end
   end
 end
