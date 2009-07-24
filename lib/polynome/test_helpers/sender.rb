@@ -9,7 +9,7 @@ module Polynome
 
       def send(message_path, *args)
         socket  = OSC::UDPSocket.new
-        message = OSC::Message.new(message_path, 'i', *args)
+        message = OSC::Message.new(message_path, nil, *args)
         socket.send message, 0, @host, @port
       end
     end
