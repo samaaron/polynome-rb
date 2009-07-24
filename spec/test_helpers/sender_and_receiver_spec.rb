@@ -8,13 +8,13 @@ describe Polynome::TestHelpers, "Sender and Receiver" do
 
     describe "on initialisation" do
       it "should be possible to supply a host and port number" do
-        sender = Polynome::TestHelpers::Sender.new(88888, "localhost")
+        sender = Polynome::TestHelpers::Sender.new(4422, "localhost")
         sender.host.should == "localhost"
-        sender.port.should == 88888
+        sender.port.should == 4422
       end
 
       it "should default to the host 'localhost'" do
-        sender = Polynome::TestHelpers::Sender.new(88888)
+        sender = Polynome::TestHelpers::Sender.new(4422)
         sender.host.should == "localhost"
       end
     end
@@ -27,14 +27,14 @@ describe Polynome::TestHelpers, "Sender and Receiver" do
 
     describe "on initialisation" do
       it "should be possible to supply a port to listen on" do
-        receiver = Polynome::TestHelpers::Receiver.new(99999)
-        receiver.port.should == 99999
+        receiver = Polynome::TestHelpers::Receiver.new(4422)
+        receiver.port.should == 4422
       end
     end
 
     describe "wait_for" do
       it "should raise an exception if it is asked to receive fewer than one message" do
-        receiver = Polynome::TestHelpers::Receiver.new(99999)
+        receiver = Polynome::TestHelpers::Receiver.new(4422)
         lambda{receiver.wait_for(0) }.should raise_error(ArgumentError)
         lambda{receiver.wait_for(-1)}.should raise_error(ArgumentError)
       end
@@ -44,8 +44,8 @@ describe Polynome::TestHelpers, "Sender and Receiver" do
   
   describe "sending and receiving" do
     before(:each) do
-      @sender   = Polynome::TestHelpers::Sender.new(99999)
-      @receiver = Polynome::TestHelpers::Receiver.new(99999)
+      @sender   = Polynome::TestHelpers::Sender.new(4422)
+      @receiver = Polynome::TestHelpers::Receiver.new(4422)
     end
 
     it "should be possible to send and receive one message" do
