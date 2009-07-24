@@ -58,13 +58,16 @@ describe Polynome::TestHelpers, "Sender and Receiver" do
 
     it "should be possible to send and receive two messages" do
       messages = @receiver.wait_for(2) do
-        @sender.send("/foo/bar", 1)
-        @sender.send("/quux/baz", 2)
+        #warning, if you send floats you don't receive them
+        #exactly the same. For example, sending 2.9 will receive
+        #2.90000009536743
+        @sender.send("/foo/bar", 1, 2, "bar")
+        @sender.send("/quux/baz", 2, "beans")
       end
       messages.size.should == 2
       messages.should == [
-                          ["/foo/bar",  [1]],
-                          ["/quux/baz", [2]]
+                          ["/foo/bar",  [1, 2, "bar"]],
+                          ["/quux/baz", [2, "beans"]]
                          ]
     end
 
