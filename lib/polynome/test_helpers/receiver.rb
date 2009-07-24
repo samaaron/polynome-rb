@@ -27,7 +27,10 @@ module Polynome
         yield if block_given?
         time = Time.now
         while(num_messages_to_receive > messages.size)
-          raise TimeOut, "Taking too long!" if Time.now - time > 0.5
+          if Time.now - time > 0.5
+            listener.close
+            raise TimeOut, "Taking too long!"
+          end
         end
         
         listener.close
