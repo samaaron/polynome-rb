@@ -3,7 +3,7 @@
 The importance here is ease of testing: both for polynome itself and for apps that use polynome (if they wish to test their interaction with polynome).
 
 Given an OSC message as input, there are two aspects that I can see that need testing:
-  1) The OSC output of polynome
+  1) The output of polynome (this is initially going to be OSC, but I may add serial communications too for direct connection to the monome)
   2) The internal messages for the associated Virtual Monome
 
 Both of these message types could be received by the testing application via OSC.
