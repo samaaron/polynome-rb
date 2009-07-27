@@ -10,7 +10,7 @@ module Polynome
     
     def initialize(port, prefix="")
       @port = port
-      @prefix = prefix.start_with?('/') ? prefix : "/#{prefix}"
+      @prefix = (prefix.start_with?('/') || prefix == "") ? prefix : "/#{prefix}"
       
       @listener = OSC::UDPServer.new
       @listener.bind("localhost", port)
@@ -22,9 +22,16 @@ module Polynome
     def add_method(path, type_spec, &block)
       #allow more descriptive * and :any as well as nil
       #to indicate that it will listen to any port or typespec
-      p  = (path      == '*' || path == :any) ? nil : path
-      ts = (type_spec == '*' || path == :any) ? nil : type_spec
+      p  = (path      == '*' || path      == :any) ? nil : path
+      ts = (type_spec == '*' || type_spec == :any) ? nil : type_spec
+
+      #prepend / if necessary
+      p = "/#{p}" if (p && !p.start_with?('/'))
       
+      #apply prefix if necessary
+      p = @prefix     if (@prefix && path.nil?)
+      p = @prefix + p if (@prefix && p)
+      puts "registering method with path #{p}"
       @listener.add_method(p, ts, &block)
     end
 
