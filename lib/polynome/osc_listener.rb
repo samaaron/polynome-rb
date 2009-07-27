@@ -5,8 +5,13 @@ module Polynome
 
     class WaitWhenNotRunning < StandardError
     end
+
+    attr_reader :port, :prefix
     
-    def initialize(port)
+    def initialize(port, prefix="")
+      @port = port
+      @prefix = prefix.start_with?('/') ? prefix : "/#{prefix}"
+      
       @listener = OSC::UDPServer.new
       @listener.bind("localhost", port)
       @num_messages_received = 0
@@ -51,6 +56,10 @@ module Polynome
 
     def running?
       @running
+    end
+
+    def close
+      stop
     end
   end
 end
