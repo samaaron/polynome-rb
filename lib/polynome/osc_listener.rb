@@ -31,7 +31,6 @@ module Polynome
       #apply prefix if necessary
       p = @prefix     if (@prefix && path.nil?)
       p = @prefix + p if (@prefix && p)
-      puts "registering method with path #{p}"
       @listener.add_method(p, ts, &block)
     end
 
