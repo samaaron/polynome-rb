@@ -10,12 +10,14 @@ Both of these message types could be received by the testing application via OSC
 
 So, to test application A:
 
-    - A registers that it wants Polynome to enter test mode
-    - A tells Polynome where it wants the test OSC messages to be sent to    
-      /polynome/internal/test/on "localhost", 1234  ; for internal test mode
-      /polynome/config/outport "localhost", 1234    ; for regular OSC output
-    - A sends OSC messages to Polynome
-    - Polynome sends OSC messages back to A on the appropriate ports
+  [*]  - A registers that it wants Polynome to enter test mode
+  [*]  - A tells Polynome where it wants the test OSC messages to be sent to
+          i.e. /polynome/internal/test/on "localhost", 1234  ; for internal test mode
+  [ ]  - Polynome reads from a config file where it should send regular OSC output
+          i.e. /polynome/config/outport "localhost", 1234    ; for regular OSC output
+  [ ]  - A sends OSC messages to Polynome
+  [ ]  - Polynome filters out Monome messages and sends them to the Monome
+  [ ]  - Polynome sends all (including filtered) OSC messages back to A on the appropriate ports
 
 It would be useful to build a test harness:
 
