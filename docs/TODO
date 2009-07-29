@@ -13,11 +13,16 @@ So, to test application A:
   [*]  - A registers that it wants Polynome to enter test mode
   [*]  - A tells Polynome where it wants the test OSC messages to be sent to
           i.e. /polynome/internal/test/on "localhost", 1234  ; for internal test mode
-  [ ]  - Polynome reads from a config file where it should send regular OSC output
-          i.e. /polynome/config/outport "localhost", 1234    ; for regular OSC output
-  [ ]  - A sends OSC messages to Polynome
+  [*]  - Polynome reads from a config file where it should send regular OSC output
+  [*]  - A VM for app A is created with the correct model and cable orientation
+  [ ]  - A is informed (also on initialisation) of the port to listen on
+  [ ]  - A's VM is placed in the Rack
+  [ ]  - A's VM listens for messages
+  [ ]  - A sends OSC messages to A's VM
   [ ]  - Polynome filters out Monome messages and sends them to the Monome
   [ ]  - Polynome sends all (including filtered) OSC messages back to A on the appropriate ports
+  [ ]  - Polynome sends all filtered messages onto the monome
+  [ ]  - Try Polymer with MLR
 
 It would be useful to build a test harness:
 
@@ -32,7 +37,6 @@ It would be useful to build a test harness:
 
 
 
-* build a receiver for standard monome OSC messages
 * echo messages to monome
 * create a thread and listening port for virtual monomes
 * echo messages from currently active application to monome
