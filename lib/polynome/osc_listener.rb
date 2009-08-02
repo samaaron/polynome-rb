@@ -68,7 +68,6 @@ module Polynome
 
     def stop
       stop_listening
-      @thread.join if @thread
       @running = false
     end
 
