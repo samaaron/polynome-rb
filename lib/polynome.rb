@@ -1,3 +1,6 @@
+#require standard libraries
+require 'thread'
+
 #require vendored stuff
 $:.push File.dirname(__FILE__) + '/../vendor/rosc/lib'
 $:.push File.dirname(__FILE__) + '/../vendor/activesupport/lib'

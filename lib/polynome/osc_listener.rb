@@ -13,13 +13,14 @@ module Polynome
       @prefix = (prefix.start_with?('/') || prefix == "") ? prefix : "/#{prefix}"
       @num_messages_received = 0
       @running = false
+      @message_received_mutex = Mutex.new
       listen
     end
 
     def listen
       @listener = OSC::UDPServer.new
       @listener.bind("localhost", port)
-      @listener.add_method(nil, nil) {@num_messages_received += 1}
+      @listener.add_method(nil, nil) {@message_received_mutex.synchronize{@num_messages_received += 1}}
       @listening = true
     end
 
@@ -48,11 +49,11 @@ module Polynome
     def wait_for(num_messages_to_wait_for)
       raise WaitWhenNotRunning, "You are attempting to wait for messages when the server isn't running" unless running?
       
-      current_num_messages = @num_messages_received
+      current_num_messages = num_messages_received
       yield if block_given?
       
       time = Time.now
-      while(@num_messages_received < current_num_messages + num_messages_to_wait_for)
+      while(num_messages_received < current_num_messages + num_messages_to_wait_for)
         if Time.now - time > 2
           raise TimeOut, "Stopped waiting for messages that don't appear to be arriving...'"
         end
@@ -77,6 +78,14 @@ module Polynome
 
     def close
       stop
+    end
+
+    private
+
+    def num_messages_received
+      @message_received_mutex.synchronize do
+        @num_messages_received
+      end
     end
   end
 end
