@@ -12,7 +12,7 @@ module Polynome
       def wait_for(num_messages_to_receive=1)
         raise ArgumentError, "Polynome::TestHelpers::Receiver#receive should wait for at least one message, you asked it to wait for #{num_messages_to_receive}" if num_messages_to_receive < 1
         
-        listener = OSC::UDPServer.new
+        listener = UDPServerWithCount.new
         listener.bind("localhost", @port)
         messages = []
         
@@ -26,7 +26,7 @@ module Polynome
 
         yield if block_given?
         time = Time.now
-        while(num_messages_to_receive > messages.size)
+        while(num_messages_to_receive > listener.num_messages_received)
           if Time.now - time > 0.5
             listener.close
             raise TimeOut, "Taking too long!"

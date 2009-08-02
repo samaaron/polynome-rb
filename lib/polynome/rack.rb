@@ -13,13 +13,17 @@ module Polynome
       @out_host = opts[:out_host]
       
       @listener = OSCListener.new(@in_port, prefix="/polynome")
-      @listener.add_method("/test/register_output", :any) do |message|
-        port = message.args[1]
-        host = message.args[0]
-        register_test_output(port, host)
-      end
+      @listener.add_method(:any, :any){|message| send_to_test_channels(message)}
       
+      @listener.add_method("/test/register_output", :any) do |message|
+        app_name = message.args[0]
+        port     = message.args[2]
+        host     = message.args[1]
+        register_test_output(app_name, port, host)
+      end
+
       @sender = OSCSender.new(@out_port, @out_host)
+      @test_channels = {}
     end
 
     def boot
@@ -31,9 +35,16 @@ module Polynome
       @listener.close
     end
 
-    def register_test_output(port, host)
-      @test_sender = OSCSender.new(port, host)
-      @test_sender.send('/polynome/test/register_output/ack')
+    def register_test_output(app_name, port, host)
+      test_sender = OSCSender.new(port, host)
+      @test_channels[app_name] = test_sender
+      test_sender.send('/polynome/test/register_output/ack')
+    end
+
+    def send_to_test_channels(message)
+      @test_channels.each do |app_name, sender|
+        sender.send "/polynome/test/received/#{app_name}#{message.address}", *message.args
+      end
     end
   end
 end
