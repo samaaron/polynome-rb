@@ -8,19 +8,18 @@ Given an OSC message as input, there are two aspects that I can see that need te
 
 Both of these message types could be received by the testing application via OSC.
 
-So, to test application A:
+So, to test application S:
 
-  [*]  - A registers that it wants Polynome to enter test mode
-  [*]  - A tells Polynome where it wants the test OSC messages to be sent to
+  [*]  - S registers that it wants Polynome to enter test mode
+  [*]  - S tells Polynome where it wants the test OSC messages to be sent to
           i.e. /polynome/internal/test/on "localhost", 1234  ; for internal test mode
   [*]  - Polynome reads from a config file where it should send regular OSC output
-  [*]  - A VM for app A is created with the correct model and cable orientation
-  [ ]  - A is informed (also on initialisation) of the port to listen on
-  [ ]  - A's VM is placed in the Rack
-  [ ]  - A's VM listens for messages
-  [ ]  - A sends OSC messages to A's VM
+  [*]  - A VM for app S is created with the correct model and cable orientation
+  [ ]  - S's VM is placed in the Rack
+  [ ]  - S's VM listens for messages
+  [ ]  - S sends OSC messages to S's VM
   [ ]  - Polynome filters out Monome messages and sends them to the Monome
-  [ ]  - Polynome sends all (including filtered) OSC messages back to A on the appropriate ports
+  [ ]  - Polynome sends all (including filtered) OSC messages back to S on the appropriate ports
   [ ]  - Polynome sends all filtered messages onto the monome
   [ ]  - Try Polymer with MLR
 

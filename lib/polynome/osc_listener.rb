@@ -11,12 +11,23 @@ module Polynome
     def initialize(port, prefix="")
       @port = port
       @prefix = (prefix.start_with?('/') || prefix == "") ? prefix : "/#{prefix}"
-      
+      @num_messages_received = 0
+      @running = false
+      listen
+    end
+
+    def listen
       @listener = OSC::UDPServer.new
       @listener.bind("localhost", port)
-      @num_messages_received = 0
       @listener.add_method(nil, nil) {@num_messages_received += 1}
-      @running = false
+      @listening = true
+    end
+
+    def stop_listening
+      if @listening
+        @listener.close
+        @listening = false
+      end
     end
 
     def add_method(path, type_spec, &block)
@@ -56,7 +67,8 @@ module Polynome
     end
 
     def stop
-      @listener.close
+      stop_listening
+      @thread.join if @thread
       @running = false
     end
 
