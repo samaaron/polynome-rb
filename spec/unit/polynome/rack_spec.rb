@@ -49,15 +49,15 @@ describe Polynome::Rack do
       @rack.shutdown
     end
     
-    #TODO need to spec multiple apps registering for test data
+    it "should be possible to register with the Rack to receive all output" do
+      message = @receiver.wait_for(1) do
+        @sender.send('/polynome/test/register_output', 'test_client', 'localhost', 5544)
+      end
+      
+      message.should == [["/polynome/test/register_output/ack", []]]
+    end
 
-   #it "should be possible to register with the Rack to receive all output" do
-   #  message = @receiver.wait_for(1) do
-   #    @sender.send('/polynome/test/register_output', 'test_client', 'localhost', 5544)
-   #  end
-   #
-   #  message.should == [["/polynome/test/register_output/ack", []]]
-   #end
+    it "should be possible to register with multiple test apps"
 
     it "should resend incoming messages via test channel" do
       messages = @receiver.wait_for(5) do
@@ -76,6 +76,8 @@ describe Polynome::Rack do
                           ["/polynome/test/received/test_client/polynome/test/dummy", []]
                          ]
     end
+
+    it "should resend outgoing messages via test channel"
   end
 
 end
