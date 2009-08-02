@@ -6,6 +6,23 @@ module Polynome
     class WaitWhenNotRunning < StandardError
     end
 
+    class UDPServerWithCount < OSC::UDPServer
+      attr_reader :num_messages_received
+
+      def initialize
+        @num_messages_received = 0
+        super
+      end
+
+      def serve
+        loop do
+          p, sender = recvfrom(MAX_MSG_SIZE)
+          dispatch p
+          @num_messages_received += 1
+        end
+      end
+    end
+
     attr_reader :port, :prefix
     
     def initialize(port, prefix="")
@@ -13,14 +30,12 @@ module Polynome
       @prefix = (prefix.start_with?('/') || prefix == "") ? prefix : "/#{prefix}"
       @num_messages_received = 0
       @running = false
-      @message_received_mutex = Mutex.new
       listen
     end
 
     def listen
-      @listener = OSC::UDPServer.new
+      @listener = UDPServerWithCount.new
       @listener.bind("localhost", port)
-      @listener.add_method(nil, nil) {@message_received_mutex.synchronize{@num_messages_received += 1}}
       @listening = true
     end
 
@@ -83,9 +98,7 @@ module Polynome
     private
 
     def num_messages_received
-      @message_received_mutex.synchronize do
-        @num_messages_received
-      end
+      @listener.num_messages_received
     end
   end
 end
