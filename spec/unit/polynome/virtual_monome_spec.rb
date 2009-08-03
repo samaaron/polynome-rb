@@ -144,4 +144,12 @@ describe Polynome::VirtualMonome, "with bespoke initialisation of cable_orientat
   end
 end
 
+describe Polynome::VirtualMonome, "with a specified listening port" do
+  before(:each) do
+    @vm = Polynome::VirtualMonome.new(:listening_port => 9988)
+  end
 
+  it "should have a listening port of 9988" do
+    @vm.listening_port.should == 9988
+  end
+end

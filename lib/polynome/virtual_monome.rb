@@ -10,7 +10,7 @@ module Polynome
                          )
       @cable_orientation = opts[:cable_orientation]
       @model             = opts[:model]
-      @listening_port = opts[:listening_port]
+      @listening_port    = opts[:listening_port]
       set_ranges
     end
 
