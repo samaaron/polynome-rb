@@ -144,12 +144,16 @@ describe Polynome::VirtualMonome, "with bespoke initialisation of cable_orientat
   end
 end
 
-describe Polynome::VirtualMonome, "with a specified listening port" do
+describe Polynome::VirtualMonome, "with specified input and output ports" do
   before(:each) do
-    @vm = Polynome::VirtualMonome.new(:listening_port => 9988)
+    @vm = Polynome::VirtualMonome.new(:input_port => 8877, :output_port => 7788)
   end
 
-  it "should have a listening port of 9988" do
-    @vm.listening_port.should == 9988
+  it "should have an input port of 8877" do
+    @vm.input_port.should == 8877
+  end
+
+  it "should have an output port of 7788" do
+    @vm.output_port.should == 7788
   end
 end

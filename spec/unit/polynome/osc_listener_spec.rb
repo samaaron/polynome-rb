@@ -8,19 +8,19 @@ describe Polynome::OSCListener do
   it "should be possible to initialise one with a specified port" do
     listener = Polynome::OSCListener.new(4422)
     listener.port.should == 4422
-    listener.close #necessary to release the port for other specs
+    listener.stop #necessary to release the port for other specs
   end
 
   it "should be possible to initialise one with a specified port and prefix" do
     listener = Polynome::OSCListener.new(4422, '/beans')
     listener.prefix.should == '/beans'
-    listener.close #necessary to release the port for other specs
+    listener.stop #necessary to release the port for other specs
   end
 
   it "should be possible to omit the initial forward slash in the prefix" do
     listener = Polynome::OSCListener.new(4422, 'beans')
     listener.prefix.should == '/beans'
-    listener.close #necessary to release the port for other specs
+    listener.stop #necessary to release the port for other specs
   end
 end
 

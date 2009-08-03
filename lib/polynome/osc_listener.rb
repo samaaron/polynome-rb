@@ -13,20 +13,7 @@ module Polynome
       @prefix = (prefix.start_with?('/') || prefix == "") ? prefix : "/#{prefix}"
       @num_messages_received = 0
       @running = false
-      listen
-    end
-
-    def listen
-      @listener = UDPServerWithCount.new
-      @listener.bind("localhost", port)
-      @listening = true
-    end
-
-    def stop_listening
-      if @listening
-        @listener.close
-        @listening = false
-      end
+      open_port
     end
 
     def add_method(path, type_spec, &block)
@@ -66,7 +53,7 @@ module Polynome
     end
 
     def stop
-      stop_listening
+      close_port
       @running = false
     end
 
@@ -74,14 +61,25 @@ module Polynome
       @running
     end
 
-    def close
-      stop
-    end
-
     private
 
     def num_messages_received
       @listener.num_messages_received
+    end
+
+    def open_port
+      unless @port_open
+        @listener = UDPServerWithCount.new
+        @listener.bind("localhost", @port)
+        @port_open = true
+      end
+    end
+
+    def close_port
+      if @port_open
+        @listener.close
+        @port_open = false
+      end
     end
   end
 end

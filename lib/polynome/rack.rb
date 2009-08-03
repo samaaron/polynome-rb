@@ -33,7 +33,6 @@ module Polynome
 
     def shutdown
       @listener.stop
-      @listener.close
     end
 
     def add_vm(vm)
