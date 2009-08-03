@@ -1,15 +1,16 @@
 module Polynome
   class VirtualMonome
-    attr_reader :cable_orientation, :model, :min_x, :max_x, :min_y, :max_y
+    attr_reader :cable_orientation, :model, :min_x, :max_x, :min_y, :max_y, :listening_port
     
     def initialize(opts={})
       opts.reverse_merge!(
                           :cable_orientation => :top,
-                          :model             => :sixty_four
-                          )
-
+                          :model             => :sixty_four,
+                          :listening_port    => 9988
+                         )
       @cable_orientation = opts[:cable_orientation]
       @model             = opts[:model]
+      @listening_port = opts[:listening_port]
       set_ranges
     end
 

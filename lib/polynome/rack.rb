@@ -24,6 +24,7 @@ module Polynome
 
       @sender = OSCSender.new(@out_port, @out_host)
       @test_channels = {}
+      @vms = []
     end
 
     def boot
@@ -35,6 +36,13 @@ module Polynome
       @listener.close
     end
 
+    def add_vm(vm)
+      @vms << vm
+    end
+      
+    def num_vms
+      @vms.size
+    end
     def register_test_output(app_name, port, host)
       test_sender = OSCSender.new(port, host)
       @test_channels[app_name] = test_sender

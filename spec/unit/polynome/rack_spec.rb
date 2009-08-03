@@ -37,6 +37,29 @@ describe Polynome::Rack do
     end
   end
 
+  describe "Adding a Virtual Monome" do
+    before(:each) do
+      @rack     = Polynome::Rack.new(:in_port => 4443)
+      @receiver = Polynome::TestHelpers::Receiver.new(5544)
+      @sender   = Polynome::TestHelpers::Sender.new(4433)
+      @rack.boot
+    end
+
+    after(:each) do
+      @rack.shutdown
+    end
+    
+    it "should know that no vms are currently in a new rack" do
+      @rack.num_vms.should == 0
+    end
+
+    it "should know that there is one vm after adding one" do
+      vm = Polynome::VirtualMonome.new
+      @rack.add_vm(vm)
+      @rack.num_vms.should == 1
+    end
+  end
+
   describe "Test mode" do
     before(:each) do
       @sender   = Polynome::TestHelpers::Sender.new(4433)
@@ -56,8 +79,6 @@ describe Polynome::Rack do
       
       message.should == [["/polynome/test/register_output/ack", []]]
     end
-
-    it "should be possible to register with multiple test apps"
 
     it "should resend incoming messages via test channel" do
       messages = @receiver.wait_for(5) do
