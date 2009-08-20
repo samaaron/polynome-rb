@@ -15,6 +15,7 @@ So, to test application S:
           i.e. /polynome/internal/test/on "localhost", 1234  ; for internal test mode
   [*]  - Polynome reads from a config file where it should send regular OSC output
   [*]  - A VM for app S is created with the correct model and cable orientation
+  [ ]  - Create a test output thread with a queue which it pulls messages from and logs
   [ ]  - Give each VM its own listener so apps (such as S) can send messages to the VM
   [ ]  - Give each VM its own sender so it can send output to the real monome
   [*]  - S's VM is placed in the Rack
@@ -34,7 +35,7 @@ It would be useful to build a test harness:
       @message = app.receive(:num_messages => 1)
       @message.should == ["/polynome/led", 0, 5, 1]
     end
-  end        
+  end
 
 
 
@@ -42,7 +43,6 @@ It would be useful to build a test harness:
 * echo messages to monome
 * create a thread and listening port for virtual monomes
 * echo messages from currently active application to monome
-* create switcher to switch between virtual monome screens (slide in / out) 
+* create switcher to switch between virtual monome screens (slide in / out)
 * receive more advanced messages - boxes, shapes, patterns etc.
 * split a monome into separate monomes (e.g. the 256 can become two 128s)
-   
