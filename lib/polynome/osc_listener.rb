@@ -16,6 +16,30 @@ module Polynome
       open_port
     end
 
+    ## takes an OSC message pattern and block. The block will be
+    ## executed (and passed the OSC message as a param) if the
+    ## incoming OSC message matches the pattern.
+    ##
+    ## The pattern consists of two parts: the path and a
+    ## type_spec:
+    ##
+    ## *  The path is a string of the form /foo/bar/baz
+    ##
+    ## *  The type spec is a string which should match
+    ##    the regep /[ifsb]*/ and corresponds to the
+    ##    message parameters:
+    ##    - i: integer
+    ##    - f: float
+    ##    - s: string
+    ##    - b: blob (byte array with size)
+    ##
+    ##    The length of the typespec should be identical to the
+    ##    number of params. For example, if the typespec is iifsbs
+    ##    there should be 6 params of types integer, integer, float,
+    ##    string, blog and string respectively
+    ##
+    ## Both the path and typespec can also be set to * or :any to make
+    ## them match ALL incoming OSC messages.
     def add_method(path, type_spec, &block)
       #allow more descriptive * and :any as well as nil
       #to indicate that it will listen to any port or typespec
