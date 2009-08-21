@@ -7,7 +7,7 @@ module Polynome
     end
 
     attr_reader :port, :prefix
-    
+
     def initialize(port, prefix="")
       @port = port
       @prefix = (prefix.start_with?('/') || prefix == "") ? prefix : "/#{prefix}"
@@ -48,7 +48,7 @@ module Polynome
 
       #prepend / if necessary
       p = "/#{p}" if (p && !p.start_with?('/'))
-      
+
       #apply prefix if necessary
       p = @prefix     if (@prefix && path.nil?)
       p = @prefix + p if (@prefix && p)
@@ -57,10 +57,10 @@ module Polynome
 
     def wait_for(num_messages_to_wait_for)
       raise WaitWhenNotRunning, "You are attempting to wait for messages when the server isn't running" unless running?
-      
+
       current_num_messages = num_messages_received
       yield if block_given?
-      
+
       time = Time.now
       while(num_messages_received < current_num_messages + num_messages_to_wait_for)
         if Time.now - time > 2
@@ -74,15 +74,27 @@ module Polynome
         @listener.serve
       end
       @running = true
+      return @running
     end
 
     def stop
       close_port
       @running = false
+      return !@running
     end
 
     def running?
       @running
+    end
+
+    def debug_mode(message="OSCListener")
+      puts "#{message} debug mode on, listening to port #{@port}"
+      unless @debug_mode
+        @debug_mode = message
+        add_method(:any, :any) do |message|
+          puts "#{@debug_mode} received: #{message_path}, #{args.inspect}" if @debug_mode
+        end
+      end
     end
 
     private
@@ -93,6 +105,7 @@ module Polynome
 
     def open_port
       unless @port_open
+        #puts "trying to open port #{@port}"
         @listener = UDPServerWithCount.new
         @listener.bind("localhost", @port)
         @port_open = true
@@ -101,6 +114,7 @@ module Polynome
 
     def close_port
       if @port_open
+        #puts "trying to close port #{@port}"
         @listener.close
         @port_open = false
       end

@@ -7,6 +7,7 @@ module Polynome
       attr_reader :port
       def initialize(port)
         @port = port
+        @stdout = $stdout
       end
 
       def wait_for(num_messages_to_receive=1)
@@ -18,6 +19,13 @@ module Polynome
         
         listener.add_method nil, nil do |message|
           messages << [message.address, message.args]
+        end
+
+        if @debug_mode
+          puts "adding debug method"
+          listener.add_method(nil, nil) do |message|
+            puts "#{@debug_mode} received: #{message_path}, #{args.inspect} from port #{@port}" if @debug_mode
+          end
         end
         
         t = Thread.new do
@@ -35,6 +43,11 @@ module Polynome
         
         listener.close
         messages
+      end
+
+      def debug_mode(message="TestHelper::Receiver")
+        puts "#{message} debug mode on. Listening to port #{@port}"
+        @debug_mode = message
       end
     end
   end

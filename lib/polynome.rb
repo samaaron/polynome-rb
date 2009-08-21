@@ -2,19 +2,20 @@
 require 'thread'
 
 #require vendored stuff
-$:.push File.dirname(__FILE__) + '/../vendor/rosc/lib'
-$:.push File.dirname(__FILE__) + '/../vendor/activesupport/lib'
+$:.unshift File.dirname(__FILE__) + '/../vendor/rosc/lib'
+$:.unshift File.dirname(__FILE__) + '/../vendor/activesupport/lib'
 require 'osc'
 require 'activesupport'
 
+
 #require polynome stuff
-$:.push File.dirname(__FILE__) + '/polynome'
+$:.unshift File.dirname(__FILE__) + '/polynome'
 require 'udp_server_with_count'
-require 'rack'
+require 'virtual_table'
 require 'osc_listener'
 require 'osc_sender'
 require 'virtual_monome'
 
 #require config
-$:.push File.dirname(__FILE__) + '/../config'
+$:.unshift File.dirname(__FILE__) + '/../config'
 require 'defaults'
