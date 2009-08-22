@@ -1,4 +1,5 @@
 begin
+  puts "(Executing with #{Gem.ruby_engine}, version #{Gem.ruby_version})\n\n"
   require File.dirname(__FILE__) + '/vendor/rspec/lib/spec/rake/spectask'
 rescue LoadError
   puts 'To use rspec for testing you must install the rspec submodule:'
