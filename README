@@ -1,19 +1,19 @@
-  , __       _                                    
- /|/  \     | |                                   
-  |___/ __  | |        _  _    __   _  _  _    _  
-  |    /  \_|/  |   | / |/ |  /  \_/ |/ |/ |  |/  
+  , __       _
+ /|/  \     | |
+  |___/ __  | |        _  _    __   _  _  _    _
+  |    /  \_|/  |   | / |/ |  /  \_/ |/ |/ |  |/
   |    \__/ |__/ \_/|/  |  |_/\__/   |  |  |_/|__/
-                   /|                             
-                   \|                             
+                   /|
+                   \|
 
   "letting multiple monome apps play and share together, nicely"
 
-  
+
 
       +---------+                 ----- molar
       |ooooooooo|     +========+ /
       |ooooooooo| --- |Polynome| ------ mlr
-      |ooooooooo|     +========+ \  
+      |ooooooooo|     +========+ \
       +---------+                 ----- Extended Emulator App
 
 
@@ -73,3 +73,7 @@ the fun stuff more fun to create and combine. It's a nicely designed,
 yet empty, studio awaiting your applications and creativity.
 
 
+Further Information
+-------------------
+
+For further information explore the documents within the docs directory.
