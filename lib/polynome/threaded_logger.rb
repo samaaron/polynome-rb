@@ -1,6 +1,4 @@
 module Polynome
-  module TestHelpers
-    class LoggingThread
-    end
+  class ThreadedLogger
   end
 end

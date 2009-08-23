@@ -15,6 +15,7 @@ require 'virtual_table'
 require 'osc_listener'
 require 'osc_sender'
 require 'virtual_monome'
+require 'threaded_logger'
 
 #require config
 $:.unshift File.dirname(__FILE__) + '/../config'
