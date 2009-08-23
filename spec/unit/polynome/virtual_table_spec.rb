@@ -40,8 +40,8 @@ describe Polynome::VirtualTable do
   describe "Adding a Virtual Monome" do
     before(:each) do
       @rack     = Polynome::VirtualTable.new(:in_port => 4443)
-      @receiver = Polynome::TestHelpers::Receiver.new(5544)
-      @sender   = Polynome::TestHelpers::Sender.new(4433)
+      @receiver = Tosca::Receiver.new(5544)
+      @sender   = Tosca::Sender.new(4433)
       @rack.boot
     end
 
@@ -63,8 +63,8 @@ describe Polynome::VirtualTable do
 
   describe "Test mode" do
     before(:each) do
-      @sender   = Polynome::TestHelpers::Sender.new(4433)
-      @receiver = Polynome::TestHelpers::Receiver.new(5544)
+      @sender   = Tosca::Sender.new(4433)
+      @receiver = Tosca::Receiver.new(5544)
       @rack     = Polynome::VirtualTable.new(:in_port => 4433)
       @rack.boot
     end

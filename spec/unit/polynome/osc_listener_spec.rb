@@ -24,17 +24,17 @@ describe Polynome::OSCListener do
   end
 end
 
-describe Polynome::OSCListener, "initialised listening to port 4422" do
+describe Polynome::OSCListener, ", initialised listening to port 4422" do
   before(:each) do
     @listener = Polynome::OSCListener.new(4422)
     @listener.start
-    @sender = Polynome::TestHelpers::Sender.new(4422)
+    @sender = Tosca::Sender.new(4422)
   end
 
   after(:each) do
     @listener.stop
   end
-  
+
   it "should be possible to register methods with it" do
     messages = []
     @listener.add_method(:any, :any) { |message| messages << message}
@@ -45,11 +45,11 @@ describe Polynome::OSCListener, "initialised listening to port 4422" do
   end
 end
 
-describe Polynome::OSCListener, "listening to port 4422 with a predefined prefix" do
+describe Polynome::OSCListener, ", listening to port 4422 with a predefined prefix" do
   before(:each) do
     @listener = Polynome::OSCListener.new(4422, "/beans")
     @listener.start
-    @sender = Polynome::TestHelpers::Sender.new(4422)
+    @sender = Tosca::Sender.new(4422)
   end
 
   after(:each) do

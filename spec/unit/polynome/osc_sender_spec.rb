@@ -6,7 +6,7 @@ describe Polynome::OSCSender do
   end
 
   it "should be possible to send messages with it" do
-    receiver = Polynome::TestHelpers::Receiver.new(5544)
+    receiver = Tosca::Receiver.new(5544)
     sender = Polynome::OSCSender.new(5544, 'localhost')
     messages = receiver.wait_for(1) do
       sender.send('/hey/there', 1, 2, "three")

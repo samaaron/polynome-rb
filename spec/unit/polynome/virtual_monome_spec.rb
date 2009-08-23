@@ -6,7 +6,7 @@ describe Polynome::VirtualMonome do
   end
 end
 
-describe Polynome::VirtualMonome, "initialised with defaults" do
+describe Polynome::VirtualMonome, ", initialised with defaults" do
   before(:each) do
     @vm = Polynome::VirtualMonome.new
   end
@@ -24,7 +24,7 @@ describe Polynome::VirtualMonome, "initialised with defaults" do
   end
 end
 
-describe Polynome::VirtualMonome, "with bespoke initialisation of cable_orientation bottom and model one_twenty_eight" do
+describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orientation bottom and model one_twenty_eight" do
   before(:each) do
     @vm = Polynome::VirtualMonome.new(:cable_orientation => :bottom,
                                       :model             => :one_twenty_eight)
@@ -59,7 +59,7 @@ describe Polynome::VirtualMonome, "with bespoke initialisation of cable_orientat
   end
 end
 
-describe Polynome::VirtualMonome, "with bespoke initialisation of cable_orientation left and model one_twenty_eight" do
+describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orientation left and model one_twenty_eight" do
   before(:each) do
     @vm = Polynome::VirtualMonome.new(:cable_orientation => :left,
                                       :model             => :one_twenty_eight)
@@ -94,7 +94,7 @@ describe Polynome::VirtualMonome, "with bespoke initialisation of cable_orientat
   end
 end
 
-describe Polynome::VirtualMonome, "with bespoke initialisation of cable_orientation left and model sixty_four" do
+describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orientation left and model sixty_four" do
   before(:each) do
     @vm = Polynome::VirtualMonome.new(:cable_orientation => :left,
                                       :model             => :sixty_four)
@@ -129,7 +129,7 @@ describe Polynome::VirtualMonome, "with bespoke initialisation of cable_orientat
   end
 end
 
-describe Polynome::VirtualMonome, "with bespoke initialisation of cable_orientation left and model two_fifty_six" do
+describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orientation left and model two_fifty_six" do
   before(:each) do
     @vm = Polynome::VirtualMonome.new(:cable_orientation => :left,
                                  :model             => :two_fifty_six)
