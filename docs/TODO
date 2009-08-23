@@ -1,44 +1,25 @@
-* build test framework
+First phase - basic bridge mode
 
-The importance here is ease of testing: both for polynome itself and for apps that use polynome (if they wish to test their interaction with polynome).
+Polynome acts as a basic bridge with one Virtual Monome on the Table which forwards all messages
+to and from the real monome and application (such as MLR)
 
-Given an OSC message as input, there are two aspects that I can see that need testing:
-  1) The output of polynome (this is initially going to be OSC, but I may add serial communications too for direct connection to the monome)
-  2) The internal messages for the associated Virtual Monome
-
-Both of these message types could be received by the testing application via OSC.
-
-So, to test application S:
-
-  [*]  - S registers that it wants Polynome to enter test mode
-  [*]  - S tells Polynome where it wants the test OSC messages to be sent to
+  [*]  - App registers that it wants Polynome to enter test mode
+  [*]  - App tells Polynome where it wants the test OSC messages to be sent to
           i.e. /polynome/internal/test/on "localhost", 1234  ; for internal test mode
   [*]  - Polynome reads from a config file where it should send regular OSC output
-  [*]  - A VM for app S is created with the correct model and cable orientation
+  [*]  - A VM for App is created with the correct model and cable orientation
   [ ]  - Create a test output thread with a queue which it pulls messages from and logs
-  [ ]  - Give each VM its own listener so apps (such as S) can send messages to the VM
-  [ ]  - Give each VM its own sender so it can send output to the real monome
-  [*]  - S's VM is placed in the Rack
-  [ ]  - S's VM listens for messages
-  [ ]  - S sends OSC messages to S's VM
+  [*]  - Give each VM its own listener so apps can send messages to the VM
+  [*]  - Give each VM its own sender so it can send output to the real monome
+  [ ]  - Create a debug mode for VMs for which all debug messages are sent to the ThreadedLogger
+  [*]  - Apps VM is placed on the Table
+  [ ]  - Apps VM listens for messages
+  [ ]  - App sends OSC messages to Apps VM
   [ ]  - Polynome filters out Monome messages and sends them to the Monome
   [ ]  - Polynome sends all (including filtered) OSC messages back to S on the appropriate ports
   [ ]  - Polynome sends all filtered messages onto the monome
   [ ]  - Try Polymer with MLR
   [ ]  - Move the test response code from Rack to OSCListener
-
-It would be useful to build a test harness:
-
-  describe "simple led lighting" do
-    it "should be possible to light an led" do
-      @app.send("/polynome/led", 0, 5, 1)
-      @message = app.receive(:num_messages => 1)
-      @message.should == ["/polynome/led", 0, 5, 1]
-    end
-  end
-
-
-
 
 * echo messages to monome
 * create a thread and listening port for virtual monomes
