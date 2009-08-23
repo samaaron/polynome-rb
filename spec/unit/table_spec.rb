@@ -1,37 +1,37 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 
-describe Polynome::VirtualTable do
+describe Polynome::Table do
   it "should exist" do
-    Polynome::VirtualTable.should_not be_nil
+    Polynome::Table.should_not be_nil
   end
 
   describe "initialisation" do
     it "should be possible to initialise with default values" do
-      rack = Polynome::VirtualTable.new
+      rack = Polynome::Table.new
       rack.should_not be_nil
       rack.shutdown
     end
 
     it "should be possible to initialise again with default values" do
-      rack = Polynome::VirtualTable.new
+      rack = Polynome::Table.new
       rack.should_not be_nil
       rack.shutdown
     end
 
     it "should be possible to specify the in port to use" do
-      rack = Polynome::VirtualTable.new(:in_port => 1234)
+      rack = Polynome::Table.new(:in_port => 1234)
       rack.in_port.should == 1234
       rack.shutdown
     end
 
     it "should be possible to specify the out port to use" do
-      rack = Polynome::VirtualTable.new(:out_port => 5678)
+      rack = Polynome::Table.new(:out_port => 5678)
       rack.out_port.should == 5678
       rack.shutdown
     end
 
     it "should be possible to specify the out host to use" do
-      rack = Polynome::VirtualTable.new(:out_host => 'beans.com')
+      rack = Polynome::Table.new(:out_host => 'beans.com')
       rack.out_host.should == 'beans.com'
       rack.shutdown
     end
@@ -39,7 +39,7 @@ describe Polynome::VirtualTable do
 
   describe "Adding a Virtual Monome" do
     before(:each) do
-      @rack     = Polynome::VirtualTable.new(:in_port => 4443)
+      @rack     = Polynome::Table.new(:in_port => 4443)
       @receiver = Tosca::Receiver.new(5544)
       @sender   = Tosca::Sender.new(4433)
       @rack.boot
@@ -65,7 +65,7 @@ describe Polynome::VirtualTable do
     before(:each) do
       @sender   = Tosca::Sender.new(4433)
       @receiver = Tosca::Receiver.new(5544)
-      @rack     = Polynome::VirtualTable.new(:in_port => 4433)
+      @rack     = Polynome::Table.new(:in_port => 4433)
       @rack.boot
     end
 
@@ -73,7 +73,7 @@ describe Polynome::VirtualTable do
       @rack.shutdown
     end
 
-    it "should be possible to register with the VirtualTable to receive all output" do
+    it "should be possible to register with the Table to receive all output" do
       message = @receiver.wait_for(1) do
         @sender.send('/polynome/test/register_output', 'test_client', 'localhost', 5544)
       end

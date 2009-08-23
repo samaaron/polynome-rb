@@ -164,7 +164,7 @@ describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orient
   end
 end
 
-#describe Polynome::VirtualTable, "with specified input and output ports" do
+#describe Polynome::Table, "with specified input and output ports" do
 #  before(:each) do
 #    @vm = Polynome::VirtualMonome.new(:input_port => 8877, :output_port => 7788)
 #  end

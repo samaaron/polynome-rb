@@ -1,5 +1,5 @@
 module Polynome
-  class VirtualTable
+  class Table
     attr_reader :in_port, :out_port, :out_host
     def initialize(opts={})
       opts.reverse_merge!(

@@ -11,7 +11,7 @@ require 'activesupport'
 #require polynome stuff
 $:.unshift File.dirname(__FILE__) + '/polynome'
 require 'udp_server_with_count'
-require 'virtual_table'
+require 'table'
 require 'osc_listener'
 require 'osc_sender'
 require 'virtual_monome'
