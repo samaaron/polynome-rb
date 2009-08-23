@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper.rb'
+require File.dirname(__FILE__) + '/../spec_helper.rb'
 
 describe Polynome::VirtualMonome do
   it "should exist" do
