@@ -1,5 +1,5 @@
 module Polynome
-  class VirtualMonome < Polynome::Base
+  class VirtualMonome
     attr_reader :cable_orientation, :model, :min_x, :max_x, :min_y, :max_y, :input_port, :output_port
 
     def initialize(opts={})

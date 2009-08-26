@@ -1,5 +1,5 @@
 module Polynome
-  class OSCListener < Polynome::Base
+  class OSCListener
     class TimeOut < StandardError
     end
 

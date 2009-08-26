@@ -1,5 +1,5 @@
 module Polynome
-  class OSCSender < Polynome::Base
+  class OSCSender
     def initialize(port, host="localhost")
       @host = host
       @port = port
