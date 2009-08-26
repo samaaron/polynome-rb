@@ -1,5 +1,5 @@
 module Polynome
-  class OSCListener
+  class OSCListener < Polynome::Base
     class TimeOut < StandardError
     end
 
@@ -106,7 +106,7 @@ module Polynome
     def open_port
       unless @port_open
         #puts "trying to open port #{@port}"
-        @listener = UDPServerWithCount.new
+        @listener = OSC::UDPServerWithCount.new
         @listener.bind("localhost", @port)
         @port_open = true
       end
