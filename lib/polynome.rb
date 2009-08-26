@@ -11,7 +11,6 @@ require 'threaded_logger'
 
 #require polynome stuff
 $:.unshift File.dirname(__FILE__) + '/polynome'
-require 'base'
 require 'table'
 require 'osc_listener'
 require 'osc_sender'
