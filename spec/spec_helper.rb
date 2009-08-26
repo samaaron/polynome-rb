@@ -8,3 +8,5 @@ require File.dirname(__FILE__) + '/../vendor/tosca/lib/tosca'
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../vendor/rspec/lib'
 require 'spec'
 require 'spec/autorun'
+
+ThreadedLogger.create_log(:rspec_execution)
