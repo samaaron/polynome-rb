@@ -15,7 +15,7 @@ class ThreadedLogger
   end
 
   def self.create_log(name)
-    log = new(name)
+    log = new(name.to_s)
     @logs[name.to_s] = log
   end
 

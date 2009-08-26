@@ -13,22 +13,40 @@ describe ThreadedLogger do
     ThreadedLogger.logs.size.should == 0
   end
 
-  it "should be possible to create a new log with a symbol" do
-    ThreadedLogger.create_log(:benny)
-    ThreadedLogger.logs.size.should == 1
+  describe "#create_log" do
+    it "should be possible to create a new log with a symbol" do
+      ThreadedLogger.create_log(:benny)
+      ThreadedLogger.logs.size.should == 1
+    end
+
+    it "should be possible to create a new log with a string" do
+      ThreadedLogger.create_log("toddy")
+      ThreadedLogger.logs.size.should == 1
+    end
+
+    it "should be possible to create multiple logs" do
+      ThreadedLogger.create_log(:boris)
+      ThreadedLogger.create_log(:beans)
+      logs = ThreadedLogger.logs
+      logs.size.should == 2
+      logs.each{|log| log.class.should == ThreadedLogger}
+    end
   end
 
-  it "should be possible to create a new log with a string" do
-    ThreadedLogger.create_log("toddy")
-    ThreadedLogger.logs.size.should == 1
-  end
+  describe "#get_log" do
+    it "should return nil if the log hasn't been created" do
+      ThreadedLogger.get_log(:unknown).should be_nil
+    end
 
-  it "should be possible to create multiple logs" do
-    ThreadedLogger.create_log(:boris)
-    ThreadedLogger.create_log(:beans)
-    logs = ThreadedLogger.logs
-    logs.size.should == 2
-    logs.each{|log| log.class.should == ThreadedLogger}
+    it "should be possible to get a log with a symbol" do
+      ThreadedLogger.create_log(:bimhuis)
+      ThreadedLogger.get_log(:bimhuis).should_not be_nil
+    end
+
+    it "should be possible to get a log with a string" do
+      ThreadedLogger.create_log(:bimhuis)
+      ThreadedLogger.get_log("bimhuis").should_not be_nil
+    end
   end
 
   describe "with a new log" do
