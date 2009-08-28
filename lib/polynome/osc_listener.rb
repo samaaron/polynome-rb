@@ -6,11 +6,13 @@ module Polynome
     class WaitWhenNotRunning < StandardError
     end
 
-    attr_reader :port, :prefix
+    attr_reader :port, :prefix, :log
 
-    def initialize(port, prefix="")
+    def initialize(port, opts={})
+      opts.reverse_merge! :prefix => "", :log => ""
       @port = port
-      @prefix = (prefix.start_with?('/') || prefix == "") ? prefix : "/#{prefix}"
+      @log = log
+      @prefix = (opts[:prefix].start_with?('/') || opts[:prefix] == "") ? opts[:prefix] : "/#{opts[:prefix]}"
       @num_messages_received = 0
       @running = false
       open_port

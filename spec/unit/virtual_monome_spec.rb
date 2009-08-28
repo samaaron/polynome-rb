@@ -164,44 +164,46 @@ describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orient
   end
 end
 
-#describe Polynome::Table, "with specified input and output ports" do
-#  before(:each) do
-#    @vm = Polynome::VirtualMonome.new(:input_port => 8877, :output_port => 7788)
-#  end
-#
-#  after(:each) do
-#    @vm.power_down
-#  end
-#
-#  it "should have an input port of 8877" do
-#    @vm.input_port.should == 8877
-#  end
-#
-#  it "should have an output port of 7788" do
-#    @vm.output_port.should == 7788
-#  end
-#
-#  #describe "with send and receive helpers" do
-#  #  before(:each) do
-#  #    @sender   = Polynome::TestHelpers::Sender.new(8877)
-#  #    @sender.debug_mode
-#  #    @receiver = Polynome::TestHelpers::Receiver.new(7788)
-#  #    @receiver.debug_mode
-#  #    @vm.power_up
-#  #    @vm.debug_mode
-#  #  end
-#  #
-#  #  after(:each) do
-#  #    @receiver.stop
-#  #    @vm.power_down
-#  #  end
-#  #
-#  #  it "should forward all input to the output" do
-#  #    message = @receiver.wait_for(1) do
-#  #      @sender.send('/a/b/c', 1, 2, 3)
-#  #    end
-#  #
-#  #    message.should == [['/a/b/c', [1,2,3]]]
-#  #  end
-#  #end
-#end
+describe Polynome::VirtualMonome, ", with specified input and output ports" do
+  before(:each) do
+    @vm = Polynome::VirtualMonome.new(:input_port => 8877, :output_port => 7788)
+    @logger = ThreadedLogger.new(:tosca)
+    @logger.start
+  end
+
+  after(:each) do
+    @vm.power_down
+  end
+
+  it "should have an input port of 8877" do
+    @vm.input_port.should == 8877
+  end
+
+  it "should have an output port of 7788" do
+    @vm.output_port.should == 7788
+  end
+
+  describe "with Tosca send and receivers" do
+    before(:each) do
+      @sender   = Tosca::Sender.new(8877)
+      @sender.debug_mode
+      @receiver = Tosca::Receiver.new(7788)
+      @receiver.debug_mode
+      @vm.power_up
+      @vm.debug_mode
+    end
+
+    after(:each) do
+      @receiver.stop
+      @vm.power_down
+    end
+
+    #it "should forward all input to the output" do
+    #  message = @receiver.wait_for(1) do
+    #    @sender.send('/a/b/c', 1, 2, 3)
+    #  end
+    #
+    #  message.should == [['/a/b/c', [1,2,3]]]
+    #end
+  end
+end

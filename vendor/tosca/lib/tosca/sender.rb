@@ -14,7 +14,7 @@ module Tosca
       puts "#{@debug_mode} sent: #{message_path}, #{args.inspect} to port #{@port} on #{@host}" if @debug_mode
     end
 
-    def debug_mode(message="TestHelpers::Sender")
+    def debug_mode(message="Tosca::Sender")
       @debug_mode = message
     end
   end

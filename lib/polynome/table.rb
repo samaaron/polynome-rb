@@ -12,7 +12,7 @@ module Polynome
       @out_port = opts[:out_port]
       @out_host = opts[:out_host]
 
-      @listener = OSCListener.new(@in_port, prefix="/polynome")
+      @listener = OSCListener.new(@in_port, :prefix => "/polynome")
       @listener.add_method(:any, :any){|message| send_to_test_channels(message)}
 
       @listener.add_method("/test/register_output", :any) do |message|

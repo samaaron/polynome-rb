@@ -12,13 +12,13 @@ describe Polynome::OSCListener do
   end
 
   it "should be possible to initialise one with a specified port and prefix" do
-    listener = Polynome::OSCListener.new(4422, '/beans')
+    listener = Polynome::OSCListener.new(4422, :prefix => '/beans')
     listener.prefix.should == '/beans'
     listener.stop #necessary to release the port for other specs
   end
 
   it "should be possible to omit the initial forward slash in the prefix" do
-    listener = Polynome::OSCListener.new(4422, 'beans')
+    listener = Polynome::OSCListener.new(4422, :prefix => 'beans')
     listener.prefix.should == '/beans'
     listener.stop #necessary to release the port for other specs
   end
@@ -47,7 +47,7 @@ end
 
 describe Polynome::OSCListener, ", listening to port 4422 with a predefined prefix" do
   before(:each) do
-    @listener = Polynome::OSCListener.new(4422, "/beans")
+    @listener = Polynome::OSCListener.new(4422, :prefix => "/beans")
     @listener.start
     @sender = Tosca::Sender.new(4422)
   end
