@@ -9,4 +9,5 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + '/../vendor/rspec/lib'
 require 'spec'
 require 'spec/autorun'
 
-ThreadedLogger.create_log(:rspec_execution)
+ThreadedLogger.create_log(:rspec)
+TLOG = ThreadedLogger.get_log(:rspec).start

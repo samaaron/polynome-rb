@@ -1,21 +1,35 @@
 module Polynome
   class OSCListener
+    include Loggable
+
     class TimeOut < StandardError
     end
 
     class WaitWhenNotRunning < StandardError
     end
 
-    attr_reader :port, :prefix, :log
+    attr_reader :port, :prefix, :log_history
 
     def initialize(port, opts={})
-      opts.reverse_merge! :prefix => "", :log => ""
+      opts.reverse_merge!(
+                          :prefix        => "",
+                          :logger        => nil,
+                          :debug         => false,
+                          :debug_message => ""
+                         )
       @port = port
-      @log = log
+      @logger = opts[:logger]
+      @log_history = ""
+      @name = "#{opts[:debug_message]} OSCListener"
+      @debug = opts[:debug]
       @prefix = (opts[:prefix].start_with?('/') || opts[:prefix] == "") ? opts[:prefix] : "/#{opts[:prefix]}"
       @num_messages_received = 0
       @running = false
       open_port
+
+      add_debug_logging_method if @debug
+      log "#{@name} debug mode on, listening to port #{@port}"
+
     end
 
     ## takes an OSC message pattern and block. The block will be
@@ -89,17 +103,13 @@ module Polynome
       @running
     end
 
-    def debug_mode(message="OSCListener")
-      puts "#{message} debug mode on, listening to port #{@port}"
-      unless @debug_mode
-        @debug_mode = message
-        add_method(:any, :any) do |message|
-          puts "#{@debug_mode} received: #{message_path}, #{args.inspect}" if @debug_mode
-        end
+    private
+
+    def add_debug_logging_method
+      add_method(:any, :any) do |message|
+        log "received: #{message.address}, #{message.args.inspect}"
       end
     end
-
-    private
 
     def num_messages_received
       @listener.num_messages_received
@@ -107,18 +117,20 @@ module Polynome
 
     def open_port
       unless @port_open
-        #puts "trying to open port #{@port}"
+        log "trying to open port #{@port}"
         @listener = OSC::UDPServerWithCount.new
         @listener.bind("localhost", @port)
         @port_open = true
+        log "opened port #{@port}"
       end
     end
 
     def close_port
       if @port_open
-        #puts "trying to close port #{@port}"
+        log "trying to close port #{@port}"
         @listener.close
         @port_open = false
+        log "closed port #{@port}"
       end
     end
   end

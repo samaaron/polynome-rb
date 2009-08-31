@@ -8,7 +8,7 @@ describe Tosca, ", Sender and Receiver" do
 
     describe "on initialisation" do
       it "should be possible to supply a host and port number" do
-        sender = Tosca::Sender.new(4422, "localhost")
+        sender = Tosca::Sender.new(4422, :host => "localhost")
         sender.host.should == "localhost"
         sender.port.should == 4422
       end

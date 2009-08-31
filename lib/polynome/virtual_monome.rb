@@ -1,23 +1,27 @@
 module Polynome
   class VirtualMonome
-    attr_reader :cable_orientation, :model, :min_x, :max_x, :min_y, :max_y, :input_port, :output_port
+    attr_reader :cable_orientation, :model, :min_x, :max_x, :min_y, :max_y, :input_port, :output_port, :log_history
 
     def initialize(opts={})
       opts.reverse_merge!(
                           :cable_orientation => :top,
                           :model             => :sixty_four,
                           :input_port        => 9988,
-                          :output_port       => 8899
+                          :output_port       => 8899,
+                          :logger            => nil,
+                          :debug             => false,
+                          :debug_message     => ""
                           )
 
       @cable_orientation = opts[:cable_orientation]
       @model             = opts[:model]
       @input_port        = opts[:input_port]
       @output_port       = opts[:output_port]
+      @logger            = opts[:logger]
 
-      @listener = OSCListener.new(@input_port)
-      @sender   = OSCSender.new(@output_port)
-      @sender.debug_mode("vm's sender")
+      @log_history = ""
+      @listener    = OSCListener.new(@input_port, :logger => @logger, :debug => opts[:debug], :debug_message => "VM's listender, yo!")
+      @sender      = OSCSender.new(@output_port,  :logger => @logger, :debug => opts[:debug], :debug_message => "VM's Sender, yo!")
       @listener.add_method :any, :any do |message|
         @sender.send(message.address, *message.args)
       end
@@ -57,11 +61,6 @@ module Polynome
                  end
 
       @max_x, @max_y = *max_vals
-    end
-
-    def debug_mode
-      @listener.debug_mode("vm listener")
-      @sender.debug_mode("vm sender")
     end
   end
 end

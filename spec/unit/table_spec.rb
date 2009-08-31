@@ -65,7 +65,7 @@ describe Polynome::Table do
     before(:each) do
       @sender   = Tosca::Sender.new(4433)
       @receiver = Tosca::Receiver.new(5544)
-      @table     = Polynome::Table.new(:in_port => 4433)
+      @table    = Polynome::Table.new(:in_port => 4433)
       @table.boot
     end
 

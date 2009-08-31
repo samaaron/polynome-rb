@@ -1,8 +1,23 @@
 module Polynome
   class OSCSender
-    def initialize(port, host="localhost")
-      @host = host
-      @port = port
+    include Loggable
+
+    attr_reader :log_history
+    def initialize(port, opts={})
+      opts.reverse_merge!(
+                          :host          => "localhost",
+                          :logger        => nil,
+                          :debug         => false,
+                          :debug_message => "OSCSender"
+                         )
+
+      @host        = opts[:host]
+      @logger      = opts[:logger]
+      @port        = port
+      @log_history = ""
+      @name = "#{opts[:debug_message]} OSCSender"
+      log "debug mode on, set to send on port #{@port}"
+
     end
 
     def send(message_path, *args)
@@ -10,12 +25,9 @@ module Polynome
       message = OSC::Message.new(message_path, nil, *args)
       socket.send message, 0, @host, @port
 
-      puts "#{@debug_mode} sent: #{message_path}, #{args.inspect} to port #{@port} on #{@host}" if @debug_mode
+      log "sent: #{message_path}, #{args.inspect} to port #{@port} on #{@host}"
     end
 
-    def debug_mode(message="OSCSender")
-      @debug_mode = message
-    end
-
+    private
   end
 end

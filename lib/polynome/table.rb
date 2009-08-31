@@ -1,18 +1,25 @@
 module Polynome
   class Table
-    attr_reader :in_port, :out_port, :out_host
+    include Loggable
+    attr_reader :in_port, :out_port, :out_host, :log_history
     def initialize(opts={})
       opts.reverse_merge!(
                           :in_port  => Polynome::BootOptions::INPORT,
                           :out_port => Polynome::BootOptions::OUTPORT,
-                          :out_host => Polynome::BootOptions::OUTHOST
+                          :out_host => Polynome::BootOptions::OUTHOST,
+                          :logger   => nil,
+                          :debug    => false
                          )
 
-      @in_port  = opts[:in_port]
-      @out_port = opts[:out_port]
-      @out_host = opts[:out_host]
+      @in_port     = opts[:in_port]
+      @out_port    = opts[:out_port]
+      @out_host    = opts[:out_host]
+      @logger      = opts[:logger]
+      @log_history = ""
+      @name        = "Polynome::Table"
+      @debug       = opts[:debug]
 
-      @listener = OSCListener.new(@in_port, :prefix => "/polynome")
+      @listener = OSCListener.new(@in_port, :prefix => "/polynome", :debug => opts[:debug], :debug_message => "Table's", :logger => @logger)
       @listener.add_method(:any, :any){|message| send_to_test_channels(message)}
 
       @listener.add_method("/test/register_output", :any) do |message|
@@ -22,7 +29,7 @@ module Polynome
         register_test_output(app_name, port, host)
       end
 
-      @sender = OSCSender.new(@out_port, @out_host)
+      @sender = OSCSender.new(@out_port, :host => @out_host, :debug => opts[:debug], :debug_message => "Table's", :logger => @logger)
       @test_channels = {}
       @vms = []
     end
@@ -44,7 +51,7 @@ module Polynome
     end
 
     def register_test_output(app_name, port, host)
-      test_sender = OSCSender.new(port, host)
+      test_sender = OSCSender.new(port, :host => host)
       @test_channels[app_name] = test_sender
       test_sender.send('/polynome/test/register_output/ack')
     end

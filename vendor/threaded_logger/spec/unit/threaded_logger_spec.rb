@@ -56,7 +56,7 @@ describe ThreadedLogger do
       ThreadedLogger.create_log(:beans)
       logs = ThreadedLogger.logs
       logs.size.should == 2
-      logs.each{|log| log.class.should == ThreadedLogger}
+      logs.each{|log| log.class.should == ThreadedLogger::TLogger}
     end
   end
 
@@ -110,6 +110,20 @@ describe ThreadedLogger do
       outstream = ""
       @logger.outstream = outstream
       @logger.outstream.should == outstream
+    end
+
+    it "should be possible to start and stop the log" do
+      lambda{@logger.start ; @logger.stop}.should_not raise_error
+    end
+
+    it "should return the logger on start" do
+      @logger.start.should == @logger
+      @logger.stop
+    end
+
+    it "should return the logger on stop" do
+      @logger.start
+      @logger.stop.should == @logger
     end
 
     describe "with starting and stopping and with a given outstream" do

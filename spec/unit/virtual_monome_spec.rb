@@ -166,8 +166,11 @@ end
 
 describe Polynome::VirtualMonome, ", with specified input and output ports" do
   before(:each) do
-    @vm = Polynome::VirtualMonome.new(:input_port => 8877, :output_port => 7788)
-    @logger = ThreadedLogger.new(:tosca)
+    @polynome_input_port_num  = 7788
+    @polynome_output_port_num = 8877
+    @vm = Polynome::VirtualMonome.new(:input_port => @polynome_input_port_num,
+                                      :output_port => @polynome_output_port_num)
+    @logger = ThreadedLogger::TLogger.new(:tosca)
     @logger.start
   end
 
@@ -175,35 +178,31 @@ describe Polynome::VirtualMonome, ", with specified input and output ports" do
     @vm.power_down
   end
 
-  it "should have an input port of 8877" do
-    @vm.input_port.should == 8877
+  it "should have an input port of #{@polynome_input_port_num}" do
+    @vm.input_port.should == @polynome_input_port_num
   end
 
-  it "should have an output port of 7788" do
-    @vm.output_port.should == 7788
+  it "should have an output port of #{@polynome_output_port_num}" do
+    @vm.output_port.should == @polynome_output_port_num
   end
 
-  describe "with Tosca send and receivers" do
+  describe "with Tosca sender and receivers" do
     before(:each) do
-      @sender   = Tosca::Sender.new(8877)
-      @sender.debug_mode
-      @receiver = Tosca::Receiver.new(7788)
-      @receiver.debug_mode
+      @sender   = Tosca::Sender.new(@polynome_input_port_num)
+      @receiver = Tosca::Receiver.new(@polynome_output_port_num)
       @vm.power_up
-      @vm.debug_mode
     end
 
     after(:each) do
-      @receiver.stop
       @vm.power_down
     end
 
-    #it "should forward all input to the output" do
-    #  message = @receiver.wait_for(1) do
-    #    @sender.send('/a/b/c', 1, 2, 3)
-    #  end
-    #
-    #  message.should == [['/a/b/c', [1,2,3]]]
-    #end
+    it "should forward all input to the output" do
+      message = @receiver.wait_for(1) do
+        @sender.send('/a/b/c', 1, 2, 3)
+      end
+
+      message.should == [['/a/b/c', [1,2,3]]]
+    end
   end
 end
