@@ -4,3 +4,6 @@
 [submodule "vendor/samaaron-rosc"]
 	path = vendor/samaaron-rosc
 	url = git://github.com/samaaron/rosc.git
+[submodule "vendor/rainbow"]
+	path = vendor/rainbow
+	url = git://github.com/sickill/rainbow.git
