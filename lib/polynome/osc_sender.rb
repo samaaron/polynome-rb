@@ -8,13 +8,14 @@ module Polynome
                           :host          => "localhost",
                           :logger        => nil,
                           :debug         => false,
-                          :debug_message => "OSCSender"
+                          :debug_message => ""
                          )
 
       @host        = opts[:host]
       @logger      = opts[:logger]
       @port        = port
       @log_history = ""
+      @debug       = opts[:debug]
       @name = "#{opts[:debug_message]} OSCSender"
       log "debug mode on, set to send on port #{@port}"
 
@@ -28,6 +29,5 @@ module Polynome
       log "sent: #{message_path}, #{args.inspect} to port #{@port} on #{@host}"
     end
 
-    private
   end
 end

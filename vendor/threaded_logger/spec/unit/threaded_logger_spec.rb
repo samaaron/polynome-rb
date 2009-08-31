@@ -202,8 +202,8 @@ describe ThreadedLogger do
         end
 
         while(@logger.num_messages_logged < 10000) do
-          if Time.now - time > 3
-            raise "Taking too long to place messages onto the @log outstream, only managed to receive #{@log.num_messages_logged} messages"
+          if Time.now - time > 5
+            raise "Taking too long to place messages onto the @log outstream, only managed to receive #{@logger.num_messages_logged} messages"
           end
         end
 
