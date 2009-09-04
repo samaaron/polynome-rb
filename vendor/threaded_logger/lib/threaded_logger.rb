@@ -1,6 +1,4 @@
-$LOAD_PATH.unshift File.dirname(__FILE__) + '/threaded_logger'
-
-require 'tlogger'
+require 'threaded_logger/tlogger'
 
 module ThreadedLogger
   def self.reset

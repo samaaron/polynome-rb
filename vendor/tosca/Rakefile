@@ -10,4 +10,7 @@ Spec::Rake::SpecTask.new do |t|
   t.spec_opts = ['--options', File.dirname(__FILE__) + "/spec/spec.opts"]
   t.spec_files = FileList['spec/**/*_spec.rb']
   t.fail_on_error = false
+  t.libs << '../activesupport/lib'
+  t.libs << '../samaaron-rosc/lib'
+  t.libs << 'lib'
 end

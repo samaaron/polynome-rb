@@ -14,6 +14,9 @@ Spec::Rake::SpecTask.new do |t|
                  FileList['vendor/tosca/spec/**/*_spec.rb'] +
                  FileList['vendor/threaded_logger/spec/**/*_spec.rb']
   t.fail_on_error = false
+  t.libs << 'vendor/threaded_logger/lib/'
+  t.libs << 'lib'
+  t.libs << 'vendor/tosca/lib'
 end
 
 desc "Run the specs under spec and mention which Ruby version is currently running"

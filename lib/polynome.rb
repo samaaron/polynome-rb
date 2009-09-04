@@ -1,26 +1,25 @@
 #require standard libraries
 require 'thread'
 
+#make sure vendored stuff takes priority in the loadpath
+Dir[File.dirname(__FILE__) + '/../vendor/*/lib'].each {|lib|  $:.unshift lib}
+
 #require vendored stuff
-$:.unshift File.dirname(__FILE__) + '/../vendor/samaaron-rosc/lib'
-$:.unshift File.dirname(__FILE__) + '/../vendor/activesupport/lib'
-$:.unshift File.dirname(__FILE__) + '/../vendor/threaded_logger/lib'
-$:.unshift File.dirname(__FILE__) + '/../vendor/rainbow/lib'
 require 'samaaron-rosc'
 require 'activesupport'
 require 'threaded_logger'
 require 'rainbow'
 
+#add self to the loadpath
+$:.unshift File.dirname(__FILE__)
 #require polynome stuff
-$:.unshift File.dirname(__FILE__) + '/polynome'
-require 'loggable'
-require 'table'
-require 'osc_listener'
-require 'osc_sender'
-require 'virtual_monome'
+require 'polynome/loggable'
+require 'polynome/table'
+require 'polynome/osc_listener'
+require 'polynome/osc_sender'
+require 'polynome/virtual_monome'
 
 
 #require config
-$:.unshift File.dirname(__FILE__) + '/../config'
-require 'defaults'
+require 'polynome/../../config/defaults'
 
