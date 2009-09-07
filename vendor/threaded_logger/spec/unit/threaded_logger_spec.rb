@@ -41,6 +41,11 @@ describe ThreadedLogger do
   end
 
   describe "#create_log" do
+    it "should return the log just created" do
+      log = ThreadedLogger.create_log(:eggs)
+      log.should == ThreadedLogger.get_log(:eggs)
+    end
+
     it "should be possible to create a new log with a symbol" do
       ThreadedLogger.create_log(:benny)
       ThreadedLogger.logs.size.should == 1
@@ -57,6 +62,12 @@ describe ThreadedLogger do
       logs = ThreadedLogger.logs
       logs.size.should == 2
       logs.each{|log| log.class.should == ThreadedLogger::TLogger}
+    end
+
+    it "should raise an error if the log already exists" do
+      log = ThreadedLogger.create_log(:eggs)
+
+      lambda{ThreadedLogger.create_log(:eggs)}.should raise_error(ThreadedLogger::CreateLogException)
     end
   end
 

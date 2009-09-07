@@ -64,7 +64,7 @@ module ThreadedLogger
         @thread = Thread.new do
           loop do
             message = @messages.pop
-            stamped_message = "[#{@name}, #{time_stamp}] #{message}\n"
+            stamped_message = "[#{@name}, #{time_stamp}]\t#{message}\n"
 
             if((@outstream == STDOUT || @outstream == STDERR) && "".respond_to?(:color))
               #we're printing out to STDOUT or STDERR and we have the

@@ -1,6 +1,9 @@
+require 'thread'
 require 'threaded_logger/tlogger'
 
 module ThreadedLogger
+  class CreateLogException < Exception ; end
+
   def self.reset
     initialize
   end
@@ -35,6 +38,7 @@ module ThreadedLogger
   end
 
   def self.create_log(name)
+    raise(CreateLogException, "Error, attempting to create a log (#{name}) that already exists.") if @logs[name.to_s]
     unless @logs[name.to_s]
       log = TLogger.new(name.to_s)
       @logs[name.to_s] = log
