@@ -170,12 +170,13 @@ describe Polynome::VirtualMonome, ", with specified input and output ports" do
     @polynome_output_port_num = 8877
     @vm = Polynome::VirtualMonome.new(:input_port => @polynome_input_port_num,
                                       :output_port => @polynome_output_port_num)
-    @logger = ThreadedLogger::TLogger.new(:tosca)
-    @logger.start
+    @outstream = ""
+    @logger = ThreadedLogger::TLogger.new(:tosca, @outstream)
   end
 
   after(:each) do
     @vm.power_down
+    @logger.stop
   end
 
   it "should have an input port of #{@polynome_input_port_num}" do

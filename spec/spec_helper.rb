@@ -9,4 +9,4 @@ require 'spec'
 require 'spec/autorun'
 
 ThreadedLogger.create_log(:rspec) unless ThreadedLogger.get_log(:rspec)
-TLOG = ThreadedLogger.get_log(:rspec).start unless defined? TLOG
+TLOG = ThreadedLogger.get_log(:rspec) unless defined? TLOG

@@ -37,12 +37,14 @@ module ThreadedLogger
     @logs.values
   end
 
-  def self.create_log(name)
+  def self.create_log(name, outstream=STDOUT)
     raise(CreateLogException, "Error, attempting to create a log (#{name}) that already exists.") if @logs[name.to_s]
     unless @logs[name.to_s]
-      log = TLogger.new(name.to_s)
+      log = TLogger.new(name.to_s, outstream)
       @logs[name.to_s] = log
     end
+
+    return @logs[name.to_s]
   end
 
   def self.get_log(name)

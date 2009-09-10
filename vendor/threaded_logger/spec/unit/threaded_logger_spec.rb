@@ -87,10 +87,13 @@ describe ThreadedLogger do
     end
   end
 
-  describe "with a new log" do
+  describe "with a new log with the default outstream" do
     before(:each) do
-      ThreadedLogger.create_log(:ted)
-      @logger = ThreadedLogger.get_log(:ted)
+      @logger = ThreadedLogger.create_log(:ted)
+    end
+
+    it "should be possible to get the log" do
+      ThreadedLogger.get_log(:ted).should == @logger
     end
 
     it "should have the right name" do
@@ -101,140 +104,134 @@ describe ThreadedLogger do
       @logger.length.should == 0
     end
 
+    it "should use STDOUT as the default outstream" do
+      @logger.outstream.should == STDOUT
+    end
+
+    it "should be running after initilisation" do
+      @logger.should be_running
+    end
+
+    it "should be possible to stop the logger" do
+      @logger.stop
+      @logger.should_not be_running
+    end
+
+    it "should return the logger on stop" do
+      @logger.stop.should == @logger
+    end
+  end
+
+
+  describe "with a new log with a given outstream" do
+    before(:each) do
+      @outstream = ""
+      @logger = ThreadedLogger.create_log(:bill, @outstream)
+    end
+
+    after(:each) do
+      @logger.stop
+    end
+
+    it "should be running" do
+      @logger.should be_running
+    end
+
+    it "should start with the outstream being an empty string" do
+      @outstream.should == ""
+    end
+
+    it "should have the correct outstream" do
+      @logger.outstream.should == @outstream
+    end
+
     it "should be possible to send it a message" do
       @logger.log "hello there"
-      @logger.length.should == 1
+      @logger.num_messages_received.should == 1
     end
 
     it "should be possible to sent it multiple messages" do
       @logger.log "hello"
       @logger.log "there"
       @logger.log "world"
-      @logger.length.should == 3
+      @logger.num_messages_received.should == 3
     end
 
-    it "should use STDOUT as the default outstream" do
-      @logger.outstream.should == STDOUT
-    end
+    it "should place the correct 5 messages to the outstream" do
+      time = Time.now
 
-    it "should be possible to initialize one with an outstream" do
-      outstream = ""
-      @logger.outstream = outstream
-      @logger.outstream.should == outstream
-    end
+      @logger.log "hi"
+      @logger.log "there"
+      @logger.log "how"
+      @logger.log "are"
+      @logger.log "you?"
 
-    it "should be possible to start and stop the log" do
-      lambda{@logger.start ; @logger.stop}.should_not raise_error
-    end
-
-    it "should return the logger on start" do
-      @logger.start.should == @logger
-      @logger.stop
-    end
-
-    it "should return the logger on stop" do
-      @logger.start
-      @logger.stop.should == @logger
-    end
-
-    describe "with starting and stopping and with a given outstream" do
-      before(:each) do
-        @outstream = ""
-        @logger.outstream = @outstream
-        @logger.start
+      while(@logger.num_messages_logged < 5) do
+        if Time.now - time > 0.5
+          raise "Taking too long to place messages onto the @logger outstream, only managed to receive #{@logger.num_messages} messages"
+        end
       end
 
-      after(:each) do
-        @logger.stop
+      messages = ThreadedLogger.strip_messages(@outstream, :bill)
+      @logger.num_messages_logged.should == 5
+      messages.should == "hi\nthere\nhow\nare\nyou?\n"
+    end
+
+    it "should be possible to log with the << message too" do
+      time = Time.now
+
+      @logger << "hi"
+      @logger << "there"
+      @logger << "how"
+      @logger << "are"
+      @logger << "you?"
+
+      while(@logger.num_messages_logged < 5) do
+        if Time.now - time > 0.5
+          raise "Taking too long to place messages onto the @logger outstream, only managed to receive #{@logger.num_messages} messages"
+        end
       end
 
-      it "should be running" do
-        @logger.running?.should == true
-      end
+      messages = ThreadedLogger.strip_messages(@outstream, :bill)
+      @logger.num_messages_logged.should == 5
+      messages.should == "hi\nthere\nhow\nare\nyou?\n"
+    end
 
-      it "should start with the outstream being an empty string" do
-        @outstream.should == ""
-      end
+    it "should be possible to place 10000 messages to the outstream from 1000 different threads" do
+      time = Time.now
 
-      it "should have the correct outstream" do
-        @logger.outstream.should == @outstream
-      end
+      1000.times do |i|
+        thread_name = "thread #{i}"
 
-      it "should place the messages to the outstream" do
-        time = Time.now
-
-        @logger.log "hi"
-        @logger.log "there"
-        @logger.log "how"
-        @logger.log "are"
-        @logger.log "you?"
-
-        while(@logger.num_messages_logged < 5) do
-          if Time.now - time > 0.5
-            raise "Taking too long to place messages onto the @logger outstream, only managed to receive #{@logger.num_messages} messages"
+        Thread.new do
+          10.times do |j|
+            message = "#{thread_name}: message #{j}"
+            @logger.log message
           end
         end
-
-        messages = ThreadedLogger.strip_messages(@outstream, :ted)
-        messages.should == "hi\nthere\nhow\nare\nyou?\n"
       end
 
-      it "should be possible to log with the << message too" do
-        time = Time.now
-
-        @logger << "hi"
-        @logger << "there"
-        @logger << "how"
-        @logger << "are"
-        @logger << "you?"
-
-        while(@logger.num_messages_logged < 5) do
-          if Time.now - time > 0.5
-            raise "Taking too long to place messages onto the @logger outstream, only managed to receive #{@logger.num_messages} messages"
-          end
+      while(@logger.num_messages_logged < 10000) do
+        if Time.now - time > 5
+          raise "Taking too long to place messages onto the @log outstream, only managed to receive #{@logger.num_messages_logged} messages"
         end
-
-        messages = ThreadedLogger.strip_messages(@outstream, :ted)
-        messages.should == "hi\nthere\nhow\nare\nyou?\n"
       end
 
-      it "should be possible to place 10000 messages to the outstream from 1000 different threads" do
-        time = Time.now
-
-        1000.times do |i|
-          thread_name = "thread #{i}"
-
-          Thread.new do
-            10.times do |j|
-              message = "#{thread_name}: message #{j}"
-              @logger.log message
-            end
-          end
-        end
-
-        while(@logger.num_messages_logged < 10000) do
-          if Time.now - time > 5
-            raise "Taking too long to place messages onto the @log outstream, only managed to receive #{@logger.num_messages_logged} messages"
-          end
-        end
-
-        @outstream.split("\n").size.should == 10000
-      end
+      @outstream.split("\n").size.should == 10000
     end
-  end
-
-  describe "with multiple logs" do
-     before(:each) do
-      ThreadedLogger.create_log(:flower)
-      @logger1 = ThreadedLogger.get_log(:flower)
-
-      ThreadedLogger.create_log(:pot)
-      @logger2 = ThreadedLogger.get_log(:pot)
-
-      ThreadedLogger.create_log(:men)
-      @logger3 = ThreadedLogger.get_log(:men)
-    end
-
-
   end
 end
+
+describe "with multiple logs" do
+  before(:each) do
+    ThreadedLogger.create_log(:flower)
+    @logger1 = ThreadedLogger.get_log(:flower)
+
+    ThreadedLogger.create_log(:pot)
+    @logger2 = ThreadedLogger.get_log(:pot)
+
+    ThreadedLogger.create_log(:men)
+    @logger3 = ThreadedLogger.get_log(:men)
+  end
+end
+
