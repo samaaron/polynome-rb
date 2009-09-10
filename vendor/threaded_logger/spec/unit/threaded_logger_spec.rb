@@ -197,10 +197,10 @@ describe ThreadedLogger do
       messages.should == "hi\nthere\nhow\nare\nyou?\n"
     end
 
-    it "should be possible to place 10000 messages to the outstream from 1000 different threads" do
+    it "should be possible to place 100 messages to the outstream from 10 different threads" do
       time = Time.now
 
-      1000.times do |i|
+      10.times do |i|
         thread_name = "thread #{i}"
 
         Thread.new do
@@ -211,13 +211,13 @@ describe ThreadedLogger do
         end
       end
 
-      while(@logger.num_messages_logged < 10000) do
+      while(@logger.num_messages_logged < 100) do
         if Time.now - time > 5
           raise "Taking too long to place messages onto the @log outstream, only managed to receive #{@logger.num_messages_logged} messages"
         end
       end
 
-      @outstream.split("\n").size.should == 10000
+      @outstream.split("\n").size.should == 100
     end
   end
 end
