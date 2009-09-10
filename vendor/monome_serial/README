@@ -1,0 +1,5 @@
+MonomeSerial
+
+A library for direct communication with a monome device via a serial connection.
+
+Note, this library has only been developed and tested on Mac OS X under Ruby 1.9.1. Patches for compatibility with other operating systems and Ruby interpreters are very welcome.

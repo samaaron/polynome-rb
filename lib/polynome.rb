@@ -4,11 +4,17 @@ require 'thread'
 #make sure vendored stuff takes priority in the loadpath
 Dir[File.dirname(__FILE__) + '/../vendor/*/lib'].each {|lib|  $:.unshift lib}
 
+#make sure extensions dir is in the loadpath
+RUBY_ENGINE = 'MRI' unless Object.const_defined? "RUBY_ENGINE"
+$:.unshift(File.dirname(__FILE__) + "/../vendor/extensions/#{RUBY_ENGINE}-#{RUBY_VERSION}-#{RUBY_PLATFORM}")
+
 #require vendored stuff
 require 'samaaron-rosc'
 require 'activesupport'
 require 'threaded_logger'
 require 'rainbow'
+require 'monome_serial'
+
 
 #add self to the loadpath
 $:.unshift File.dirname(__FILE__)

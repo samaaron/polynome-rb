@@ -13,13 +13,35 @@ Spec::Rake::SpecTask.new do |t|
   t.spec_files = FileList['spec/**/*_spec.rb'] +
                  FileList['vendor/tosca/spec/**/*_spec.rb'] +
                  FileList['vendor/threaded_logger/spec/**/*_spec.rb']
+
+  #only run the specs for monome_serial if
+  #we're using MRI 1.9.1 or greater
+  RUBY_ENGINE = 'MRI' unless Object.const_defined?("RUBY_ENGINE")
+  if (RUBY_VERSION.split('.').join.to_i >= 191) && RUBY_ENGINE == "ruby"
+    t.spec_files += FileList['vendor/monome_serial/spec/**/*_spec.rb']
+  end
+
   t.fail_on_error = false
   t.libs << 'vendor/threaded_logger/lib/'
   t.libs << 'lib'
   t.libs << 'vendor/tosca/lib'
+  t.libs << 'vendor/monome_serial/lib/'
+  t.libs << 'vendor/activesupport/lib'
+  t.libs << "vendor/extensions/#{RUBY_ENGINE}-#{RUBY_VERSION}-#{RUBY_PLATFORM}"
 end
 
 desc "Run the specs under spec and mention which Ruby version is currently running"
 task :spec => [:spec_main] do
   puts "(Interpreted with #{Gem.ruby_engine}, version #{Gem.ruby_version})\n\n"
+end
+
+
+desc "Compile Termios C Extensions"
+task :compile_termios do
+  ruby_cmd = "#{File.join(Config::CONFIG['bindir'], Config::CONFIG['ruby_install_name'])}"
+  cd_to_termios_dir = "cd #{File.dirname(__FILE__) + "/vendor/arika-ruby-termios/"}"
+  extensions_dir = File.expand_path(File.dirname(__FILE__) + "/vendor/extensions/#{RUBY_ENGINE}-#{RUBY_VERSION}-#{RUBY_PLATFORM}")
+
+  `mkdir -p #{extensions_dir}`
+  `#{cd_to_termios_dir} ; #{ruby_cmd} extconf.rb ; make clean ; make ; mv *.bundle #{extensions_dir}`
 end
