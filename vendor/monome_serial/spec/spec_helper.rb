@@ -1,5 +1,4 @@
 #require tosca
-require 'termios'
 require 'monome_serial'
 
 

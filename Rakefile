@@ -12,14 +12,9 @@ Spec::Rake::SpecTask.new do |t|
   t.spec_opts = ['--options', File.dirname(__FILE__) + "/spec/spec.opts"]
   t.spec_files = FileList['spec/**/*_spec.rb'] +
                  FileList['vendor/tosca/spec/**/*_spec.rb'] +
-                 FileList['vendor/threaded_logger/spec/**/*_spec.rb']
+                 FileList['vendor/threaded_logger/spec/**/*_spec.rb'] +
+                 FileList['vendor/monome_serial/spec/**/*_spec.rb']
 
-  #only run the specs for monome_serial if
-  #we're using MRI 1.9.1 or greater
-  RUBY_ENGINE = 'MRI' unless Object.const_defined?("RUBY_ENGINE")
-  if (RUBY_VERSION.split('.').join.to_i >= 191) && RUBY_ENGINE == "ruby"
-    t.spec_files += FileList['vendor/monome_serial/spec/**/*_spec.rb']
-  end
 
   t.fail_on_error = false
   t.libs << 'vendor/threaded_logger/lib/'
@@ -27,6 +22,7 @@ Spec::Rake::SpecTask.new do |t|
   t.libs << 'vendor/tosca/lib'
   t.libs << 'vendor/monome_serial/lib/'
   t.libs << 'vendor/activesupport/lib'
+  RUBY_ENGINE = 'MRI' unless Object.const_defined?("RUBY_ENGINE")
   t.libs << "vendor/extensions/#{RUBY_ENGINE}-#{RUBY_VERSION}-#{RUBY_PLATFORM}"
 end
 

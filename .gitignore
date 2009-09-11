@@ -2,4 +2,5 @@ tmp
 *.DS_Store
 \#*#
 *.#*
+vendor/extensions
 

@@ -1,5 +1,11 @@
 #require external libraries
 require 'activesupport'
+require 'fcntl'
 
-#require local source
 require 'monome_serial/serial_communicator'
+require 'monome_serial/serial_communicator/communicator'
+require 'monome_serial/serial_communicator/dummy_communicator'
+require 'monome_serial/serial_communicator/real_communicator'
+
+
+
