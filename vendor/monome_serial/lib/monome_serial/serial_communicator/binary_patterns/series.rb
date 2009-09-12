@@ -174,15 +174,7 @@ module MonomeSerial
         #       decode:         id match: byte 0 >> 4 == 1
         #                               a: byte 0 & 0x0f
         #                               d: byte 1
-        def led_on_pattern
-          "00100000"
-        end
-
-        def led_off_pattern
-          "00110000"
-        end
-
-        ONE_COORD_PATTERNS = {
+        INT_TO_BIN_STRING = {
           0  => "0000",
           1  => "0001",
           2  => "0010",
@@ -202,18 +194,37 @@ module MonomeSerial
         }
 
         X_Y_COORD_PATTERNS = (0..15).inject({}) do |hash, x|
-          (0..15).each {|y| hash[[x,y]] = ONE_COORD_PATTERNS[x] + ONE_COORD_PATTERNS[y]}
+          (0..15).each {|y| hash[[x,y]] = INT_TO_BIN_STRING[x] + INT_TO_BIN_STRING[y]}
           hash
         end
 
         EIGHT_LIGHT_ROW_PATTTERNS = (0..15).inject({}) do |hash, row|
-          hash[row] = "0100" + ONE_COORD_PATTERNS[row]
+          hash[row] = "0100" + INT_TO_BIN_STRING[row]
           hash
         end
 
         SIXTEEN_LIGHT_ROW_PATTERNS = (0..15).inject({}) do |hash, row|
-          hash[row] = "0110" + ONE_COORD_PATTERNS[row]
+          hash[row] = "0110" + INT_TO_BIN_STRING[row]
           hash
+        end
+
+
+        EIGHT_LIGHT_COL_PATTERNS = (0..15).inject({}) do |hash, row|
+          hash[row] = "0101" + INT_TO_BIN_STRING[row]
+          hash
+        end
+
+        SIXTEEN_LIGHT_COL_PATTERNS = (0..15).inject({}) do |hash, row|
+          hash[row] = "0111" + INT_TO_BIN_STRING[row]
+          hash
+        end
+
+        def led_on_pattern
+          "00100000"
+        end
+
+        def led_off_pattern
+          "00110000"
         end
 
         def x_y_coord_pattern(x, y)
@@ -225,6 +236,7 @@ module MonomeSerial
         end
 
         def col_of_8_pattern(col)
+          EIGHT_LIGHT_COL_PATTERNS[col]
         end
 
         def row_of_16_pattern(row)
@@ -232,7 +244,36 @@ module MonomeSerial
         end
 
         def col_of_16_pattern(col)
+          SIXTEEN_LIGHT_COL_PATTERNS[col]
         end
+
+        def clear_pattern
+          "10010000"
+        end
+
+        def all_pattern
+          "10010001"
+        end
+
+        def frame_pattern(quadrant)
+          raise ArgumentError, "Expecting quadrang to be between 0 and 3 inclusively, got #{quadrant}" unless quadrant >= 0 && quadrant <= 3
+
+          quadrant_pattern = case quadrant
+                             when 0 then "00"
+                             when 1 then "01"
+                             when 2 then "10"
+                             when 3 then "11"
+                             end
+          "100000" + quadrant_pattern
+        end
+
+
+        def brightness_pattern(brightness)
+          raise ArgumentError, "Expecting a brightness between 0 and 15 inclusively, got #{brightness}" unless brightness >= 0 && brightness <= 15
+
+          "1010" + INT_TO_BIN_STRING[brightness]
+        end
+
       end
     end
   end
