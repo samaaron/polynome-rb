@@ -63,7 +63,9 @@ module MonomeSerial
         case strings.size
         when 1 then @dev.write(strings.pack('B8'))
         when 2 then @dev.write(strings.pack('B8B8'))
-        when 3 then @dev.write(strings.pack('B8B8'))
+        when 3 then @dev.write(strings.pack('B8B8B8'))
+        when 9 then @dev.write(strings.pack('B8B8B8B8B8B8B8B8B8'))
+        else raise ArgumentError, "SerialCommunicator#write only supports sending one, two, three or nine bytes at a time. You tried to send #{strings.size} bytes."
         end
       end
 
