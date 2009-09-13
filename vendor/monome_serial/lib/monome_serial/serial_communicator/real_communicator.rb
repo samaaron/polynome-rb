@@ -1,11 +1,18 @@
 module MonomeSerial
   module SerialCommunicator
     class RealCommunicator < Communicator
+      attr_reader :model, :serial
       def initialize(tty_path)
         #make sure tty_path exists (such as "/dev/tty.usbserial-m256-203")
         raise ArgumentError, "path to tty IO file does not exist" unless File.exists?(tty_path)
 
-        #open up the virtual serial port
+        match = tty_path.match /m(\d+)-(\d+)/
+        @model = match[1]
+
+        #pull out this Monome's individual serial number
+        @serial = match[2]
+
+        #Open up the virtual serial port
         @dev = dev_open(tty_path)
 
         #bless the file with Termios powers
@@ -58,14 +65,18 @@ module MonomeSerial
       end
 
       def write(strings)
+
         super
 
-        case strings.size
-        when 1 then @dev.write(strings.pack('B8'))
-        when 2 then @dev.write(strings.pack('B8B8'))
-        when 3 then @dev.write(strings.pack('B8B8B8'))
-        when 9 then @dev.write(strings.pack('B8B8B8B8B8B8B8B8B8'))
-        else raise ArgumentError, "SerialCommunicator#write only supports sending one, two, three or nine bytes at a time. You tried to send #{strings.size} bytes."
+        #convert integer params to 8bit binary representation
+        bin_strings = strings.map{|s| s.to_s}
+
+        case bin_strings.size
+        when 1 then @dev.write(bin_strings.pack('B8'))
+        when 2 then @dev.write(bin_strings.pack('B8B8'))
+        when 3 then @dev.write(bin_strings.pack('B8B8B8'))
+        when 9 then @dev.write(bin_strings.pack('B8B8B8B8B8B8B8B8B8'))
+        else raise ArgumentError, "SerialCommunicator#write only supports sending one, two, three or nine bytes at a time. You tried to send #{bin_strings.size} bytes."
         end
       end
 

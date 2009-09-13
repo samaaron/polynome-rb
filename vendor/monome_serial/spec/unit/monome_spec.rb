@@ -8,8 +8,16 @@ describe MonomeSerial::Monome do
   describe "A basic monome with a dummy communicator" do
     before(:each) do
       MonomeSerial::SerialCommunicator.should_receive(:get_communicator).and_return MonomeSerial::SerialCommunicator::DummyCommunicator.new
-      @monome = MonomeSerial::Monome.new('blah')
+      @monome = MonomeSerial::Monome.new('blah-m256-007')
       @comm = @monome.communicator
+    end
+
+    it "should have a model of 256" do
+      @monome.model.should == "256"
+    end
+
+    it "should have a serial of 007" do
+      @monome.serial.should == "007"
     end
 
     describe "illuminate_lamp" do

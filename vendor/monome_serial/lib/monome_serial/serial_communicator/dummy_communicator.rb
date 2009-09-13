@@ -17,6 +17,14 @@ module MonomeSerial
       def real?
         false
       end
+
+      def model
+        "256"
+      end
+
+      def serial
+        "007"
+      end
     end
   end
 end
