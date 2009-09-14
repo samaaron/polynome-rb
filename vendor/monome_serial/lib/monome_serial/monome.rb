@@ -10,48 +10,35 @@ module MonomeSerial
       raise "tty path pattern unrecognised, was expecting to find m256-007 where 256 represents the model and 007 represents the serial, got #{tty_path}" unless match
 
       @model  = match[1]
-      @transposer = Transposer.new(@model)
       @serial = match[2]
-
       @communicator = SerialCommunicator.get_communicator(tty_path)
-
-      @cable_orientation = :top
-    end
-
-    def cable_orientation=(orientation)
-      raise ArgumentError, "Unknown cable orientation. Expected :top, :bottom, :left or :right, got #{orientation}" unless orientation == :top || orientation == :left || orientation == :right || orientation == :bottom
-      @cable_orientation = orientation
-      @transposer.orientation = orientation
     end
 
     def illuminate_lamp(x,y)
-      @communicator.write([led_on_pattern,  x_y_coord_pattern(*@transposer.transpose_coords(x,y))])
+      @communicator.write([led_on_pattern,  x_y_coord_pattern(x,y)])
     end
 
     def extinguish_lamp(x,y)
-      @communicator.write([led_off_pattern, x_y_coord_pattern(*@transposer.transpose_coords(x,y))])
+      @communicator.write([led_off_pattern, x_y_coord_pattern(x,y)])
     end
 
     def illuminate_row(row, pattern)
-      #it seems that the defaults for the original OS X MonomeSerial
-      #OSC protocol illuminates columns when the row command is called
       case pattern.size
       when 8 then
-        @communicator.write([col_of_8_pattern(@transposer.transpose_row(row)), @transposer.transpose_row_pattern(pattern)])
+        @communicator.write([col_of_8_pattern(row), pattern])
       when 16 then
-        transposed_pattern = @transposer.transpose_row_pattern(pattern)
-        @communicator.write([col_of_16_pattern(@transposer.transpose_row(row)), transposed_pattern[0..7], transposed_pattern[8..15]])
+        @communicator.write([col_of_16_pattern(row), pattern[0..7], pattern[8..15]])
       else
         raise ArgumentError, "Incorrect length of pattern sent to MonomeSerial::Monome#illumninate_row. Expected 8 or 16, got #{pattern.size}"
       end
     end
 
-    def illuminate_col(col, pattern)
+    def illuminate_column(col, pattern)
       case pattern.size
         when 8 then
-        @communicator.write([row_of_8_pattern(@transposer.transpose_col(col)), @transposer.transpose_col_pattern(pattern)])
+        @communicator.write([row_of_8_pattern(col), pattern])
       when 16 then
-        @communicator.write([row_of_16_pattern(@transposer.transpose_col(col)), pattern[0..7], pattern[8..15]])
+        @communicator.write([row_of_16_pattern(col), pattern[0..7], pattern[8..15]])
       else
         raise ArgumentError, "Incorrect length of pattern sent to MonomeSerial::Monome#illumninate_col. Expected 8 or 16, got #{pattern.size}"
       end
