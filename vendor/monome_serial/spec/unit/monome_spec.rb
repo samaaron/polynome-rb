@@ -5,10 +5,42 @@ describe MonomeSerial::Monome do
     MonomeSerial::Monome.should_not be_nil
   end
 
-  describe "A default monome with series binary patterns" do
+  it "should raise an error when not initializing with a correct protocol name" do
+    lambda{MonomeSerial::Monome.new('/blah', "phonycol" )}.should raise_error(ArgumentError)
+  end
+
+  describe "A default monome with an unusual tty_path" do
+    before(:each) do
+      @monome = MonomeSerial::Monome.new('unusual_path')
+    end
+
+    it "should default to the series protocol" do
+      @monome.protocol.should == "series"
+    end
+
+    it "should default the serial to Serial Unknown" do
+      @monome.serial.should == "Serial Unknown"
+    end
+
+    it "should have a dummy communicator" do
+      @monome.communicator.class.should == MonomeSerial::SerialCommunicator::DummyCommunicator
+    end
+  end
+
+  describe "A default monome with the 40h protocol" do
+    before(:each) do
+      @monome = MonomeSerial::Monome.new('/foo/tty.usbserial-m256-203', '40h')
+    end
+
+    it "should raise an exception when a communicating method is used" do
+      lambda{@monome.illuminate_lamp(0,0)}.should raise_error(NotImplementedError)
+    end
+  end
+
+  describe "A monome with a normal tty_path and a dummy communicator" do
     before(:each) do
       MonomeSerial::SerialCommunicator.should_receive(:get_communicator).and_return MonomeSerial::SerialCommunicator::DummyCommunicator.new
-      @monome = MonomeSerial::Monome.new('m256-007')
+      @monome = MonomeSerial::Monome.new('/foo/tty.usbserial-m256-203')
       @comm = @monome.communicator
     end
 

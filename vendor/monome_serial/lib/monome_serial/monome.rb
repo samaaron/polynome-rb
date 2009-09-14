@@ -7,20 +7,24 @@ module MonomeSerial
     #the given device and rotation. This class just provides raw access
     #to the serial protocol and serves it unadultered.
 
-    attr_reader :communicator, :serial, :model, :cable_orientation
+    attr_reader :communicator, :serial, :protocol
 
-    def initialize(tty_path)
-      #pull out the model and serial for the monome represented by
+    def initialize(tty_path, protocol="series")
+      raise ArgumentError, "Unexpected protocol type" unless protocol == "40h" || protocol == "series"
+
+      @protocol = protocol
+
+      #try to pull out serial for the monome represented by
       #this tty_path
       match  = tty_path.match /m(\d+h?)-(\d+)/
-      raise "tty path pattern unrecognised, was expecting to find m256-007 where 256 represents the model and 007 represents the serial, got #{tty_path}" unless match
+      @serial = match ? match[2] : "Serial Unknown"
 
-      @model  = match[1]
-      @serial = match[2]
+      #get communicator (will return a DummyCommunicator if the path
+      #isn't correct)
       @communicator = SerialCommunicator.get_communicator(tty_path)
 
       #include the correct binary patterns
-      if @serial == "40h"
+      if @protocol == "40h"
         extend SerialCommunicator::BinaryPatterns::Fourtyh
       else
         extend SerialCommunicator::BinaryPatterns::Series
