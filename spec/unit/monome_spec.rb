@@ -1,14 +1,14 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 
-describe Polynome::VirtualMonome do
+describe Polynome::Monome do
   it "should exist" do
-    Polynome::VirtualMonome.should_not be_nil
+    Polynome::Monome.should_not be_nil
   end
 end
 
-describe Polynome::VirtualMonome, ", initialised with defaults" do
+describe Polynome::Monome, ", initialised with defaults" do
   before(:each) do
-    @vm = Polynome::VirtualMonome.new
+    @vm = Polynome::Monome.new
   end
 
   after(:each) do
@@ -24,9 +24,9 @@ describe Polynome::VirtualMonome, ", initialised with defaults" do
   end
 end
 
-describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orientation bottom and model one_twenty_eight" do
+describe Polynome::Monome, ", with bespoke initialisation of cable_orientation bottom and model one_twenty_eight" do
   before(:each) do
-    @vm = Polynome::VirtualMonome.new(:cable_orientation => :bottom,
+    @vm = Polynome::Monome.new(:cable_orientation => :bottom,
                                       :model             => :one_twenty_eight)
   end
 
@@ -59,9 +59,9 @@ describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orient
   end
 end
 
-describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orientation left and model one_twenty_eight" do
+describe Polynome::Monome, ", with bespoke initialisation of cable_orientation left and model one_twenty_eight" do
   before(:each) do
-    @vm = Polynome::VirtualMonome.new(:cable_orientation => :left,
+    @vm = Polynome::Monome.new(:cable_orientation => :left,
                                       :model             => :one_twenty_eight)
   end
 
@@ -94,9 +94,9 @@ describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orient
   end
 end
 
-describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orientation left and model sixty_four" do
+describe Polynome::Monome, ", with bespoke initialisation of cable_orientation left and model sixty_four" do
   before(:each) do
-    @vm = Polynome::VirtualMonome.new(:cable_orientation => :left,
+    @vm = Polynome::Monome.new(:cable_orientation => :left,
                                       :model             => :sixty_four)
   end
 
@@ -129,9 +129,9 @@ describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orient
   end
 end
 
-describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orientation left and model two_fifty_six" do
+describe Polynome::Monome, ", with bespoke initialisation of cable_orientation left and model two_fifty_six" do
   before(:each) do
-    @vm = Polynome::VirtualMonome.new(:cable_orientation => :left,
+    @vm = Polynome::Monome.new(:cable_orientation => :left,
                                  :model             => :two_fifty_six)
   end
 
@@ -164,11 +164,11 @@ describe Polynome::VirtualMonome, ", with bespoke initialisation of cable_orient
   end
 end
 
-describe Polynome::VirtualMonome, ", with specified input and output ports" do
+describe Polynome::Monome, ", with specified input and output ports" do
   before(:each) do
     @polynome_input_port_num  = 7788
     @polynome_output_port_num = 8877
-    @vm = Polynome::VirtualMonome.new(:input_port => @polynome_input_port_num,
+    @vm = Polynome::Monome.new(:input_port => @polynome_input_port_num,
                                       :output_port => @polynome_output_port_num)
     @outstream = ""
     @logger = ThreadedLogger::TLogger.new(:tosca, @outstream)

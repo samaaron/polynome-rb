@@ -37,7 +37,7 @@ describe Polynome::Table do
     end
   end
 
-  describe "Adding a Virtual Monome" do
+  describe "Adding a Monome" do
     before(:each) do
       @table     = Polynome::Table.new(:in_port => 4443)
       @receiver = Tosca::Receiver.new(5544)
@@ -54,7 +54,7 @@ describe Polynome::Table do
     end
 
     it "should know that there is one vm after adding one" do
-      vm = Polynome::VirtualMonome.new
+      vm = Polynome::Monome.new
       @table.add_vm(vm)
       @table.num_vms.should == 1
       vm.power_down

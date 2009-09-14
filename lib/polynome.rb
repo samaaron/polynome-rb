@@ -23,7 +23,7 @@ require 'polynome/loggable'
 require 'polynome/table'
 require 'polynome/osc_listener'
 require 'polynome/osc_sender'
-require 'polynome/virtual_monome'
+require 'polynome/monome'
 
 
 #require config
