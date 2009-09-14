@@ -5,7 +5,7 @@ describe MonomeSerial::Monome do
     MonomeSerial::Monome.should_not be_nil
   end
 
-  describe "A default monome" do
+  describe "A default monome with series binary patterns" do
     before(:each) do
       MonomeSerial::SerialCommunicator.should_receive(:get_communicator).and_return MonomeSerial::SerialCommunicator::DummyCommunicator.new
       @monome = MonomeSerial::Monome.new('m256-007')

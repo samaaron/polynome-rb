@@ -1,17 +1,23 @@
 module MonomeSerial
   class Monome
-    include SerialCommunicator::BinaryPatterns::Series
     attr_reader :communicator, :serial, :model, :cable_orientation
 
     def initialize(tty_path)
       #pull out the model and serial for the monome represented by
       #this tty_path
-      match  = tty_path.match /m(\d+)-(\d+)/
+      match  = tty_path.match /m(\d+h?)-(\d+)/
       raise "tty path pattern unrecognised, was expecting to find m256-007 where 256 represents the model and 007 represents the serial, got #{tty_path}" unless match
 
       @model  = match[1]
       @serial = match[2]
       @communicator = SerialCommunicator.get_communicator(tty_path)
+
+      #include the correct binary patterns
+      if @serial == "40h"
+        extend SerialCommunicator::BinaryPatterns::Fourtyh
+      else
+        extend SerialCommunicator::BinaryPatterns::Series
+      end
     end
 
     def illuminate_lamp(x,y)
