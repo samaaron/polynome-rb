@@ -1,5 +1,12 @@
 module MonomeSerial
   class Monome
+    #It's important to note that the vanilla behaviour of these methods
+    #doesn't match that of the OSC protocol specification as implemented
+    #by the original OS X MonomeSerial application. In order to match
+    #these behviours it is necessary to map the calls appropriately for
+    #the given device and rotation. This class just provides raw access
+    #to the serial protocol and serves it unadultered.
+
     attr_reader :communicator, :serial, :model, :cable_orientation
 
     def initialize(tty_path)
@@ -31,9 +38,9 @@ module MonomeSerial
     def illuminate_row(row, pattern)
       case pattern.size
       when 8 then
-        @communicator.write([col_of_8_pattern(row), pattern])
+        @communicator.write([row_of_8_pattern(row), pattern])
       when 16 then
-        @communicator.write([col_of_16_pattern(row), pattern[0..7], pattern[8..15]])
+        @communicator.write([row_of_16_pattern(row), pattern[0..7], pattern[8..15]])
       else
         raise ArgumentError, "Incorrect length of pattern sent to MonomeSerial::Monome#illumninate_row. Expected 8 or 16, got #{pattern.size}"
       end
@@ -41,10 +48,10 @@ module MonomeSerial
 
     def illuminate_column(col, pattern)
       case pattern.size
-        when 8 then
-        @communicator.write([row_of_8_pattern(col), pattern])
+      when 8 then
+        @communicator.write([col_of_8_pattern(col), pattern])
       when 16 then
-        @communicator.write([row_of_16_pattern(col), pattern[0..7], pattern[8..15]])
+        @communicator.write([col_of_16_pattern(col), pattern[0..7], pattern[8..15]])
       else
         raise ArgumentError, "Incorrect length of pattern sent to MonomeSerial::Monome#illumninate_col. Expected 8 or 16, got #{pattern.size}"
       end
