@@ -1,18 +1,27 @@
 module MonomeSerial
   class Monome
     include SerialCommunicator::BinaryPatterns::Series
-    attr_reader :communicator, :serial, :model
+    attr_reader :communicator, :serial, :model, :cable_orientation
+
     def initialize(tty_path)
       #pull out the model and serial for the monome represented by
       #this tty_path
       match  = tty_path.match /m(\d+)-(\d+)/
+      raise "tty path pattern unrecognised, was expecting to find m256-007 where 256 represents the model and 007 represents the serial, got #{tty_path}" unless match
+
       @model  = match[1]
       @transposer = Transposer.new(@model)
       @serial = match[2]
 
       @communicator = SerialCommunicator.get_communicator(tty_path)
 
-      @serial = @communicator
+      @cable_orientation = :top
+    end
+
+    def cable_orientation=(orientation)
+      raise ArgumentError, "Unknown cable orientation. Expected :top, :bottom, :left or :right, got #{orientation}" unless orientation == :top || orientation == :left || orientation == :right || orientation == :bottom
+      @cable_orientation = orientation
+      @transposer.orientation = orientation
     end
 
     def illuminate_lamp(x,y)

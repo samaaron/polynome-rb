@@ -1,6 +1,8 @@
 module MonomeSerial
   class Transposer
     attr_reader :max_width, :max_height
+    attr_writer :orientation
+
 
     def initialize(model)
       case model
@@ -9,6 +11,8 @@ module MonomeSerial
       when "256" then init_256
       else raise ArgumentError, "Unknown monome type: #{model}"
       end
+
+      @orientation = :top
     end
 
     def init_64
