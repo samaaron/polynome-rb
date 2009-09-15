@@ -10,3 +10,4 @@ require 'spec/autorun'
 
 ThreadedLogger.create_log(:rspec) unless ThreadedLogger.get_log(:rspec)
 TLOG = ThreadedLogger.get_log(:rspec) unless defined? TLOG
+MonomeSerial::SerialCommunicator.suppress_warnings = true

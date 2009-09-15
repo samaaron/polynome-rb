@@ -8,7 +8,7 @@ describe SerialCommunicator do
 
   describe "A dummy serial connection" do
     before(:each) do
-      @comm = SerialCommunicator.get_communicator("fake", false)
+      @comm = SerialCommunicator.get_communicator("fake")
     end
 
     it "should be a dummy connection" do
