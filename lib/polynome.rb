@@ -19,6 +19,7 @@ require 'monome_serial'
 #add self to the loadpath
 $:.unshift File.dirname(__FILE__)
 #require polynome stuff
+require 'polynome/monome_communicator'
 require 'polynome/loggable'
 require 'polynome/rack'
 require 'polynome/osc_listener'
