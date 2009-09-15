@@ -1,5 +1,5 @@
 module Polynome
-  class Table
+  class Rack
     include Loggable
     attr_reader :in_port, :out_port, :out_host, :log_history
     def initialize(opts={})

@@ -20,10 +20,10 @@ require 'monome_serial'
 $:.unshift File.dirname(__FILE__)
 #require polynome stuff
 require 'polynome/loggable'
-require 'polynome/table'
+require 'polynome/rack'
 require 'polynome/osc_listener'
 require 'polynome/osc_sender'
-require 'polynome/monome'
+require 'polynome/light_bank'
 
 
 #require config

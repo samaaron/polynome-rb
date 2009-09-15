@@ -21,4 +21,3 @@ describe MonomeSerial::SerialCommunicator do
     end
   end
 end
-
