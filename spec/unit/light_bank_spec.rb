@@ -1,14 +1,15 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
+include Polynome
 
-describe Polynome::LightBank do
+describe LightBank do
   it "should exist" do
-    Polynome::LightBank.should_not be_nil
+    LightBank.should_not be_nil
   end
 end
 
-describe Polynome::LightBank, ", initialised with defaults" do
+describe LightBank, ", initialised with defaults" do
   before(:each) do
-    @bank = Polynome::LightBank.new
+    @bank = LightBank.new
   end
 
   after(:each) do
@@ -24,10 +25,10 @@ describe Polynome::LightBank, ", initialised with defaults" do
   end
 end
 
-describe Polynome::LightBank, ", with bespoke initialisation of cable_orientation bottom and model one_twenty_eight" do
+describe LightBank, ", with bespoke initialisation of cable_orientation bottom and model one_twenty_eight" do
   before(:each) do
-    @bank = Polynome::LightBank.new(:cable_orientation => :bottom,
-                               :model             => :one_twenty_eight)
+    @bank = LightBank.new(:cable_orientation => :bottom,
+                          :model             => :one_twenty_eight)
   end
 
   after(:each) do
@@ -59,10 +60,10 @@ describe Polynome::LightBank, ", with bespoke initialisation of cable_orientatio
   end
 end
 
-describe Polynome::LightBank, ", with bespoke initialisation of cable_orientation left and model one_twenty_eight" do
+describe LightBank, ", with bespoke initialisation of cable_orientation left and model one_twenty_eight" do
   before(:each) do
-    @bank = Polynome::LightBank.new(:cable_orientation => :left,
-                               :model             => :one_twenty_eight)
+    @bank = LightBank.new(:cable_orientation => :left,
+                          :model             => :one_twenty_eight)
   end
 
   after(:each) do
@@ -94,10 +95,10 @@ describe Polynome::LightBank, ", with bespoke initialisation of cable_orientatio
   end
 end
 
-describe Polynome::LightBank, ", with bespoke initialisation of cable_orientation left and model sixty_four" do
+describe LightBank, ", with bespoke initialisation of cable_orientation left and model sixty_four" do
   before(:each) do
-    @bank = Polynome::LightBank.new(:cable_orientation => :left,
-                               :model             => :sixty_four)
+    @bank = LightBank.new(:cable_orientation => :left,
+                          :model             => :sixty_four)
   end
 
   after(:each) do
@@ -129,10 +130,10 @@ describe Polynome::LightBank, ", with bespoke initialisation of cable_orientatio
   end
 end
 
-describe Polynome::LightBank, ", with bespoke initialisation of cable_orientation left and model two_fifty_six" do
+describe LightBank, ", with bespoke initialisation of cable_orientation left and model two_fifty_six" do
   before(:each) do
-    @bank = Polynome::LightBank.new(:cable_orientation => :left,
-                               :model             => :two_fifty_six)
+    @bank = LightBank.new(:cable_orientation => :left,
+                          :model             => :two_fifty_six)
   end
 
   after(:each) do
@@ -164,12 +165,12 @@ describe Polynome::LightBank, ", with bespoke initialisation of cable_orientatio
   end
 end
 
-describe Polynome::LightBank, ", with specified input and output ports" do
+describe LightBank, ", with specified input and output ports" do
   before(:each) do
     @polynome_input_port_num  = 7788
     @polynome_output_port_num = 8877
-    @bank = Polynome::LightBank.new(:input_port => @polynome_input_port_num,
-                               :output_port => @polynome_output_port_num)
+    @bank = LightBank.new(:input_port => @polynome_input_port_num,
+                          :output_port => @polynome_output_port_num)
     @outstream = ""
     @logger = ThreadedLogger::TLogger.new(:tosca, @outstream)
   end

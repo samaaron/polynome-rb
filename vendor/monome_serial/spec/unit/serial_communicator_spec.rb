@@ -1,13 +1,14 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
+include MonomeSerial
 
-describe MonomeSerial::SerialCommunicator do
+describe SerialCommunicator do
   it "should exist" do
-    MonomeSerial::SerialCommunicator.should_not be_nil
+    SerialCommunicator.should_not be_nil
   end
 
   describe "A dummy serial connection" do
     before(:each) do
-      @comm = MonomeSerial::SerialCommunicator.get_communicator("fake", false)
+      @comm = SerialCommunicator.get_communicator("fake", false)
     end
 
     it "should be a dummy connection" do
