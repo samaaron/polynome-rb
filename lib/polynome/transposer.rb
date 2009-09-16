@@ -1,4 +1,4 @@
-module MonomeSerial
+module Polynome
   class Transposer
     attr_reader :max_width, :max_height
     attr_writer :orientation

@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
-include MonomeSerial
+include Polynome
 
 describe Transposer do
   it "should exist" do
