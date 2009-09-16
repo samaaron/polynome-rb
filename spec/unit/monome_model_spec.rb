@@ -73,4 +73,10 @@ describe MonomeModel do
       @model.protocol.should == "series"
     end
   end
+
+  describe "get unknown model" do
+    it "should raise an ArgumentError" do
+      lambda{MonomeModel.get_model("uknown_model")}.should raise_error(ArgumentError)
+    end
+  end
 end

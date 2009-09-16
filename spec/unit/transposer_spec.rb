@@ -18,11 +18,11 @@ describe Transposer do
     end
 
     it "should have a max height of 7" do
-      @transposer.max_height.should == 7
+      @transposer.max_height_coord.should == 7
     end
 
     it "should have a max width of 7" do
-      @transposer.max_width.should == 7
+      @transposer.max_width_coord.should == 7
     end
   end
 
@@ -32,11 +32,11 @@ describe Transposer do
     end
 
     it "should have a max height of 7" do
-      @transposer.max_height.should == 7
+      @transposer.max_height_coord.should == 7
     end
 
     it "should have a max width of 7" do
-      @transposer.max_width.should == 7
+      @transposer.max_width_coord.should == 7
     end
   end
 
@@ -46,11 +46,11 @@ describe Transposer do
     end
 
     it "should have a max height of 7" do
-      @transposer.max_height.should == 7
+      @transposer.max_height_coord.should == 7
     end
 
     it "should have a max width of 15" do
-      @transposer.max_width.should == 15
+      @transposer.max_width_coord.should == 15
     end
   end
 
@@ -60,12 +60,11 @@ describe Transposer do
     end
 
     it "should have a max height of 15" do
-      @transposer.max_height.should == 15
+      @transposer.max_height_coord.should == 15
     end
 
     it "should have a max width of 15" do
-      @transposer.max_width.should == 15
+      @transposer.max_width_coord.should == 15
     end
   end
-
 end

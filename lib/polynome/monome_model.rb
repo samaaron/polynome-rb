@@ -6,6 +6,7 @@ module Polynome
       when "64"  then return SixtyFour.new
       when "128" then return OneTwentyEight.new
       when "256" then return TwoFiftySix.new
+      else raise ArgumentError, "Uknown monome model type: #{model}"
       end
     end
   end
