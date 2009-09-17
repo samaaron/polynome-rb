@@ -23,6 +23,10 @@ module Polynome
     def protocol
       "40h"
     end
+
+    def num_frames
+      1
+    end
   end
 
   class SixtyFour < MonomeModel
@@ -36,6 +40,10 @@ module Polynome
 
     def protocol
       "series"
+    end
+
+    def num_frames
+      1
     end
   end
 
@@ -51,6 +59,10 @@ module Polynome
     def protocol
       "series"
     end
+
+    def num_frames
+      2
+    end
   end
 
   class TwoFiftySix < MonomeModel
@@ -64,6 +76,10 @@ module Polynome
 
     def protocol
       "series"
+    end
+
+    def num_frames
+      4
     end
   end
 end

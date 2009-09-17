@@ -1,18 +1,18 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 include MonomeSerial
 
-describe Monome do
+describe MonomeCommunicator do
   it "should exist" do
-    Monome.should_not be_nil
+    MonomeCommunicator.should_not be_nil
   end
 
   it "should raise an error when not initializing with a correct protocol name" do
-    lambda{Monome.new('/blah', "phonycol" )}.should raise_error(ArgumentError)
+    lambda{MonomeCommunicator.new('/blah', "phonycol" )}.should raise_error(ArgumentError)
   end
 
   describe "A default monome with an unusual tty_path" do
     before(:each) do
-      @monome = Monome.new('unusual_path')
+      @monome = MonomeCommunicator.new('unusual_path')
     end
 
     it "should default to the series protocol" do
@@ -30,7 +30,7 @@ describe Monome do
 
   describe "A default monome with the 40h protocol" do
     before(:each) do
-      @monome = Monome.new('/foo/tty.usbserial-m256-203', '40h')
+      @monome = MonomeCommunicator.new('/foo/tty.usbserial-m256-203', '40h')
     end
 
     it "should raise an exception when a communicating method is used" do
@@ -41,7 +41,7 @@ describe Monome do
   describe "A monome with a normal tty_path and a dummy communicator" do
     before(:each) do
       SerialCommunicator.should_receive(:get_communicator).and_return SerialCommunicator::DummyCommunicator.new
-      @monome = Monome.new('/foo/tty.usbserial-m256-203')
+      @monome = MonomeCommunicator.new('/foo/tty.usbserial-m256-203')
       @comm = @monome.communicator
     end
 

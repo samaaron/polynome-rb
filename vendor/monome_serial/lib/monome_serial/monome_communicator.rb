@@ -1,5 +1,5 @@
 module MonomeSerial
-  class Monome
+  class MonomeCommunicator
     #It's important to note that the vanilla behaviour of these methods
     #doesn't match that of the OSC protocol specification as implemented
     #by the original OS X MonomeSerial application. In order to match

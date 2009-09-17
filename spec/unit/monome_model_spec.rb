@@ -18,6 +18,10 @@ describe MonomeModel do
     it "should use the 40h protocol" do
       @model.protocol.should == "40h"
     end
+
+    it "should have 1 frame" do
+      @model.num_frames.should == 1
+    end
   end
 
   describe "get model 64" do
@@ -35,6 +39,10 @@ describe MonomeModel do
 
     it "should use the series protocol" do
       @model.protocol.should == "series"
+    end
+
+    it "should have 1 frame" do
+      @model.num_frames.should == 1
     end
   end
 
@@ -54,6 +62,10 @@ describe MonomeModel do
     it "should use the series protocol" do
       @model.protocol.should == "series"
     end
+
+    it "should have 2 frames" do
+      @model.num_frames.should == 2
+    end
   end
 
   describe "get model 256" do
@@ -71,6 +83,10 @@ describe MonomeModel do
 
     it "should use the series protocol" do
       @model.protocol.should == "series"
+    end
+
+    it "should have 4 frames" do
+      @model.num_frames.should == 4
     end
   end
 
