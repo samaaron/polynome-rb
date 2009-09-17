@@ -21,7 +21,7 @@ $:.unshift File.dirname(__FILE__)
 #require polynome stuff
 require 'polynome/transposer'
 require 'polynome/monome_model'
-require 'polynome/monome_communicator'
+require 'polynome/monome'
 require 'polynome/loggable'
 require 'polynome/rack'
 require 'polynome/osc_listener'
