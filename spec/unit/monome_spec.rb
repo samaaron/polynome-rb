@@ -36,8 +36,8 @@ describe Monome do
       @monome.num_frame_buffers.should == 4
     end
 
-    it "should start with 0 surfaces" do
-      @monome.num_surfaces.should == 0
+    it "should start with 1 surface" do
+      @monome.num_surfaces.should == 1
     end
   end
 
