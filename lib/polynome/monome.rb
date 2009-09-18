@@ -2,7 +2,7 @@ module Polynome
   class Monome
     CABLE_ORIENTATIONS = [:top, :bottom, :left, :right]
 
-    attr_reader :cable_orientation, :model
+    attr_reader :cable_orientation, :model, :current_surface, :t1, :t2
 
     def initialize(opts={})
       opts.reverse_merge! :cable_orientation => :top
@@ -14,21 +14,29 @@ module Polynome
       @model = Model.get_model(opts[:model])
       @cable_orientation = opts[:cable_orientation]
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
-      @surfaces = {}
+      @surfaces = [Surface.new(num_frame_buffers)]
+      @current_surface = @surfaces[0]
     end
 
     def num_frame_buffers
       @model.num_frames
     end
 
-    def num_surfaces
-      @surfaces.keys.size
+    def display_buffer
+      buffer_to_display = current_surface.fetch_frame_buffer
+      buffer_to_display.each_with_index do |frame, index|
+        @communicator.illuminate_frame(index, frame.read)
+      end
     end
 
-    def update_frame_buffer(buffer_index, frame)
-      raise ArgumentError, "Buffer index out of range. Was expecting one of the set {#{(1..num_frame_buffers).to_a.join(', ')}}, got #{buffer_index}." if buffer_index < 1 || buffer_index > num_frame_buffers
+    def run_display
+      @t2 = Thread.new do
+        loop{display_buffer}
+      end
+    end
 
-
+    def num_surfaces
+      @surfaces.size
     end
   end
 end

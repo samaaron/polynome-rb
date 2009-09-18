@@ -9,6 +9,13 @@ module Polynome
       @bit_array
     end
 
+    def invert!
+      @bit_array = @bit_array.map do |row|
+        row.each_char.to_a.map!{|i| i == "1" ? "0" : "1"}.join
+      end
+      self
+    end
+
     private
     def convert_binary_string_to_bit_array(binary_string)
       [
