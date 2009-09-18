@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 include Polynome
 
-describe MonomeModel do
+describe Model do
   describe "get model 40h" do
     before(:each) do
-      @model = MonomeModel.get_model("40h")
+      @model = Model.get_model("40h")
     end
 
     it "should have a width of 8" do
@@ -26,7 +26,7 @@ describe MonomeModel do
 
   describe "get model 64" do
     before(:each) do
-      @model = MonomeModel.get_model("64")
+      @model = Model.get_model("64")
     end
 
     it "should have a width of 8" do
@@ -48,7 +48,7 @@ describe MonomeModel do
 
   describe "get model 128" do
     before(:each) do
-      @model = MonomeModel.get_model("128")
+      @model = Model.get_model("128")
     end
 
     it "should have a width of 16" do
@@ -70,7 +70,7 @@ describe MonomeModel do
 
   describe "get model 256" do
     before(:each) do
-      @model = MonomeModel.get_model("256")
+      @model = Model.get_model("256")
     end
 
     it "should have a width of 16" do
@@ -92,7 +92,7 @@ describe MonomeModel do
 
   describe "get unknown model" do
     it "should raise an ArgumentError" do
-      lambda{MonomeModel.get_model("uknown_model")}.should raise_error(ArgumentError)
+      lambda{Model.get_model("uknown_model")}.should raise_error(ArgumentError)
     end
   end
 end

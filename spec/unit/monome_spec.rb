@@ -32,8 +32,8 @@ describe Monome do
       @monome.model.should be_kind_of(TwoFiftySix)
     end
 
-    it "should support 4 frames" do
-      @monome.num_frames_supported.should == 4
+    it "should have 4 frame buffers" do
+      @monome.num_frame_buffers.should == 4
     end
 
     it "should start with 0 surfaces" do
@@ -41,16 +41,39 @@ describe Monome do
     end
   end
 
-  describe "with 256 with a mocked out serial communicator" do
+  describe "with a 64 with a mocked out serial communicator" do
     before(:each) do
       @serial = MonomeSerial::SerialCommunicator::DummyCommunicator.new
       MonomeSerial::SerialCommunicator.should_receive(:get_communicator).and_return(@serial)
-      @monome = Monome.new(:io_file => 'foo/bar', :model => "256")
+      @monome = Monome.new(:io_file => 'foo/bar', :model => "64")
     end
 
-    it "shouldn't have broken" do
-      @monome.should_not be_nil
+    it "should have 1 frame buffer" do
+      @monome.num_frame_buffers.should == 1
     end
 
+    describe "#update_frame_buffer" do
+      it "should raise an ArgumentError if a buffer index < 1 is used" do
+        lambda{@monome.update_frame_buffer(0, Frame.new("1111111111111111111111111111111111111111111111111111111111111111"))}.should raise_error(ArgumentError)
+      end
+
+      it "should raise an ArgumentError if a buffer index greater than the number of frame buffers supported is used" do
+        num_frame_buffers = @monome.num_frame_buffers
+        overflow = num_frame_buffers + 1
+        lambda{@monome.update_frame_buffer(overflow, Frame.new("1111111111111111111111111111111111111111111111111111111111111111"))}.should raise_error(ArgumentError)
+      end
+    end
+
+    describe "#update_display" do
+      describe "with a frame containing all 1s" do
+        before do
+          @frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
+        end
+
+        it "should send the contents of the frame buffer to the serial communicator" do
+          @monome.update_frame_buffer(1, @frame)
+        end
+      end
+    end
   end
 end

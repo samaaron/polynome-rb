@@ -3,7 +3,7 @@ module Polynome
     attr_writer :orientation
 
     def initialize(model_string)
-      @model = MonomeModel.get_model(model_string)
+      @model = Model.get_model(model_string)
       @orientation = :top
     end
 

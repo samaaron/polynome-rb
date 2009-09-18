@@ -11,18 +11,24 @@ module Polynome
       raise ArgumentError, "Polynome::Monome#initialize requires a model to be specified"    unless opts[:model]
       raise ArgumentError, "Unknown cable orientation: #{opts[:cable_orientation]}, expected #{CABLE_ORIENTATIONS.to_sentence(:last_word_connector => ' or ')}" unless CABLE_ORIENTATIONS.include?(opts[:cable_orientation])
 
-      @model = MonomeModel.get_model(opts[:model])
+      @model = Model.get_model(opts[:model])
       @cable_orientation = opts[:cable_orientation]
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
       @surfaces = {}
     end
 
-    def num_frames_supported
+    def num_frame_buffers
       @model.num_frames
     end
 
     def num_surfaces
       @surfaces.keys.size
+    end
+
+    def update_frame_buffer(buffer_index, frame)
+      raise ArgumentError, "Buffer index out of range. Was expecting one of the set {#{(1..num_frame_buffers).to_a.join(', ')}}, got #{buffer_index}." if buffer_index < 1 || buffer_index > num_frame_buffers
+
+
     end
   end
 end
