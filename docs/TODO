@@ -1,29 +1,12 @@
-First phase - basic bridge mode
+First phase - frame management
 
-Polynome acts as a basic bridge with one Virtual Monome on the Table which forwards all messages
-to and from the real monome and application (such as MLR)
+Polynome is in a state where frames can be created and displayed
 
-  [*]  - App registers that it wants Polynome to enter test mode
-  [*]  - App tells Polynome where it wants the test OSC messages to be sent to
-          i.e. /polynome/internal/test/on "localhost", 1234  ; for internal test mode
-  [*]  - Polynome reads from a config file where it should send regular OSC output
-  [*]  - A VM for App is created with the correct model and cable orientation
-  [ ]  - Create a test output thread with a queue which it pulls messages from and logs
-  [*]  - Give each VM its own listener so apps can send messages to the VM
-  [*]  - Give each VM its own sender so it can send output to the real monome
-  [ ]  - Create a debug mode for VMs for which all debug messages are sent to the ThreadedLogger
-  [*]  - Apps VM is placed on the Table
-  [ ]  - Apps VM listens for messages
-  [ ]  - App sends OSC messages to Apps VM
-  [ ]  - Polynome filters out Monome messages and sends them to the Monome
-  [ ]  - Polynome sends all (including filtered) OSC messages back to S on the appropriate ports
-  [ ]  - Polynome sends all filtered messages onto the monome
-  [ ]  - Try Polymer with MLR
-  [ ]  - Move the test response code from Rack to OSCListener
-
-* echo messages to monome
-* create a thread and listening port for virtual monomes
-* echo messages from currently active application to monome
-* create switcher to switch between virtual monome screens (slide in / out)
-* receive more advanced messages - boxes, shapes, patterns etc.
-* split a monome into separate monomes (e.g. the 256 can become two 128s)
+[ ] Implement Monome#update_frame_buffer such that the frame(s) in the current buffer(s) are made visible on the device
+[ ] Build locks around the frame buffer such that only one process can access it at a time
+[ ] Create a worker thread that checks the buffer but is blocked until the buffer is updated
+[ ] Create a dummy 64 app that updates the buffer with alternating frames
+[ ] Create a dummy 128 app that updates the buffer with alternating frames
+[ ] Allow the dummy 128 app to be rotated if the device contains a sufficient number of frames
+[ ] Allow the monome to have two surfaces each containing a different app
+[ ] Allow switching between surfaces
