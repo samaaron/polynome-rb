@@ -1,0 +1,19 @@
+This library only supports Ruby 1.9.1 and is only tested to work on Mac OS X 10.6 Snow Leopard.
+
+1. Initialise and update submodules
+
+  - git submodule init
+  - git submodule update
+
+2. Compile the termios module
+
+  - rake compile_termios
+
+3. Run the test suite (please report back if you're seeing errors)
+
+  - rake spec
+
+3. Run an example!
+
+  - ruby examples/your_choice.rb
+
