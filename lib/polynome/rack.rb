@@ -4,9 +4,9 @@ module Polynome
     attr_reader :in_port, :out_port, :out_host, :log_history
     def initialize(opts={})
       opts.reverse_merge!(
-                          :in_port  => Polynome::BootOptions::INPORT,
-                          :out_port => Polynome::BootOptions::OUTPORT,
-                          :out_host => Polynome::BootOptions::OUTHOST,
+                          :in_port  => Defaults::INPORT,
+                          :out_port => Defaults::OUTPORT,
+                          :out_host => Defaults::OUTHOST,
                           :logger   => nil,
                           :debug    => false
                          )

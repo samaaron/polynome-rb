@@ -46,7 +46,7 @@ describe Frame do
     end
   end
 
-  describe "with a frame initialised intitialised with a 64 bit string of 1s" do
+  describe "with a frame intitialised with a 64 bit string of 1s" do
     before do
       string = "1111111111111111111111111111111111111111111111111111111111111111"
       @frame = Frame.new(string)

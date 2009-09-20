@@ -16,6 +16,13 @@ module Polynome
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
       @surfaces = [Surface.new(num_frame_buffers)]
       @current_surface = @surfaces[0]
+      @frame_queue = SizedQueue.new(Defaults::FRAME_BUFFER_SIZE)
+    end
+
+    def update_frame_buffer(*frames)
+      raise ArgumentError, "Incorret number of frames sent. Was expecting #{num_frames}, got #{frames.size}" if frames.size != num_frames
+
+      @frame_queue << frames
     end
 
     def num_frame_buffers

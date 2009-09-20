@@ -5,7 +5,9 @@ Polynome is in a state where frames can be created and displayed
 [*] Implement Monome#update_frame_buffer such that the frame(s) in the current buffer(s) are made visible on the device
 [*] Build locks around the frame buffer such that only one process can access it at a time
 [*] Create a worker thread that checks the buffer but is blocked until the buffer is updated
-[ ] Design a surface switching mechanism which works with the frame buffer
+[*] Design a surface switching mechanism which works with the frame buffer (see below)
+[ ] Move the FrameBuffer into its own class
+[ ] Give each monome a Display (which includes a FrameBuffer)
 [ ] Create a dummy 64 app that updates the buffer with alternating frames
 [ ] Create a dummy 128 app that updates the buffer with alternating frames
 [ ] Allow the dummy 128 app to be rotated if the device contains a sufficient number of frames
