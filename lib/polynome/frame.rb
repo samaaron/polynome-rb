@@ -11,10 +11,8 @@ module Polynome
 
     def invert!
       @bit_array = @bit_array.map do |row|
-        puts "before: #{row}"
         inverted = ""
         row.each_char{|c| inverted << (c == "1" ? "0" : "1")}
-        puts "after: #{inverted}"
         inverted
       end
       self
