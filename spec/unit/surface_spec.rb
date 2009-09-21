@@ -40,7 +40,12 @@ describe Surface do
 
   describe "#update_frame_buffer" do
     it "should raise an ArgumentError if no frames are sent" do
-      lambda{Surface.new(1).update_frame_buffer()}.should raise_error(ArgumentError)
+      lambda{Surface.new(1).update_display()}.should raise_error(ArgumentError)
+    end
+
+    it "should raise an ArgumentError if a frame with an index of 0 is sent" do
+      frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
+      lambda{Surface.new(1).update_display(0, frame)}.should raise_error(ArgumentError)
     end
   end
 
@@ -53,10 +58,10 @@ describe Surface do
       @surface.num_frames.should == 1
     end
 
-    describe "#update_frame_buffer" do
-      it "should raise an ArgumentError if more than one frame is sent" do
+    describe "#update_display" do
+      it "should raise an ArgumentError if a frame with an index of 2 is sent" do
         frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-        lambda{@surface.update_frame_buffer(frame, frame)}.should raise_error(ArgumentError)
+        lambda{@surface.update_display(2, frame)}.should raise_error(ArgumentError)
       end
     end
   end
@@ -70,15 +75,10 @@ describe Surface do
       @surface.num_frames.should == 2
     end
 
-    describe "#update_frame_buffer" do
-      it "should raise an ArgumentError if more than two frames are sent" do
+    describe "#update_display" do
+      it "should raise an ArgumentError if with an index of 3 sent" do
         frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-        lambda{@surface.update_frame_buffer(frame, frame, frame)}.should raise_error(ArgumentError)
-      end
-
-      it "should raise an ArgumentError if fewer than two frames are sent" do
-        frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-        lambda{@surface.update_frame_buffer(frame)}.should raise_error(ArgumentError)
+        lambda{@surface.update_display(3, frame)}.should raise_error(ArgumentError)
       end
     end
   end
@@ -92,15 +92,10 @@ describe Surface do
       @surface.num_frames.should == 4
     end
 
-    describe "#update_frame_buffer" do
-      it "should raise an ArgumentError if more than four frames are sent" do
+    describe "#update_display" do
+      it "should raise an ArgumentError if a frame with an index of 5 is sent" do
         frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-        lambda{@surface.update_frame_buffer(frame, frame, frame, frame, frame)}.should raise_error(ArgumentError)
-      end
-
-      it "should raise an ArgumentError if fewer than four frames are sent" do
-        frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-        lambda{@surface.update_frame_buffer(frame, frame, frame)}.should raise_error(ArgumentError)
+        lambda{@surface.update_display(5, frame)}.should raise_error(ArgumentError)
       end
     end
   end

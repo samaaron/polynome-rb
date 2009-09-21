@@ -7,6 +7,10 @@ module Polynome
       @frame_buffers = initialize_frame_buffers(num_frames)
     end
 
+    def display_frame(index, frame)
+      @frame_buffers[index].push_frame(frame)
+    end
+
     private
     def initialize_frame_buffers(num_frames)
       case num_frames

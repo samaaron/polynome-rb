@@ -11,7 +11,11 @@ module Polynome
 
     def invert!
       @bit_array = @bit_array.map do |row|
-        row.each_char.to_a.map!{|i| i == "1" ? "0" : "1"}.join
+        puts "before: #{row}"
+        inverted = ""
+        row.each_char{|c| inverted << (c == "1" ? "0" : "1")}
+        puts "after: #{inverted}"
+        inverted
       end
       self
     end
