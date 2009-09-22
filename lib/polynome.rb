@@ -19,6 +19,7 @@ require 'monome_serial'
 #add self to the loadpath
 $:.unshift File.dirname(__FILE__)
 #require polynome stuff
+require 'polynome/interface'
 require 'polynome/frame_buffer'
 require 'polynome/display'
 require 'polynome/surface'
