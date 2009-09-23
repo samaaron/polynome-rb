@@ -5,6 +5,13 @@ Polynome is in a state where frames can be created and displayed
 [*] a surface switching mechanism which works with the frame buffer (see TECHNICAL_OVERVIEW)
 [*] Move the FrameBuffer into its own class
 [*] Give each monome a Display (which includes a FrameBuffer)
+[ ] Give each monome multiple surfaces
+[ ] Allow a monome to create a new surface
+[ ] Allow a monome to destroy a surface
+[ ] Allow an interface to register with a given surface
+[ ] Allow an interface to specify its rotation on registration
+[ ] Only permit valid rotations and sizes given the monome's size
+[ ] Allow interface frame updates be sent via the surface to the display
 [ ] Create a dummy 64 app that updates the buffer with alternating frames
 [ ] Create a dummy 128 app that updates the buffer with alternating frames
 [ ] Allow the dummy 128 app to be rotated if the device contains a sufficient number of frames
