@@ -1,0 +1,88 @@
+Technical Overview
+==================
+
+This document provides a generally high-level yet sufficiently
+detailed technical overview of Polynome's architecture. It is meant to
+be read by developers interested in hacking Polynome.
+
+
+Abstractions
+------------
+
+Polynome consists of a number of abstractions which may initially look
+confusing - particularly as there may seem to be a fair amount of
+synonyms used. However, each abstraction has its own specific purpose
+and reason for existence and each has been named in order to help the
+developer think about the problems involved and break them up
+appropriately in order to divide and conquer. The following are the
+key abstractions:
+
+Monome      - The physical monome
+Display     - The physical set of LEDs on the monome
+Buttons     - The physical set of buttons on the monome
+Surface     - A virtual set of display and button pairs for a given monome
+Interface   - A virtual set of display and button pairs for a given
+              application. May be smaller than the monome itself.
+Application - A monome application communicator that receives and
+              sends OSC messages to an external application.
+Frame       - A bank of 64 LEDs in an 8x8 formation. This is the
+              fundamental building block of interfaces, surfaces and
+              the display itself.
+
+
+Basic Overview
+-------------
+
+A monome has a display and a set of buttons. The display consists of a
+list of surfaces (each surface is essentially a virtual display). Each
+surface consists of multiple frames and can host the interfaces of
+multiple applications. Each interface consists of  1, 2 or 4 frames
+and is associated with a given application.
+
+
+Lighting the Monome
+-------------------
+
+An application receives OSC commands which it translates to frame
+updates. It sends these frame udpates to its interface which in turn
+sends them to the associated surface that the interface is hosted
+in. If the surface is the current_surface it sends the frame updates
+to the monome's display, if it isn't the current_surface it just
+replaces the surface's single frame buffer with the new frame(s). If
+the user switches surface to the one hosting this particular app, that
+frame buffer will be used to initialise the monome to the current
+lighting position.
+
+
+Receiving Button Events
+-----------------------
+
+All button presses are dectected by the monome's buttons and are sent
+to the current surface, which in turn  passes the button presses on to
+the appropriate application interface which passes the event to the
+application communicator itself which then forwards the event via OSC
+to the actual application.
+
+Before sending the button press event to an app, the surface maps the
+coordinate based on both the screen and app orientations
+
+
+Orientation
+-----------
+
+Each monome has an orientation which is mirrored by the physical
+monome itself. The monome's display and each of its screens inherit
+this orientation. Also, every application has a default rotation
+orientation which the application's interface inherits.
+
+Therefore, there are are a number of levels of potential rotation in play here:
+
+- application's incoming OSC messages are translated to the default rotation
+  of all applications
+- the application's frames are rotated to the rotation of the
+  application's interface
+- the surface's frames are then rotated to the rotation of the monome
+  before being sent to the device itself.
+
+
+

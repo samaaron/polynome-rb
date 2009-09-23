@@ -2,7 +2,7 @@ First phase - frame management
 
 Polynome is in a state where frames can be created and displayed
 
-[*] a surface switching mechanism which works with the frame buffer (see below)
+[*] a surface switching mechanism which works with the frame buffer (see TECHNICAL_OVERVIEW)
 [*] Move the FrameBuffer into its own class
 [*] Give each monome a Display (which includes a FrameBuffer)
 [ ] Create a dummy 64 app that updates the buffer with alternating frames
@@ -10,34 +10,3 @@ Polynome is in a state where frames can be created and displayed
 [ ] Allow the dummy 128 app to be rotated if the device contains a sufficient number of frames
 [ ] Allow the monome to have two surfaces each containing a different app
 [ ] Allow switching between surfaces
-
-a monome has surfaces and a frame buffer
-
-each surface consists of multiple frames and can host multiple apps
-
-each app uses 1, 2 or 4 frames
-
-an app sends frame updates to its surface
-
-if the surface is the current_surface it sends the frame updates to the monome's frame buffer
-
-if it isn't the current_surface it just replaces the surace's single frame buffer with the new frame (s)
-
-each app has an orientation
-
-each screen inherits its orientation from the monome
-
-there are two levels of potential rotation in play:
-
-- app frames are rotated when sent to the surface
-- surface frames are rotated when sent to the monome
-
-surface -> monome frame rotation is achieved via rotation of frames and reordering their position in the illuminate_frame call
-
-app -> surface frame rotation is achieved via...
-
-all button presses are sent to the current surface
-
-the current surfaces passes the button presses on to the appropriate app
-
-before sending the button press event to an app, the surface maps the coordinate based on both the screen and app orientations
