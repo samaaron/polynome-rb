@@ -14,9 +14,9 @@ module Polynome
       @model = Model.get_model(opts[:model])
       @cable_orientation = opts[:cable_orientation]
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
-      @surfaces = [Surface.new(num_frame_buffers)]
+      @surfaces = [Surface.new("base", num_frame_buffers)]
       @current_surface = @surfaces[0]
-      @frame_queue = SizedQueue.new(Defaults::FRAME_BUFFER_SIZE)
+      @frame_buffer = FrameBuffer.new
     end
 
     def update_frame_buffer(*frames)
@@ -44,6 +44,27 @@ module Polynome
 
     def num_surfaces
       @surfaces.size
+    end
+
+    def add_surface(name)
+      raise Surface::DuplicateSurfaceError, "A surface with the name #{name} already exists!" if find_surface_index_by_name(name)
+
+      @surfaces << Surface.new(name, num_frame_buffers)
+      self
+    end
+
+    def remove_surface(name)
+      index = find_surface_index_by_name(name)
+      raise Surface::UnknownSurfaceError, "A surface with the name #{name} does not exist" unless index
+
+      @surfaces.delete_at(index)
+      self
+    end
+
+    private
+
+    def find_surface_index_by_name(name)
+      @surfaces.find_index{|surface| surface.name == name.to_s}
     end
   end
 end

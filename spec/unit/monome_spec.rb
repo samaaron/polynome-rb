@@ -39,6 +39,51 @@ describe Monome do
     it "should start with 1 surface" do
       @monome.num_surfaces.should == 1
     end
+
+    describe "#add_surface" do
+      it "should be possible to add a surface with a given name" do
+        lambda{@monome.add_surface(:new_surface)}.should_not raise_error
+      end
+
+      it "should return self" do
+        @monome.add_surface(:new_surface).should == @monome
+      end
+
+      it "should have one more surface after adding a surface" do
+        num_surfaces = @monome.num_surfaces
+        @monome.add_surface(:new_surface)
+        @monome.num_surfaces.should == num_surfaces + 1
+      end
+
+      it "should raise an error if the surface name already exists" do
+        @monome.add_surface(:duplicate_surface)
+        lambda{@monome.add_surface(:duplicate_surface)}.should raise_error(Surface::DuplicateSurfaceError)
+      end
+    end
+
+    describe "#remove_surface" do
+      before(:each) do
+        @monome.add_surface(:new_surface)
+      end
+
+      it "should be possible to remove a surface" do
+        lambda{@monome.remove_surface(:new_surface)}.should_not raise_error
+      end
+
+      it "should return self" do
+        @monome.remove_surface(:new_surface).should == @monome
+      end
+
+      it "should have one fewer surfaces after removing a surface" do
+        num_surfaces = @monome.num_surfaces
+        @monome.remove_surface(:new_surface)
+        @monome.num_surfaces.should == num_surfaces - 1
+      end
+
+      it "should raise an error if the surface requested for removal doesn't exist" do
+        lambda{@monome.remove_surface(:unknown_surface)}.should raise_error(Surface::UnknownSurfaceError)
+      end
+    end
   end
 
   describe "with a 64 with a mocked out serial communicator" do

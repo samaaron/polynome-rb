@@ -1,11 +1,19 @@
 module Polynome
   class Surface
-    ALLOWED_FRAME_COUNTS = [1,2,4]
-    attr_reader :num_frames
 
-    def initialize(num_frames)
+    class UnknownSurfaceError < StandardError
+    end
+
+    class DuplicateSurfaceError < StandardError
+    end
+
+    ALLOWED_FRAME_COUNTS = [1,2,4]
+    attr_reader :num_frames, :name
+
+    def initialize(name, num_frames)
       raise ArgumentError, "Unexpected number of frames. Expected one of the set {#{ALLOWED_FRAME_COUNTS.join(', ')}}. Got #{num_frames}" unless ALLOWED_FRAME_COUNTS.include?(num_frames)
 
+      @name = name.to_s
       @num_frames = num_frames
     end
 

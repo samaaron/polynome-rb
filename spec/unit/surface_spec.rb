@@ -8,50 +8,50 @@ describe Surface do
 
   describe "#initialize" do
     it "should be possible to initialize a surface specifying the number of frames that surface consists of" do
-      lambda{Surface.new(1)}.should_not raise_error
+      lambda{Surface.new("test", 1)}.should_not raise_error
     end
 
     it "should raise an ArgumentError if the number of frames specified is less than 1" do
-      lambda{Surface.new(0)}.should raise_error(ArgumentError)
+      lambda{Surface.new("test", 0)}.should raise_error(ArgumentError)
     end
 
     it "should raise an ArgumentError if the number of frames specified is 3" do
-      lambda{Surface.new(3)}.should raise_error(ArgumentError)
+      lambda{Surface.new("test", 3)}.should raise_error(ArgumentError)
     end
 
     it "should raise an ArgumentError if the number of frames specified is greater than 4" do
-      lambda{Surface.new(5)}.should raise_error(ArgumentError)
+      lambda{Surface.new("test", 5)}.should raise_error(ArgumentError)
     end
   end
 
   describe "#num_frames" do
     it "should report the number of frames the surface has" do
-      Surface.new(4).num_frames.should == 4
+      Surface.new("test", 4).num_frames.should == 4
     end
 
     it "should report that a surface initialised with four frames has four frames" do
-      Surface.new(4).num_frames.should == 4
+      Surface.new("test", 4).num_frames.should == 4
     end
 
     it "should report that a sufrace initialised with two frames has two frames" do
-      Surface.new(2).num_frames.should == 2
+      Surface.new("test", 2).num_frames.should == 2
     end
   end
 
   describe "#update_frame_buffer" do
     it "should raise an ArgumentError if no frames are sent" do
-      lambda{Surface.new(1).update_display()}.should raise_error(ArgumentError)
+      lambda{Surface.new("test", 1).update_display()}.should raise_error(ArgumentError)
     end
 
     it "should raise an ArgumentError if a frame with an index of 0 is sent" do
       frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-      lambda{Surface.new(1).update_display(0, frame)}.should raise_error(ArgumentError)
+      lambda{Surface.new("test", 1).update_display(0, frame)}.should raise_error(ArgumentError)
     end
   end
 
   describe "given a surface with 1 frame" do
     before(:each) do
-      @surface = Surface.new(1)
+      @surface = Surface.new("test", 1)
     end
 
     it "should only have one frame" do
@@ -68,7 +68,7 @@ describe Surface do
 
   describe "given a surface with 2 frames" do
     before(:each) do
-      @surface = Surface.new(2)
+      @surface = Surface.new("test", 2)
     end
 
     it "should have two frames" do
@@ -85,7 +85,7 @@ describe Surface do
 
   describe "given a surface with 4 frames" do
     before(:each) do
-      @surface = Surface.new(4)
+      @surface = Surface.new("test", 4)
     end
 
     it "should have four frames" do
