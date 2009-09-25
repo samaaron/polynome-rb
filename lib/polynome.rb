@@ -8,6 +8,19 @@ Dir[File.dirname(__FILE__) + '/../vendor/*/lib'].each {|lib|  $:.unshift lib}
 RUBY_ENGINE = 'MRI' unless Object.const_defined? "RUBY_ENGINE"
 $:.unshift(File.dirname(__FILE__) + "/../vendor/extensions/#{RUBY_ENGINE}-#{RUBY_VERSION}-#{RUBY_PLATFORM}")
 
+if RUBY_VERSION == "1.8.6"
+  #backport methods added in 1.8.7 until JRuby has a 1.8.7 compatible
+  #release to test with
+  module Enumerable
+    def find_index(*args, &block)
+      return index(*args) unless block_given?
+
+      match = self.find(&block)
+      self.index(match)
+    end
+  end
+end
+
 #require vendored stuff
 require 'samaaron-rosc'
 require 'activesupport'
