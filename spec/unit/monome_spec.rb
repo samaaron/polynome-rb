@@ -7,16 +7,18 @@ describe Monome do
     Monome.should == Polynome::Monome
   end
 
-  it "should raise an ArgumentError if an unknown cable orientation is specified" do
-    lambda{Monome.new(:io_file => 'foo/bar', :model => "256", :cable_orientation => "wireless (dream on)")}.should raise_error(ArgumentError)
-  end
+  describe "#initialize" do
+    it "should raise an ArgumentError if an unknown cable orientation is specified" do
+      lambda{Monome.new(:io_file => 'foo/bar', :model => "256", :cable_orientation => "wireless (dream on)")}.should raise_error(ArgumentError)
+    end
 
-  it "should raise an ArgumentError if no io_file is specified" do
-    lambda{Monome.new(:model => "256")}.should raise_error(ArgumentError)
-  end
+    it "should raise an ArgumentError if no io_file is specified" do
+      lambda{Monome.new(:model => "256")}.should raise_error(ArgumentError)
+    end
 
-  it "should raise an ArgumentError if no model is specified" do
-    lambda{Monome.new(:io_file => 'foo/bar')}.should raise_error(ArgumentError)
+    it "should raise an ArgumentError if no model is specified" do
+      lambda{Monome.new(:io_file => 'foo/bar')}.should raise_error(ArgumentError)
+    end
   end
 
   describe "with a default Monome of model 256" do

@@ -1,5 +1,8 @@
 module Polynome
   #represents the interface for a monome application
   class Interface
+    def initialize(model)
+      @model = model
+    end
   end
 end
