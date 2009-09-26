@@ -1,5 +1,5 @@
 module Polynome
-  class Application
+  class AppConnector
     attr_reader :cable_orientation
 
     def initialize(opts = {})

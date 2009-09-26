@@ -47,7 +47,7 @@ require 'polynome/model'
 require 'polynome/monome'
 require 'polynome/light_bank'
 require 'polynome/transposer'
-require 'polynome/application'
+require 'polynome/app_connector'
 require 'polynome/rack'
 
 
