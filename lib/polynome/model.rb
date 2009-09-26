@@ -1,5 +1,7 @@
 module Polynome
   class Model
+    CABLE_ORIENTATIONS = [:top, :bottom, :left, :right]
+
     attr_reader :width, :height, :protocol, :num_frames
 
     def self.get_model(model)
@@ -10,6 +12,14 @@ module Polynome
       when "256" then return TwoFiftySix.new
       else raise ArgumentError, "Unknown monome model type: #{model}"
       end
+    end
+
+    def self.valid_orientation?(orientation)
+      CABLE_ORIENTATIONS.include?(orientation)
+    end
+
+    def self.list_possible_orientations
+      CABLE_ORIENTATIONS.to_sentence(:last_word_connector => ' or ')
     end
   end
 
