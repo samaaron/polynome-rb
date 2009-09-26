@@ -17,17 +17,32 @@ developer think about the problems involved and break them up
 appropriately in order to divide and conquer. The following are the
 key abstractions:
 
-Monome      - The physical monome
-Display     - The physical set of LEDs on the monome
-Buttons     - The physical set of buttons on the monome
-Surface     - A virtual set of display and button pairs for a given monome
-Interface   - A virtual set of display and button pairs for a given
-              application. May be smaller than the monome itself.
-Application - A monome application communicator that receives and
-              sends OSC messages to an external application.
-Frame       - A bank of 64 LEDs in an 8x8 formation. This is the
-              fundamental building block of interfaces, surfaces and
-              the display itself.
+Monome       - The physical monome
+
+Display      - The physical set of LEDs on the monome
+
+Buttons      - The physical set of buttons on the monome
+
+Surface      - A virtual set of display and button pairs for a given
+               monome
+
+Interface    - A virtual set of display and button pairs for a given
+               application. May be smaller than the monome itself.
+
+AppConnector - The connection point between external applications and the
+               polynome framework. The AppConnector contains what can be
+               succinctly described as a 'virtual monome' which contains
+               an LED bank that represents the state of the
+               application's monome. It also sends and receives OSC
+               messages from the external application.
+
+Quadrant     - An 8x8 grid of buttons/LEDs. This is called a quadrant as
+               the largest monome, the 256 has four of these grids. The
+               129 happens to have 2 and the 64 and 40h just consist of one.
+               This is the fundamental conceptual building block of
+               interfaces, surfaces and the display itself.
+
+Frame        - The state of all the LEDs (on or off) for a given quadrant.
 
 
 Basic Overview
