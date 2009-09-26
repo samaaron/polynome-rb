@@ -8,6 +8,8 @@ Polynome is in a state where frames can be created and displayed
 [*] Give each monome multiple surfaces
 [*] Allow a monome to create a new surface
 [*] Allow a monome to destroy a surface
+[ ] Create an application model
+[ ] Give each application an interface
 [ ] Allow an interface to register with a given surface
 [ ] Allow an interface to specify its rotation on registration
 [ ] Only permit valid rotations and sizes given the monome's size

@@ -31,21 +31,25 @@ require 'monome_serial'
 
 #add self to the loadpath
 $:.unshift File.dirname(__FILE__)
+
+
 #require polynome stuff
+require 'polynome/loggable'
+require 'polynome/osc_listener'
+require 'polynome/osc_sender'
 require 'polynome/buttons'
 require 'polynome/interface'
 require 'polynome/frame_buffer'
 require 'polynome/display'
 require 'polynome/surface'
 require 'polynome/frame'
-require 'polynome/transposer'
 require 'polynome/model'
 require 'polynome/monome'
-require 'polynome/loggable'
-require 'polynome/rack'
-require 'polynome/osc_listener'
-require 'polynome/osc_sender'
 require 'polynome/light_bank'
+require 'polynome/transposer'
+require 'polynome/application'
+require 'polynome/rack'
+
 
 
 #require config
