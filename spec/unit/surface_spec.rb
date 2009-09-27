@@ -24,17 +24,17 @@ describe Surface do
     end
   end
 
-  describe "#num_frames" do
+  describe "#num_quadrants" do
     it "should report the number of frames the surface has" do
-      Surface.new("test", 4).num_frames.should == 4
+      Surface.new("test", 4).num_quadrants.should == 4
     end
 
     it "should report that a surface initialised with four frames has four frames" do
-      Surface.new("test", 4).num_frames.should == 4
+      Surface.new("test", 4).num_quadrants.should == 4
     end
 
     it "should report that a sufrace initialised with two frames has two frames" do
-      Surface.new("test", 2).num_frames.should == 2
+      Surface.new("test", 2).num_quadrants.should == 2
     end
   end
 
@@ -54,14 +54,54 @@ describe Surface do
       @surface = Surface.new("test", 1)
     end
 
-    it "should only have one frame" do
-      @surface.num_frames.should == 1
+    it "should only have one quadrant" do
+      @surface.num_quadrants.should == 1
     end
 
     describe "#update_display" do
       it "should raise an ArgumentError if a frame with an index of 2 is sent" do
         frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
         lambda{@surface.update_display(2, frame)}.should raise_error(ArgumentError)
+      end
+    end
+
+    describe "#register_application" do
+      describe "with a 64 application" do
+        before(:each) do
+          @app = AppConnector.new(:model => "64")
+        end
+
+        it "should be possible to register a one-framed application with this surface" do
+          lambda{@surface.register_application(@app, :quadrants => [1], :cable_orientation => :top)}.should_not raise_error
+        end
+
+        it "should raise an error if no quadrant option is passed" do
+          lambda{@surface.register_application(@app, :cable_orientation => :top)}.should raise_error(ArgumentError)
+        end
+
+        it "should raise an error if no cable orientation option is passed" do
+          lambda{@surface.register_application(@app, :quadrants => [1])}.should raise_error(ArgumentError)
+        end
+
+        it "should raise a QuadrantCountError if not enough quadrants are specified" do
+          lambda{@surface.register_application(@app, :quadrants => [], :cable_orientation => :top)}.should raise_error(Quadrants::QuadrantCountError)
+        end
+
+        it "should raise a QuadrantCountError if more than 4 quadrants are specified" do
+          lambda{@surface.register_application(@app, :quadrants => [1,2,3,4,5], :cable_orientation => :top)}.should raise_error(Quadrants::QuadrantCountError)
+        end
+
+        it "should raise a QuadrantCountError if 3 quadrants are specified" do
+          lambda{@surface.register_application(@app, :quadrants => [1,2,3], :cable_orientation => :top)}.should raise_error(Quadrants::QuadrantCountError)
+        end
+
+        it "should raise a QuadrantIDError if a quadrant id other than 1,2 or 3 is used" do
+          lambda{@surface.register_application(@app, :quadrants => [:a, 2, 3, 4], :cable_orientation => :top)}.should raise_error(Quadrants::QuadrantIDError)
+        end
+
+        it "should raise a SurfaceSizeError if more than one quadrant is specified" do
+          lambda{@surface.register_application(@app, :quadrants => [1,2], :cable_orientation => :top)}.should raise_error(Surface::SurfaceSizeError)
+        end
       end
     end
   end
@@ -72,7 +112,7 @@ describe Surface do
     end
 
     it "should have two frames" do
-      @surface.num_frames.should == 2
+      @surface.num_quadrants.should == 2
     end
 
     describe "#update_display" do
@@ -89,7 +129,7 @@ describe Surface do
     end
 
     it "should have four frames" do
-      @surface.num_frames.should == 4
+      @surface.num_quadrants.should == 4
     end
 
     describe "#update_display" do

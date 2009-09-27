@@ -7,14 +7,16 @@ module Polynome
     class DuplicateSurfaceError < StandardError
     end
 
-    ALLOWED_FRAME_COUNTS = [1,2,4]
-    attr_reader :num_frames, :name
+    class SurfaceSizeError < StandardError
+    end
 
-    def initialize(name, num_frames)
-      raise ArgumentError, "Unexpected number of frames. Expected one of the set {#{ALLOWED_FRAME_COUNTS.join(', ')}}. Got #{num_frames}" unless ALLOWED_FRAME_COUNTS.include?(num_frames)
+    attr_reader :num_quadrants, :name
+
+    def initialize(name, num_quadrants)
+      raise ArgumentError, "Unexpected quadrant count. Expected one of the set {#{Quadrants.list_valid_quadrant_counts}}. Got #{num_quadrants}" unless Quadrants.valid_quadrant_count?(num_quadrants)
 
       @name = name.to_s
-      @num_frames = num_frames
+      @num_quadrants = num_quadrants
     end
 
     def update_display(index, frame)
@@ -27,6 +29,16 @@ module Polynome
 
     def fetch_frame_buffer
       @frame_queue.pop
+    end
+
+    def register_application(application, opts={})
+      raise ArgumentError, "You must specify which quadrant(s) this application wishes to use on this surface" unless opts[:quadrants]
+      raise ArgumentError, "You must specify the cable orientation for this application on this surface" unless opts[:cable_orientation]
+
+      quadrants = Quadrants.new(opts[:quadrants])
+
+      raise SurfaceSizeError, "The number of quadrants you specified exceeds the capacity of this surface. Maximum number of quadrants supported: #{num_quadrants}, got #{quadrants.count}" if quadrants.count > num_quadrants
+
     end
   end
 end

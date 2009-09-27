@@ -37,6 +37,7 @@ $:.unshift File.dirname(__FILE__)
 require 'polynome/loggable'
 require 'polynome/osc_listener'
 require 'polynome/osc_sender'
+require 'polynome/quadrants'
 require 'polynome/buttons'
 require 'polynome/interface'
 require 'polynome/frame_buffer'
