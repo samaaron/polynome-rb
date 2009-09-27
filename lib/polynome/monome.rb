@@ -24,7 +24,7 @@ module Polynome
     end
 
     def num_frame_buffers
-      @model.num_frames
+      @model.num_quadrants
     end
 
     def display_buffer

@@ -20,7 +20,23 @@ describe Model do
     end
 
     it "should have 1 frame" do
-      @model.num_frames.should == 1
+      @model.num_quadrants.should == 1
+    end
+
+    describe "with orientations" do
+      [:top, :bottom, :left, :right].each do |orientation|
+
+        describe "with orientation #{orientation}" do
+
+          it "should have a width of 8" do
+            @model.width_with_orientation(orientation).should == 8
+          end
+
+          it "should have a height of 8" do
+            @model.height_with_orientation(orientation).should == 8
+          end
+        end
+      end
     end
   end
 
@@ -42,7 +58,23 @@ describe Model do
     end
 
     it "should have 1 frame" do
-      @model.num_frames.should == 1
+      @model.num_quadrants.should == 1
+    end
+
+     describe "with orientations" do
+      [:top, :bottom, :left, :right].each do |orientation|
+
+        describe "with orientation #{orientation}" do
+
+          it "should have a width of 8" do
+            @model.width_with_orientation(orientation).should == 8
+          end
+
+          it "should have a height of 8" do
+            @model.height_with_orientation(orientation).should == 8
+          end
+        end
+      end
     end
   end
 
@@ -64,7 +96,33 @@ describe Model do
     end
 
     it "should have 2 frames" do
-      @model.num_frames.should == 2
+      @model.num_quadrants.should == 2
+    end
+
+    describe "with orientations" do
+      [:top, :bottom].each do |orientation|
+        describe "with orientation #{orientation}" do
+          it "should have a width of 16" do
+            @model.width_with_orientation(orientation).should == 16
+          end
+
+          it "should have a height of 8" do
+            @model.height_with_orientation(orientation).should == 8
+          end
+        end
+      end
+
+      [:left, :right].each do |orientation|
+        describe "with orientation #{orientation}" do
+          it "should have a width of 8" do
+            @model.width_with_orientation(orientation).should == 8
+          end
+
+          it "should have a height of 16" do
+            @model.height_with_orientation(orientation).should == 16
+          end
+        end
+      end
     end
   end
 
@@ -86,7 +144,23 @@ describe Model do
     end
 
     it "should have 4 frames" do
-      @model.num_frames.should == 4
+      @model.num_quadrants.should == 4
+    end
+
+    describe "with orientations" do
+      [:top, :bottom, :left, :right].each do |orientation|
+
+        describe "with orientation #{orientation}" do
+
+          it "should have a width of 16" do
+            @model.width_with_orientation(orientation).should == 16
+          end
+
+          it "should have a height of 16" do
+            @model.height_with_orientation(orientation).should == 16
+          end
+        end
+      end
     end
   end
 
