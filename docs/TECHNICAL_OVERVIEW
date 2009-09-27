@@ -52,7 +52,7 @@ A monome has a display and a set of buttons. The display consists of a
 list of surfaces (each surface is essentially a virtual display). Each
 surface consists of multiple frames and can host the interfaces of
 multiple applications. Each interface consists of  1, 2 or 4 frames
-and is associated with a given application.
+and is associated with a given application through an app connector.
 
 
 Lighting the Monome
@@ -73,13 +73,13 @@ monome to the current lighting position.
 Receiving Button Events
 -----------------------
 
-All button presses are dectected by the monome's buttons and are sent
-to the current surface, which in turn  passes the button presses on to
+All physical button presses are detected by the monome's buttons and are sent
+to the current surface, which in turn passes the button presses on to
 the appropriate application interface which passes the event to the
-application communicator itself which then forwards the event via OSC
+application connector  itself which then forwards the event via OSC
 to the actual application.
 
-Before sending the button press event to an app, the surface maps the
+Before sending the button press event to an application connector, the surface maps the
 coordinate based on both the screen and app orientations
 
 
@@ -89,14 +89,23 @@ Orientation
 Each monome has an orientation which is mirrored by the physical
 monome itself. The monome's display and each of its screens inherit
 this orientation. Also, every application has a default rotation
-orientation which the application's interface inherits.
+orientation which the application's interface inherits. Finally on
+registration with at particular surface, each monome is given a
+placement orientation.
 
 Therefore, there are are a number of levels of potential rotation in play here:
 
-- application's incoming OSC messages are translated to the default rotation
-  of all applications
-- the application's frames are rotated to the rotation of the
-  application's interface
+- Incoming OSC messages are translated to the default rotation of all
+  applicaiton interfaces. The only application model type that is
+  affected by application rotation is the 128 when it can either be
+  in landscape or portrait mode. All other application types have
+  square interfaces for which rotation doesn't matter. Therefore,
+  rotation at this level only affects the coordination system (max
+  width and height) of 128 applications.
+
+- the application's frames are rotated to the rotation that was given
+  during the registration of the application with the surface.
+
 - the surface's frames are then rotated to the rotation of the monome
   before being sent to the device itself.
 
