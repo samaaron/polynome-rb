@@ -39,11 +39,11 @@ module Polynome
     end
 
 
-    VALID_QUADRANT_COMBINATIONS = [
-                                   [1], [2], [3], [4],         # one-quadrant variations
-                                   [1,2], [1,3], [2,4], [3,4], # two-quadrant variations
-                                   [1,2,3,4]                   # four-quadrant variations
-                                  ]
+    VALID_QUADRANT_COMBINATIONS = {
+      1 => [[1], [2], [3], [4]],         # one-quadrant variations
+      2 => [[1,2], [1,3], [2,4], [3,4]], # two-quadrant variations
+      4 => [[1,2,3,4]]                   # four-quadrant variations
+    }
 
     VALID_QUADRANT_IDS    = [1,2,3,4]
     VALID_QUADRANT_COUNTS = [1,2,4]
@@ -64,7 +64,13 @@ module Polynome
       VALID_QUADRANT_IDS.join(', ')
     end
 
-    attr_reader :count
+    def self.get_valid_quadrants(count)
+      raise QuadrantCountError, "Invalid quadrant count" unless valid_quadrant_count?(count)
+
+      VALID_QUADRANT_COMBINATIONS[count].map{|combo| new(combo)}
+    end
+
+    attr_reader :count, :ids
 
     def initialize(quadrants)
       raise QuadrantCountError, "Too many quadrants specified. Expected 1, 2 or 4, got #{quadrants.size}" if quadrants.size < 1 || quadrants.size > 4 || quadrants.size == 3
@@ -72,6 +78,12 @@ module Polynome
       quadrants.each{|id| raise QuadrantIDError, "Unknown quadrant id. Expected one of (#{self.class.list_valid_quadrant_ids}), got #{id}" unless self.class.valid_quadrant_id?(id)}
 
       @count = quadrants.size
+      @ids = quadrants.sort
+    end
+
+    def ==(other)
+      other.kind_of?(Quadrants) &&
+      @ids == other.ids
     end
   end
 end

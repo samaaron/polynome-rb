@@ -37,6 +37,7 @@ module Polynome
       @height        = 8
       @protocol      = "40h"
       @num_quadrants = 1
+      @valid_quadrants = Quadrants.get_valid_quadrants(@num_quadrants)
     end
   end
 
@@ -46,6 +47,7 @@ module Polynome
       @height        = 8
       @protocol      = "series"
       @num_quadrants = 1
+      @valid_quadrants = Quadrants.get_valid_quadrants(@num_quadrants)
     end
   end
 
@@ -55,6 +57,7 @@ module Polynome
       @height        = 8
       @protocol      = "series"
       @num_quadrants = 2
+      @valid_quadrants = Quadrants.get_valid_quadrants(@num_quadrants)
     end
 
     def width_with_orientation(orientation)
@@ -80,6 +83,7 @@ module Polynome
       @height        = 16
       @protocol      = "series"
       @num_quadrants = 4
+      @valid_quadrants = Quadrants.get_valid_quadrants(@num_quadrants)
     end
   end
 end

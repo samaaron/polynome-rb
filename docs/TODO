@@ -10,7 +10,7 @@ Polynome is in a state where frames can be created and displayed
 [*] Allow a monome to destroy a surface
 [*] Create an application model
 [*] Give each application an interface
-[ ] Move the cable orientation checks into model
+[*] Move the cable orientation checks into model
 [ ] Teach model how to return possible quadrants given a cable orientation
 [ ] Allow an interface to register with a given surface
 [ ] Allow an interface to specify its rotation on registration
