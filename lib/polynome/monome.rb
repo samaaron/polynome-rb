@@ -7,7 +7,7 @@ module Polynome
 
       raise ArgumentError, "Polynome::Monome#initialize requires an io_file to be specified" unless opts[:io_file]
       raise ArgumentError, "Polynome::Monome#initialize requires a model to be specified"    unless opts[:model]
-      raise ArgumentError, "Unknown cable orientation: #{opts[:cable_orientation]}, expected #{Model.list_possible_orientations}" unless Model.valid_orientation?(opts[:cable_orientation])
+      raise ArgumentError, "Unknown cable orientation: #{opts[:cable_orientation]}, expected #{Model.list_possible_cable_orientations}" unless Model.valid_cable_orientation?(opts[:cable_orientation])
 
       @model = Model.get_model(opts[:model])
       @cable_orientation = opts[:cable_orientation]

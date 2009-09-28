@@ -1,6 +1,7 @@
 module Polynome
   class Model
     CABLE_ORIENTATIONS = [:top, :bottom, :left, :right]
+    ORIENTATIONS       = [:landscape, :portrait]
 
     attr_reader :width, :height, :protocol, :num_quadrants
 
@@ -14,12 +15,20 @@ module Polynome
       end
     end
 
-    def self.valid_orientation?(orientation)
+    def self.valid_cable_orientation?(orientation)
       CABLE_ORIENTATIONS.include?(orientation)
     end
 
-    def self.list_possible_orientations
+    def self.list_possible_cable_orientations
       CABLE_ORIENTATIONS.to_sentence(:last_word_connector => ' or ')
+    end
+
+    def self.valid_orientation?(orientation)
+      ORIENTATIONS.include?(orientation)
+    end
+
+    def self.list_possible_orientations
+      ORIENTATIONS.to_sentence(:last_word_connector => ' or')
     end
 
     def width_with_orientation(orientation)
@@ -62,16 +71,16 @@ module Polynome
 
     def width_with_orientation(orientation)
       case orientation
-      when :top, :bottom then 16
-      when :left, :right then 8
+      when :landscape then 16
+      when :portrait  then 8
       else raise ArgumentError, "Unexpected orientation: #{orientation}, expected #{self.class.list_possible_orientations}"
       end
     end
 
     def height_with_orientation(orientation)
       case orientation
-      when :top, :bottom then 8
-      when :left, :right then 16
+      when :landscape then 8
+      when :portrait  then 16
       else raise ArgumentError, "Unexpected orientation: #{orientation}, expected #{self.class.list_possible_orientations}"
       end
     end

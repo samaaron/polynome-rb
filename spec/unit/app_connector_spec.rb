@@ -8,11 +8,11 @@ describe AppConnector do
 
   describe "#initialize" do
 it "should be possible to initialise an application with a model and an orientation" do
-    lambda{AppConnector.new(:model => '256', :cable_orientation => :top)}.should_not raise_error
+    lambda{AppConnector.new(:model => '256', :orientation => :landscape)}.should_not raise_error
   end
 
     it "should raise an ArgumentError if an unknown cable orientation is specified" do
-      lambda{AppConnector.new(:model => "256", :cable_orientation => "wireless (dream on)")}.should raise_error(ArgumentError)
+      lambda{AppConnector.new(:model => "256", :orientation => :dreamscape)}.should raise_error(ArgumentError)
     end
 
     it "should raise an ArgumentError if no model is specified" do
@@ -20,8 +20,8 @@ it "should be possible to initialise an application with a model and an orientat
     end
 
 
-    it "should default to a cable orientation of top if one isn't supplied" do
-      AppConnector.new(:model => "256").cable_orientation.should == :top
+    it "should default to an orientation of landscape if one isn't supplied" do
+      AppConnector.new(:model => "256").orientation.should == :landscape
     end
   end
 end

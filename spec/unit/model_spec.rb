@@ -24,10 +24,9 @@ describe Model do
     end
 
     describe "with orientations" do
-      [:top, :bottom, :left, :right].each do |orientation|
+      [:landscape, :portrait].each do |orientation|
 
         describe "with orientation #{orientation}" do
-
           it "should have a width of 8" do
             @model.width_with_orientation(orientation).should == 8
           end
@@ -61,11 +60,10 @@ describe Model do
       @model.num_quadrants.should == 1
     end
 
-     describe "with orientations" do
-      [:top, :bottom, :left, :right].each do |orientation|
+    describe "with orientations" do
+      [:landscape, :portrait].each do |orientation|
 
         describe "with orientation #{orientation}" do
-
           it "should have a width of 8" do
             @model.width_with_orientation(orientation).should == 8
           end
@@ -100,29 +98,26 @@ describe Model do
     end
 
     describe "with orientations" do
-      [:top, :bottom].each do |orientation|
-        describe "with orientation #{orientation}" do
-          it "should have a width of 16" do
-            @model.width_with_orientation(orientation).should == 16
-          end
+      describe "with orientation landscape" do
+        it "should have a width of 16" do
+          @model.width_with_orientation(:landscape).should == 16
+        end
 
-          it "should have a height of 8" do
-            @model.height_with_orientation(orientation).should == 8
-          end
+        it "should have a height of 8" do
+          @model.height_with_orientation(:landscape).should == 8
         end
       end
 
-      [:left, :right].each do |orientation|
-        describe "with orientation #{orientation}" do
-          it "should have a width of 8" do
-            @model.width_with_orientation(orientation).should == 8
-          end
+      describe "with orientation portrait" do
+        it "should have a width of 8" do
+          @model.width_with_orientation(:portrait).should == 8
+        end
 
-          it "should have a height of 16" do
-            @model.height_with_orientation(orientation).should == 16
-          end
+        it "should have a height of 16" do
+          @model.height_with_orientation(:portrait).should == 16
         end
       end
+
     end
   end
 
@@ -148,10 +143,9 @@ describe Model do
     end
 
     describe "with orientations" do
-      [:top, :bottom, :left, :right].each do |orientation|
+      [:landscape, :portrait].each do |orientation|
 
         describe "with orientation #{orientation}" do
-
           it "should have a width of 16" do
             @model.width_with_orientation(orientation).should == 16
           end
