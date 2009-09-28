@@ -26,6 +26,10 @@ Buttons      - The physical set of buttons on the monome
 Surface      - A virtual set of display and button pairs for a given
                monome
 
+Projection   - The projection of a given application connector's
+               interface onto a given surface. This projection will
+               also feature translation parameters such as rotation.
+
 Interface    - A virtual set of display and button pairs for a given
                application. May be smaller than the monome itself.
 
