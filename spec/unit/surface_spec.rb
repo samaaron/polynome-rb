@@ -72,35 +72,35 @@ describe Surface do
         end
 
         it "should be possible to register a one-framed application with this surface" do
-          lambda{@surface.register_application(@app, :quadrants => [1], :cable_orientation => :top)}.should_not raise_error
+          lambda{@surface.register_application(@app, :quadrants => [1], :rotation => 0)}.should_not raise_error
         end
 
         it "should raise an error if no quadrant option is passed" do
-          lambda{@surface.register_application(@app, :cable_orientation => :top)}.should raise_error(ArgumentError)
+          lambda{@surface.register_application(@app, :rotation => 0)}.should raise_error(ArgumentError)
         end
 
-        it "should raise an error if no cable orientation option is passed" do
-          lambda{@surface.register_application(@app, :quadrants => [1])}.should raise_error(ArgumentError)
-        end
+        #it "should default to a rotation of 0 if no rotation option is passed" do
+        #  @surface.register_application(@app, :quadrants => [1]).rotation.should == 0
+        #end
 
         it "should raise a QuadrantCountError if not enough quadrants are specified" do
-          lambda{@surface.register_application(@app, :quadrants => [], :cable_orientation => :top)}.should raise_error(Quadrants::QuadrantCountError)
+          lambda{@surface.register_application(@app, :quadrants => [])}.should raise_error(Quadrants::QuadrantCountError)
         end
 
         it "should raise a QuadrantCountError if more than 4 quadrants are specified" do
-          lambda{@surface.register_application(@app, :quadrants => [1,2,3,4,5], :cable_orientation => :top)}.should raise_error(Quadrants::QuadrantCountError)
+          lambda{@surface.register_application(@app, :quadrants => [1,2,3,4,5])}.should raise_error(Quadrants::QuadrantCountError)
         end
 
         it "should raise a QuadrantCountError if 3 quadrants are specified" do
-          lambda{@surface.register_application(@app, :quadrants => [1,2,3], :cable_orientation => :top)}.should raise_error(Quadrants::QuadrantCountError)
+          lambda{@surface.register_application(@app, :quadrants => [1,2,3])}.should raise_error(Quadrants::QuadrantCountError)
         end
 
         it "should raise a QuadrantIDError if a quadrant id other than 1,2 or 3 is used" do
-          lambda{@surface.register_application(@app, :quadrants => [:a, 2, 3, 4], :cable_orientation => :top)}.should raise_error(Quadrants::QuadrantIDError)
+          lambda{@surface.register_application(@app, :quadrants => [:a, 2, 3, 4])}.should raise_error(Quadrants::QuadrantIDError)
         end
 
         it "should raise a SurfaceSizeError if more than one quadrant is specified" do
-          lambda{@surface.register_application(@app, :quadrants => [1,2], :cable_orientation => :top)}.should raise_error(Surface::SurfaceSizeError)
+          lambda{@surface.register_application(@app, :quadrants => [1,2])}.should raise_error(Surface::SurfaceSizeError)
         end
       end
     end
