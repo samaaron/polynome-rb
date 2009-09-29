@@ -10,8 +10,6 @@ module Polynome
     class SurfaceSizeError < StandardError
     end
 
-    VALID_ROTATIONS = [0, 90, 180, 270]
-
     attr_reader :num_quadrants, :name
 
     def initialize(name, num_quadrants)
@@ -19,7 +17,7 @@ module Polynome
 
       @name = name.to_s
       @num_quadrants = num_quadrants
-      @apps = {}
+      @projections = {}
     end
 
     def update_display(index, frame)
@@ -37,13 +35,14 @@ module Polynome
     def register_application(application, opts={})
       opts.reverse_merge! :rotation => 0
       raise ArgumentError, "You must specify which quadrant(s) this application wishes to use on this surface" unless opts[:quadrants]
-      raise ArgumentError, "Invalid rotation #{opts[:rotation]}, expected #{VALID_ROTATIONS.to_sentence :last_word_connector => ' or'}." unless VALID_ROTATIONS.include?(opts[:rotation])
 
       quadrants = Quadrants.new(opts[:quadrants])
 
       raise SurfaceSizeError, "The number of quadrants you specified exceeds the capacity of this surface. Maximum number of quadrants supported: #{num_quadrants}, got #{quadrants.count}" if quadrants.count > num_quadrants
 
-      @apps[quadrants] = [opts[:rotation], application]
+      projection = Projection.new(application, opts[:rotation], quadrants)
+
+      @projections[quadrants] = [opts[:rotation], application]
     end
   end
 end

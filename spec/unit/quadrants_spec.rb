@@ -61,6 +61,10 @@ describe Quadrants do
     it "should raise a QuadrantIDError if a quadrant id other than 1,2 or 3 is used" do
       lambda{Quadrants.new([:a, 2, 3, 4])}.should raise_error(Quadrants::QuadrantIDError)
     end
+
+    it "should raise a QuadrantCombinationError if an incorrect combination is used" do
+      lambda{Quadrants.new([1,4])}.should raise_error(Quadrants::QuadrantCombinationError)
+    end
   end
 
   describe "#count" do
