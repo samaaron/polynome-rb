@@ -1,7 +1,7 @@
 Technical Overview
 ==================
 
-This document provides a generally high-level yet sufficiently
+This document provides a generally high-level yet hopefully sufficiently
 detailed technical overview of Polynome's architecture. It is meant to
 be read by developers interested in hacking Polynome.
 
@@ -17,18 +17,25 @@ developer think about the problems involved and break them up
 appropriately in order to divide and conquer. The following are the
 key abstractions:
 
-Monome       - The physical monome
+Monome       - A representation of a physical monome.
 
-Display      - The physical set of LEDs on the monome
+Display      - A representation of the physical set of LEDs on a monome.
 
-Buttons      - The physical set of buttons on the monome
-
-Surface      - A virtual set of display and button pairs for a given
+Buttons      - A representation of the  physical set of buttons on a
                monome
 
-Projection   - The projection of a given application connector's
-               interface onto a given surface. This projection will
-               also feature translation parameters such as rotation.
+Quadrant     - An 8x8 grid of buttons/LEDs. This is called a quadrant as
+               the largest monome, the 256 has four of these grids. The
+               128 happens to have 2 and the 64 and 40h just consist of one.
+               This is the fundamental conceptual building block of
+               interfaces, surfaces and the display itself.
+
+Frame        - The state of all the LEDs (on or off) for a given quadrant.
+
+Surface      - A virtual set of display and button pairs for a given
+               monome. Each monome will potentially have many surfaces
+               with only one being visible on the actual physical
+               monome.
 
 Interface    - A virtual set of display and button pairs for a given
                application. May be smaller than the monome itself.
@@ -40,13 +47,9 @@ AppConnector - The connection point between external applications and the
                application's monome. It also sends and receives OSC
                messages from the external application.
 
-Quadrant     - An 8x8 grid of buttons/LEDs. This is called a quadrant as
-               the largest monome, the 256 has four of these grids. The
-               129 happens to have 2 and the 64 and 40h just consist of one.
-               This is the fundamental conceptual building block of
-               interfaces, surfaces and the display itself.
-
-Frame        - The state of all the LEDs (on or off) for a given quadrant.
+Projection   - The projection of a given application connector's
+               interface onto a given surface. This projection will
+               also feature translation parameters such as rotation.
 
 
 Basic Overview
@@ -54,23 +57,25 @@ Basic Overview
 
 A monome has a display and a set of buttons. The display consists of a
 list of surfaces (each surface is essentially a virtual display). Each
-surface consists of multiple frames and can host the interfaces of
-multiple applications. Each interface consists of  1, 2 or 4 frames
-and is associated with a given application through an app connector.
+surface consists of multiple quadrants and can host the projections of
+the interfaces of multiple applications. Each interface consists of 1,
+2 or 4 quadrants and is associated with a given application through an
+app connector.
 
 
 Lighting the Monome
 -------------------
 
-An application receives OSC commands which it translates to frame
+An application connector receives OSC commands which it translates to frame
 updates. It sends these frame udpates to its interface which in turn
-sends them to the associated surface that the interface is hosted
-in. If the surface is the current_surface it sends the frame updates
-to the monome's display which are stored in the display's frame buffer
-and rendered on the physical monome as soon as possible. If it isn't
-the current_surface it just replaces the surface's single frame buffer
-with the new frame(s). If the user switches surface to the one hosting
-this particular app, that frame buffer will be used to initialise the
+sends them to the projection on the associated surface that the
+application connector is hosted in. If the surface is the
+current_surface it sends the frame updates to the monome's display
+which are stored in the display's frame buffer and rendered on the
+physical monome as soon as possible. If it isn't the current_surface
+it just replaces the surface's single frame buffer with the new
+frame(s). If the user switches surface to the one hosting this
+particular app, that frame buffer will be used to initialise the
 monome to the current lighting position.
 
 
@@ -80,7 +85,7 @@ Receiving Button Events
 All physical button presses are detected by the monome's buttons and are sent
 to the current surface, which in turn passes the button presses on to
 the appropriate application interface which passes the event to the
-application connector  itself which then forwards the event via OSC
+application connector itself which then forwards the event via OSC
 to the actual application.
 
 Before sending the button press event to an application connector, the surface maps the
@@ -93,9 +98,9 @@ Orientation
 Each monome has an orientation which is mirrored by the physical
 monome itself. The monome's display and each of its screens inherit
 this orientation. Also, every application has a default rotation
-orientation which the application's interface inherits. Finally on
-registration with at particular surface, each monome is given a
-placement orientation.
+orientation (landscape or portrait) which the application's interface
+inherits. Finally on registration with at particular surface, each
+projection is given an orientation.n
 
 Therefore, there are are a number of levels of potential rotation in play here:
 
@@ -108,7 +113,8 @@ Therefore, there are are a number of levels of potential rotation in play here:
   width and height) of 128 applications.
 
 - the application's frames are rotated to the rotation that was given
-  during the registration of the application with the surface.
+  to the projection during the registration of the application with
+  the surface.
 
 - the surface's frames are then rotated to the rotation of the monome
   before being sent to the device itself.
