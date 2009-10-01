@@ -65,6 +65,44 @@ describe Quadrants do
     it "should raise a QuadrantCombinationError if an incorrect combination is used" do
       lambda{Quadrants.new([1,4])}.should raise_error(Quadrants::QuadrantCombinationError)
     end
+
+    describe "creating valid quadrants" do
+      it "should be possible to create from the id of 1" do
+        lambda{Quadrants.new([1])}.should_not raise_error
+      end
+
+      it "should be possible to create from the id of 2" do
+        lambda{Quadrants.new([2])}.should_not raise_error
+      end
+
+      it "should be possible to create from the id of 3" do
+        lambda{Quadrants.new([3])}.should_not raise_error
+      end
+
+      it "should be possible to create from the id of 4" do
+        lambda{Quadrants.new([4])}.should_not raise_error
+      end
+
+      it "should be possible to create from the ids 1, 2" do
+        lambda{Quadrants.new([1, 2])}.should_not raise_error
+      end
+
+      it "should be possible to create from the ids 1, 3" do
+        lambda{Quadrants.new([1, 3])}.should_not raise_error
+      end
+
+      it "should be possible to create from the ids 2, 4" do
+        lambda{Quadrants.new([2, 4])}.should_not raise_error
+      end
+
+      it "should be possible to create from the ids 3, 4" do
+        lambda{Quadrants.new([3, 4])}.should_not raise_error
+      end
+
+      it "should be possible to create from the ids 1,2,3,4" do
+        lambda{Quadrants.new([1,2,3,4])}.should_not raise_error
+      end
+    end
   end
 
   describe "#count" do

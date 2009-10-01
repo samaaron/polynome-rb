@@ -4,5 +4,9 @@ module Polynome
     def initialize(model)
       @model = model
     end
+
+    def num_quadrants
+      @model.num_quadrants
+    end
   end
 end

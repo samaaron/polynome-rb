@@ -12,5 +12,9 @@ module Polynome
       @orientation = opts[:orientation]
       @interface         = Interface.new(model)
     end
+
+    def num_quadrants
+      @interface.num_quadrants
+    end
   end
 end

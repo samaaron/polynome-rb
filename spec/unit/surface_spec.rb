@@ -79,28 +79,18 @@ describe Surface do
           lambda{@surface.register_application(@app, :rotation => 0)}.should raise_error(ArgumentError)
         end
 
-        #it "should default to a rotation of 0 if no rotation option is passed" do
-        #  @surface.register_application(@app, :quadrants => [1]).rotation.should == 0
-        #end
-
-        it "should raise a QuadrantCountError if not enough quadrants are specified" do
-          lambda{@surface.register_application(@app, :quadrants => [])}.should raise_error(Quadrants::QuadrantCountError)
-        end
-
-        it "should raise a QuadrantCountError if more than 4 quadrants are specified" do
-          lambda{@surface.register_application(@app, :quadrants => [1,2,3,4,5])}.should raise_error(Quadrants::QuadrantCountError)
-        end
-
-        it "should raise a QuadrantCountError if 3 quadrants are specified" do
-          lambda{@surface.register_application(@app, :quadrants => [1,2,3])}.should raise_error(Quadrants::QuadrantCountError)
-        end
-
-        it "should raise a QuadrantIDError if a quadrant id other than 1,2 or 3 is used" do
-          lambda{@surface.register_application(@app, :quadrants => [:a, 2, 3, 4])}.should raise_error(Quadrants::QuadrantIDError)
+        it "should default to a rotation of 0 if no rotation option is passed" do
+          @surface.register_application(@app, :quadrants => [1]).rotation.should == 0
         end
 
         it "should raise a SurfaceSizeError if more than one quadrant is specified" do
           lambda{@surface.register_application(@app, :quadrants => [1,2])}.should raise_error(Surface::SurfaceSizeError)
+        end
+
+        it "should raise a QuadrantInUseError if the quadrant requested is already in use" do
+          @surface.register_application(@app, :quadrants => [1])
+          app2 = AppConnector.new(:model => "64")
+          lambda{@surface.register_application(app2, :quadrants => [1])}.should raise_error(Surface::QuadrantInUseError)
         end
       end
     end
@@ -121,6 +111,34 @@ describe Surface do
         lambda{@surface.update_display(3, frame)}.should raise_error(ArgumentError)
       end
     end
+
+    describe "#register_application" do
+      describe "with a 64 application" do
+        before(:each) do
+          @app = AppConnector.new(:model => "64")
+        end
+
+        it "should raise an error if the number of quadrants specified doesn't match the application's interface" do
+          lambda{@surface.register_application(@app, :quadrants => [1,2])}.should raise_error(Surface::QuadrantCountMismatchError)
+        end
+
+        it "should raise an error if, after placing a 64 app on the surface, a 128 was attempted to be placed" do
+          @surface.register_application(@app, :quadrants => [1])
+          app2 = AppConnector.new(:model => "128")
+          lambda{@surface.register_application(app2, :quadrants => [1,2])}.should raise_error(Surface::QuadrantInUseError)
+        end
+      end
+
+      describe "with a 128 application" do
+        before(:each) do
+          @app = AppConnector.new(:model => "128")
+        end
+
+        it "should raise an error if the number of quadrants specified doesn't match the application's interface" do
+          lambda{@surface.register_application(@app, :quadrants => [1])}.should raise_error(Surface::QuadrantCountMismatchError)
+        end
+      end
+    end
   end
 
   describe "given a surface with 4 frames" do
@@ -136,6 +154,18 @@ describe Surface do
       it "should raise an ArgumentError if a frame with an index of 5 is sent" do
         frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
         lambda{@surface.update_display(5, frame)}.should raise_error(ArgumentError)
+      end
+    end
+
+    describe "#register_application" do
+      describe "with a 256 application" do
+        before(:each) do
+          @app = AppConnector.new(:model => "256")
+        end
+
+        it "should be possible to register it on a blank surface" do
+          lambda{@surface.register_application(@app, :quadrants => [1,2,3,4])}.should_not raise_error
+        end
       end
     end
   end

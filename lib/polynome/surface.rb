@@ -10,6 +10,12 @@ module Polynome
     class SurfaceSizeError < StandardError
     end
 
+    class QuadrantInUseError < StandardError
+    end
+
+    class QuadrantCountMismatchError < StandardError
+    end
+
     attr_reader :num_quadrants, :name
 
     def initialize(name, num_quadrants)
@@ -18,6 +24,7 @@ module Polynome
       @name = name.to_s
       @num_quadrants = num_quadrants
       @projections = {}
+      @allocated_quadrants = {}
     end
 
     def update_display(index, frame)
@@ -34,15 +41,44 @@ module Polynome
 
     def register_application(application, opts={})
       opts.reverse_merge! :rotation => 0
-      raise ArgumentError, "You must specify which quadrant(s) this application wishes to use on this surface" unless opts[:quadrants]
+
+      unless opts[:quadrants] then raise ArgumentError,
+                                   "You must specify which quadrant(s) this application " +
+                                   "wishes to use on this surface"
+      end
+
+      if opts[:quadrants].size > num_quadrants then raise SurfaceSizeError,
+                                   "The number of quadrants you specified exceeds the "     +
+                                   "capacity of this surface. Maximum number of quadrants " +
+                                   "supported: #{num_quadrants}, got #{opts[:quadrants].size}"
+      end
+
+      if application.num_quadrants != opts[:quadrants].size then raise QuadrantCountMismatchError,
+                                  "The number of quadrants you specified does not match " +
+                                  "the capacity of the application you specified. " +
+                                   "Expected #{application.num_quadrants}, got #{opts[:quadrants].size}"
+      end
 
       quadrants = Quadrants.new(opts[:quadrants])
-
-      raise SurfaceSizeError, "The number of quadrants you specified exceeds the capacity of this surface. Maximum number of quadrants supported: #{num_quadrants}, got #{quadrants.count}" if quadrants.count > num_quadrants
-
+      register_quadrants(quadrants)
       projection = Projection.new(application, opts[:rotation], quadrants)
 
-      @projections[quadrants] = [opts[:rotation], application]
+      @projections[quadrants] = projection
+
+    end
+
+    private
+
+    def register_quadrants(quadrants)
+      #check whether quadrants are available
+      quadrants.ids.each do |id|
+        raise QuadrantInUseError, "This quadrant is already in use by another application controller" if @allocated_quadrants[id]
+      end
+
+      #register quadrant
+      quadrants.ids.each do |id|
+        @allocated_quadrants[id] = true
+      end
     end
   end
 end

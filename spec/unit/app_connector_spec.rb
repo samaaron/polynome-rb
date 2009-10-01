@@ -16,12 +16,30 @@ it "should be possible to initialise an application with a model and an orientat
     end
 
     it "should raise an ArgumentError if no model is specified" do
-      lambda{Monome.new()}.should raise_error(ArgumentError)
+      lambda{AppConnector.new()}.should raise_error(ArgumentError)
     end
 
 
     it "should default to an orientation of landscape if one isn't supplied" do
       AppConnector.new(:model => "256").orientation.should == :landscape
+    end
+  end
+
+  describe "#num_quadrants" do
+    it "should return 1 for a 64 app" do
+      AppConnector.new(:model => "64").num_quadrants.should == 1
+    end
+
+    it "should return 1 for a 40h app" do
+      AppConnector.new(:model => "40h").num_quadrants.should == 1
+    end
+
+    it "should return 2 for a 128 app" do
+      AppConnector.new(:model => "128").num_quadrants.should == 2
+    end
+
+    it "should return 4 for a 256 app" do
+      AppConnector.new(:model => "256").num_quadrants.should == 4
     end
   end
 end
