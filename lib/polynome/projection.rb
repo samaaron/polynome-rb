@@ -1,10 +1,7 @@
 module Polynome
   class Projection
-    class QuadrantCountMismatchError < StandardError
-    end
-
-    class RotationOrientationMismatchError < StandardError
-    end
+    class QuadrantCountMismatchError       < StandardError ; end
+    class RotationOrientationMismatchError < StandardError ; end
 
     VALID_ROTATIONS           = [0, 90, 180, 270]
     INVALID_128_APP_ROTATIONS = [90, 270]

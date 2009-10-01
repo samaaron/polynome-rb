@@ -32,20 +32,15 @@ module Polynome
     # |         |
     # + - - - - +
 
-    class QuadrantCountError < StandardError
-    end
-
-    class QuadrantIDError < StandardError
-    end
-
-    class QuadrantCombinationError < StandardError
-    end
+    class QuadrantCountError       < StandardError ; end
+    class QuadrantIDError          < StandardError ; end
+    class QuadrantCombinationError < StandardError ; end
 
 
     VALID_QUADRANT_COMBINATIONS = {
-      1 => [[1], [2], [3], [4]],         # one-quadrant variations
-      2 => [[1,2], [1,3], [2,4], [3,4]], # two-quadrant variations
-      4 => [[1,2,3,4]]                   # four-quadrant variations
+      1 => [ [1],   [2],   [3],   [4]   ], # one-quadrant variations
+      2 => [ [1,2], [1,3], [2,4], [3,4] ], # two-quadrant variations
+      4 => [ [1,2,3,4]                  ]  # four-quadrant variations
     }
 
     VALID_QUADRANT_IDS    = [1,2,3,4]

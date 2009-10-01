@@ -1,17 +1,10 @@
 module Polynome
   class Surface
 
-    class UnknownSurfaceError < StandardError
-    end
-
-    class DuplicateSurfaceError < StandardError
-    end
-
-    class SurfaceSizeError < StandardError
-    end
-
-    class QuadrantInUseError < StandardError
-    end
+    class UnknownSurfaceError   < StandardError ; end
+    class DuplicateSurfaceError < StandardError ; end
+    class SurfaceSizeError      < StandardError ; end
+    class QuadrantInUseError    < StandardError ; end
 
     attr_reader :num_quadrants, :name
 

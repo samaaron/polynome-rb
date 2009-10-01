@@ -2,11 +2,8 @@ module Polynome
   class OSCListener
     include Loggable
 
-    class TimeOut < StandardError
-    end
-
-    class WaitWhenNotRunning < StandardError
-    end
+    class TimeOut            < StandardError ; end
+    class WaitWhenNotRunning < StandardError ; end
 
     attr_reader :port, :prefix, :log_history
 
