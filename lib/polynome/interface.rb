@@ -8,5 +8,9 @@ module Polynome
     def num_quadrants
       @model.num_quadrants
     end
+
+    def model_type
+      @model.name
+    end
   end
 end

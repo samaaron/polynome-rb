@@ -23,6 +23,10 @@ describe Model do
       @model.num_quadrants.should == 1
     end
 
+    it "should have a name of 40h" do
+      @model.name.should == "40h"
+    end
+
     describe "with orientations" do
       [:landscape, :portrait].each do |orientation|
 
@@ -60,6 +64,10 @@ describe Model do
       @model.num_quadrants.should == 1
     end
 
+    it "should have a name of 64" do
+      @model.name.should == "64"
+    end
+
     describe "with orientations" do
       [:landscape, :portrait].each do |orientation|
 
@@ -95,6 +103,10 @@ describe Model do
 
     it "should have 2 frames" do
       @model.num_quadrants.should == 2
+    end
+
+    it "should have a name of 128" do
+      @model.name.should == "128"
     end
 
     describe "with orientations" do
@@ -140,6 +152,10 @@ describe Model do
 
     it "should have 4 frames" do
       @model.num_quadrants.should == 4
+    end
+
+    it "should have a name of 256" do
+      @model.name.should == "256"
     end
 
     describe "with orientations" do

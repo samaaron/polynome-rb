@@ -13,9 +13,6 @@ module Polynome
     class QuadrantInUseError < StandardError
     end
 
-    class QuadrantCountMismatchError < StandardError
-    end
-
     attr_reader :num_quadrants, :name
 
     def initialize(name, num_quadrants)
@@ -51,12 +48,6 @@ module Polynome
                                    "The number of quadrants you specified exceeds the "     +
                                    "capacity of this surface. Maximum number of quadrants " +
                                    "supported: #{num_quadrants}, got #{opts[:quadrants].size}"
-      end
-
-      if application.num_quadrants != opts[:quadrants].size then raise QuadrantCountMismatchError,
-                                  "The number of quadrants you specified does not match " +
-                                  "the capacity of the application you specified. " +
-                                   "Expected #{application.num_quadrants}, got #{opts[:quadrants].size}"
       end
 
       quadrants = Quadrants.new(opts[:quadrants])

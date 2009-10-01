@@ -3,7 +3,7 @@ module Polynome
     CABLE_ORIENTATIONS = [:top, :bottom, :left, :right]
     ORIENTATIONS       = [:landscape, :portrait]
 
-    attr_reader :width, :height, :protocol, :num_quadrants
+    attr_reader :width, :height, :protocol, :num_quadrants, :name
 
     def self.get_model(model)
       case model
@@ -42,6 +42,7 @@ module Polynome
 
   class FourtyH < Model
     def initialize
+      @name          = "40h"
       @width         = 8
       @height        = 8
       @protocol      = "40h"
@@ -52,6 +53,7 @@ module Polynome
 
   class SixtyFour < Model
     def initialize
+      @name          = "64"
       @width         = 8
       @height        = 8
       @protocol      = "series"
@@ -62,6 +64,7 @@ module Polynome
 
   class OneTwentyEight < Model
     def initialize
+      @name          = "128"
       @width         = 16
       @height        = 8
       @protocol      = "series"
@@ -88,6 +91,7 @@ module Polynome
 
   class TwoFiftySix < Model
     def initialize
+      @name          = "256"
       @width         = 16
       @height        = 16
       @protocol      = "series"

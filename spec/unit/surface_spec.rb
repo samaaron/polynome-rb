@@ -119,7 +119,7 @@ describe Surface do
         end
 
         it "should raise an error if the number of quadrants specified doesn't match the application's interface" do
-          lambda{@surface.register_application(@app, :quadrants => [1,2])}.should raise_error(Surface::QuadrantCountMismatchError)
+          lambda{@surface.register_application(@app, :quadrants => [1,2])}.should raise_error(Projection::QuadrantCountMismatchError)
         end
 
         it "should raise an error if, after placing a 64 app on the surface, a 128 was attempted to be placed" do
@@ -135,7 +135,7 @@ describe Surface do
         end
 
         it "should raise an error if the number of quadrants specified doesn't match the application's interface" do
-          lambda{@surface.register_application(@app, :quadrants => [1])}.should raise_error(Surface::QuadrantCountMismatchError)
+          lambda{@surface.register_application(@app, :quadrants => [1])}.should raise_error(Projection::QuadrantCountMismatchError)
         end
       end
     end

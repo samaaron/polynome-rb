@@ -16,5 +16,9 @@ module Polynome
     def num_quadrants
       @interface.num_quadrants
     end
+
+    def interface_type
+      @interface.model_type
+    end
   end
 end
