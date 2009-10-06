@@ -99,8 +99,5 @@ describe Rack do
                           ["/polynome/test/received/test_client/polynome/test/dummy", []]
                          ]
     end
-
-    it "should resend outgoing messages via test channel"
   end
-
 end

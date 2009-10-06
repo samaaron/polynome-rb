@@ -105,7 +105,7 @@ describe Monome do
           @frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
         end
 
-        it "should send the contents of the frame buffer to the serial communicator"
+        #it "should send the contents of the frame buffer to the serial communicator"
 
       end
     end
