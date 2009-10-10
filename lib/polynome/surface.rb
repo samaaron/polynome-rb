@@ -18,7 +18,11 @@ module Polynome
     end
 
     def update_display(index, frame)
-      raise ArgumentError, "Unexpected frame index. Expected one of the set #{(1..@num_frames).to_a.join(', ')}, got #{num_frames}" if index < 1 || index > @num_frames
+      if (index < 1) || (index > @num_frames) then
+        raise ArgumentError,
+          "Unexpected frame index. Expected one of the set " +
+          "#{(1..@num_frames).to_a.join(', ')}, got #{num_frames}"
+      end
 
       #TODO: implement me!
       #if this is the current surface, update monome's display
@@ -31,16 +35,18 @@ module Polynome
 
     def register_application(application, opts={})
       opts.reverse_merge! :rotation => 0
+      opts[:quadrants] = opts[:quadrant] if opts[:quadrant]
 
-      unless opts[:quadrants] then raise ArgumentError,
-                                   "You must specify which quadrant(s) this application " +
-                                   "wishes to use on this surface"
+      unless opts[:quadrants] then
+        raise ArgumentError,
+          "You must specify which quadrant(s) this application " +
+          "wishes to use on this surface"
       end
-
-      if opts[:quadrants].size > num_quadrants then raise SurfaceSizeError,
-                                   "The number of quadrants you specified exceeds the "     +
-                                   "capacity of this surface. Maximum number of quadrants " +
-                                   "supported: #{num_quadrants}, got #{opts[:quadrants].size}"
+      if opts[:quadrants].size > num_quadrants then
+        raise SurfaceSizeError,
+          "The number of quadrants you specified exceeds the "     +
+          "capacity of this surface. Maximum number of quadrants " +
+          "supported: #{num_quadrants}, got #{opts[:quadrants].size}"
       end
 
       quadrants = Quadrants.new(opts[:quadrants])
@@ -48,7 +54,6 @@ module Polynome
       projection = Projection.new(application, opts[:rotation], quadrants)
 
       @projections[quadrants] = projection
-
     end
 
     private
@@ -56,7 +61,11 @@ module Polynome
     def register_quadrants(quadrants)
       #check whether quadrants are available
       quadrants.ids.each do |id|
-        raise QuadrantInUseError, "This quadrant is already in use by another application controller" if @allocated_quadrants[id]
+        if @allocated_quadrants[id] then
+          raise QuadrantInUseError,
+            "Sorry, this quadrant is already in use by another " +
+            "application controller"
+        end
       end
 
       #register quadrant

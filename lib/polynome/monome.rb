@@ -18,7 +18,11 @@ module Polynome
     end
 
     def update_frame_buffer(*frames)
-      raise ArgumentError, "Incorret number of frames sent. Was expecting #{num_frames}, got #{frames.size}" if frames.size != num_frames
+      if frames.size != num_frames then
+        raise ArgumentError,
+        "Incorret number of frames sent. Was expecting " +
+          "#{num_frames}, got #{frames.size}"
+      end
 
       @frame_queue << frames
     end
@@ -45,7 +49,10 @@ module Polynome
     end
 
     def add_surface(name)
-      raise Surface::DuplicateSurfaceError, "A surface with the name #{name} already exists!" if find_surface_index_by_name(name)
+      if find_surface_index_by_name(name) then
+        raise Surface::DuplicateSurfaceError,
+        "A surface with the name #{name} already exists!"
+      end
 
       @surfaces << Surface.new(name, num_frame_buffers)
       self
@@ -53,7 +60,10 @@ module Polynome
 
     def remove_surface(name)
       index = find_surface_index_by_name(name)
-      raise Surface::UnknownSurfaceError, "A surface with the name #{name} does not exist" unless index
+      unless index then
+        raise Surface::UnknownSurfaceError,
+        "A surface with the name #{name} does not exist"
+      end
 
       @surfaces.delete_at(index)
       self

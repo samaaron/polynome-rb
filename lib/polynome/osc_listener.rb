@@ -69,7 +69,10 @@ module Polynome
     end
 
     def wait_for(num_messages_to_wait_for)
-      raise WaitWhenNotRunning, "You are attempting to wait for messages when the server isn't running" unless running?
+      unless running?
+        raise WaitWhenNotRunning,
+        "You are attempting to wait for messages when the server isn't running"
+      end
 
       current_num_messages = num_messages_received
       yield if block_given?

@@ -106,7 +106,7 @@ describe Surface do
     end
 
     describe "#update_display" do
-      it "should raise an ArgumentError if with an index of 3 sent" do
+      it "should raise an ArgumentError if an index of 3 sent" do
         frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
         lambda{@surface.update_display(3, frame)}.should raise_error(ArgumentError)
       end
@@ -127,6 +127,22 @@ describe Surface do
           app2 = AppConnector.new(:model => "128")
           lambda{@surface.register_application(app2, :quadrants => [1,2])}.should raise_error(Surface::QuadrantInUseError)
         end
+
+        it "should be possible to place the application on the first quadrant via the singular keyword quadrant" do
+          lambda{@surface.register_application(@app, :quadrant => [1])}.should_not raise_error
+        end
+
+        it "should be possible to place the application on the second quadrant via the singular keyword quadrant" do
+          lambda{@surface.register_application(@app, :quadrant => [2])}.should_not raise_error
+        end
+
+        it "should be possible to place two similar 64 apps on both of the available quadrants" do
+          app2 = AppConnector.new(:model => "64")
+          lambda do
+            @surface.register_application(@app, :quadrant => [1])
+            @surface.register_application(app2, :quadrant => [2])
+          end.should_not raise_error
+        end
       end
 
       describe "with a 128 application" do
@@ -136,6 +152,24 @@ describe Surface do
 
         it "should raise an error if the number of quadrants specified doesn't match the application's interface" do
           lambda{@surface.register_application(@app, :quadrants => [1])}.should raise_error(Projection::QuadrantCountMismatchError)
+        end
+
+        it "should not raise an error if the application is registered with the surface" do
+          lambda{@surface.register_application(@app, :quadrants => [1,2])}.should_not raise_error
+        end
+      end
+
+      describe "with a 256 application" do
+        before(:each) do
+          @app = AppConnector.new(:model => "256")
+        end
+
+        it "should raise an error if the number of quadrants specified doesn' tmatch the applications interface" do
+          lambda{@surface.register_application(@app, :quadrants => [1,2])}.should raise_error(Projection::QuadrantCountMismatchError)
+        end
+
+        it "should raise an error if the application is attempted to be placed on this surface" do
+          lambda{@surface.register_application(@app, :quadrants => [1,2,3,4])}.should raise_error(Surface::SurfaceSizeError)
         end
       end
     end
