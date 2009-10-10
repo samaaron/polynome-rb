@@ -35,7 +35,7 @@ module Polynome
 
     def register_application(application, opts={})
       opts.reverse_merge! :rotation => 0
-      opts[:quadrants] = opts[:quadrant] if opts[:quadrant]
+      opts[:quadrants] = [opts[:quadrant]] if opts[:quadrant]
 
       unless opts[:quadrants] then
         raise ArgumentError,
