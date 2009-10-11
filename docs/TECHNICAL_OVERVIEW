@@ -40,14 +40,14 @@ Surface      - A virtual set of display and button pairs for a given
 Interface    - A virtual set of display and button pairs for a given
                application. May be smaller than the monome itself.
 
-AppConnector - The connection point between external applications and the
-               polynome framework. The AppConnector contains what can be
+Application  - The connection point between external applications and the
+               polynome framework. Applications contain what can be
                succinctly described as a 'virtual monome' which contains
                an LED bank that represents the state of the
                application's monome. It also sends and receives OSC
                messages from the external application.
 
-Projection   - The projection of a given application connector's
+Projection   - The projection of a given application's
                interface onto a given surface. This projection will
                also feature translation parameters such as rotation.
 
@@ -59,14 +59,13 @@ A monome has a display and a set of buttons. The display consists of a
 list of surfaces (each surface is essentially a virtual display). Each
 surface consists of multiple quadrants and can host the projections of
 the interfaces of multiple applications. Each interface consists of 1,
-2 or 4 quadrants and is associated with a given application through an
-app connector.
+2 or 4 quadrants and is associated with a given application.
 
 
 Lighting the Monome
 -------------------
 
-An application connector receives OSC commands which it translates to frame
+An application receives OSC commands which it translates to frame
 updates. It sends these frame udpates to its interface which in turn
 sends them to the projection on the associated surface that the
 application connector is hosted in. If the surface is the

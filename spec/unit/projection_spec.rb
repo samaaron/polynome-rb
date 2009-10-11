@@ -9,10 +9,10 @@ end
 
 describe Projection do
 
-  describe "with a 64 app connector" do
+  describe "with a 64 app" do
     describe "#initialize" do
       before(:each) do
-        @app = AppConnector.new(:model => "64")
+        @app = Application.new(:model => "64")
         @quadrants = Quadrants.new([1])
       end
 
@@ -20,7 +20,7 @@ describe Projection do
         lambda{Projection.new(@app, 1080, @quadrants)}.should raise_error(ArgumentError)
       end
 
-      it "should store the app connector" do
+      it "should store the app" do
         Projection.new(@app, 0, @quadrants).app.should == @app
       end
 
@@ -52,9 +52,9 @@ describe Projection do
     end
   end
 
-  describe "with a 128 landscape app connector" do
+  describe "with a 128 landscape app" do
     before(:each) do
-      @app = AppConnector.new(:model => "128", :orientation => :landscape)
+      @app = Application.new(:model => "128", :orientation => :landscape)
       @quadrants = Quadrants.new([1,2])
     end
 
@@ -79,9 +79,9 @@ describe Projection do
     end
   end
 
-  describe "with a 128 portrait app connector" do
+  describe "with a 128 portrait app" do
     before(:each) do
-      @app = AppConnector.new(:model => "128", :orientation => :portrait)
+      @app = Application.new(:model => "128", :orientation => :portrait)
       @quadrants = Quadrants.new([1,3])
     end
 
