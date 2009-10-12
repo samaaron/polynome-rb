@@ -8,11 +8,12 @@ describe 'sanity check' do
 end
 
 describe Projection do
+  before(:each) {Application.reset_registered_names!}
 
   describe "with a 64 app" do
     describe "#initialize" do
       before(:each) do
-        @app = Application.new(:model => "64")
+        @app = Application.new(:model => "64", :name => "test")
         @quadrants = Quadrants.new([1])
       end
 
@@ -54,7 +55,7 @@ describe Projection do
 
   describe "with a 128 landscape app" do
     before(:each) do
-      @app = Application.new(:model => "128", :orientation => :landscape)
+      @app = Application.new(:model => "128", :orientation => :landscape, :name => "test")
       @quadrants = Quadrants.new([1,2])
     end
 
@@ -81,7 +82,7 @@ describe Projection do
 
   describe "with a 128 portrait app" do
     before(:each) do
-      @app = Application.new(:model => "128", :orientation => :portrait)
+      @app = Application.new(:model => "128", :orientation => :portrait, :name => "test")
       @quadrants = Quadrants.new([1,3])
     end
 

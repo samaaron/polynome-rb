@@ -2,6 +2,8 @@ require File.dirname(__FILE__) + '/../spec_helper.rb'
 include Polynome
 
 describe Surface do
+  before(:each) {Application.reset_registered_names!}
+
   it "should resolve to the correct constant from this context" do
     Surface.should == Polynome::Surface
   end
@@ -68,7 +70,7 @@ describe Surface do
     describe "#register_application" do
       describe "with a 64 application" do
         before(:each) do
-          @app = Application.new(:model => "64")
+          @app = Application.new(:model => "64", :name => "test")
         end
 
         it "should be possible to register a one-framed application with this surface" do
@@ -89,7 +91,7 @@ describe Surface do
 
         it "should raise a QuadrantInUseError if the quadrant requested is already in use" do
           @surface.register_application(@app, :quadrants => [1])
-          app2 = Application.new(:model => "64")
+          app2 = Application.new(:model => "64", :name => "test64")
           lambda{@surface.register_application(app2, :quadrants => [1])}.should raise_error(Surface::QuadrantInUseError)
         end
       end
@@ -115,7 +117,7 @@ describe Surface do
     describe "#register_application" do
       describe "with a 64 application" do
         before(:each) do
-          @app = Application.new(:model => 64)
+          @app = Application.new(:model => 64, :name => "test")
         end
 
         it "should raise an error if the number of quadrants specified doesn't match the application's interface" do
@@ -124,7 +126,7 @@ describe Surface do
 
         it "should raise an error if, after placing a 64 app on the surface, a 128 was attempted to be placed" do
           @surface.register_application(@app, :quadrant => 1)
-          app2 = Application.new(:model => "128")
+          app2 = Application.new(:model => "128", :name => "test2")
           lambda{@surface.register_application(app2, :quadrants => [1,2])}.should raise_error(Surface::QuadrantInUseError)
         end
 
@@ -137,7 +139,7 @@ describe Surface do
         end
 
         it "should be possible to place two similar 64 apps on both of the available quadrants" do
-          app2 = Application.new(:model => "64")
+          app2 = Application.new(:model => "64", :name => "test2")
           lambda do
             @surface.register_application(@app, :quadrant => 1)
             @surface.register_application(app2, :quadrant => 2)
@@ -147,7 +149,7 @@ describe Surface do
 
       describe "with a 128 application" do
         before(:each) do
-          @app = Application.new(:model => 128)
+          @app = Application.new(:model => 128, :name => "test")
         end
 
         it "should raise an error if the number of quadrants specified doesn't match the application's interface" do
@@ -161,7 +163,7 @@ describe Surface do
 
       describe "with a 256 application" do
         before(:each) do
-          @app = Application.new(:model => 256)
+          @app = Application.new(:model => 256, :name => "test")
         end
 
         it "should raise an error if the number of quadrants specified doesn' tmatch the applications interface" do
@@ -194,7 +196,7 @@ describe Surface do
     describe "#register_application" do
        describe "with a 64 application" do
         before(:each) do
-          @app = Application.new(:model => 64)
+          @app = Application.new(:model => 64, :name => "test")
         end
 
         it "should raise an error if the number of quadrants specified doesn't match the application's interface" do
@@ -203,7 +205,7 @@ describe Surface do
 
         it "should raise an error if, after placing a 64 app on the surface, a 256 was attempted to be placed" do
           @surface.register_application(@app, :quadrant => 1)
-          app2 = Application.new(:model => 256)
+          app2 = Application.new(:model => 256, :name => "test2")
           lambda{@surface.register_application(app2, :quadrants => [1,2,3,4])}.should raise_error(Surface::QuadrantInUseError)
         end
 
@@ -224,9 +226,9 @@ describe Surface do
         end
 
         it "should be possible to place four similar 64 apps on all of the available quadrants" do
-          app2 = Application.new(:model => 64)
-          app3 = Application.new(:model => 64)
-          app4 = Application.new(:model => 64)
+          app2 = Application.new(:model => 64, :name => "test2")
+          app3 = Application.new(:model => 64, :name => "test3")
+          app4 = Application.new(:model => 64, :name => "test4")
           lambda do
             @surface.register_application(@app, :quadrant => 1)
             @surface.register_application(app2, :quadrant => 2)
@@ -238,7 +240,7 @@ describe Surface do
 
       describe "with a 128 application" do
         before(:each) do
-          @app = Application.new(:model => 128)
+          @app = Application.new(:model => 128, :name => "test")
         end
 
         describe  "given the 128 app is registered on the top half in landscape mode (quadrants 1,2)" do
@@ -248,7 +250,7 @@ describe Surface do
 
           describe "and given an unregistered 64 app" do
             before(:each) do
-              @app64 = Application.new(:model => 64)
+              @app64 = Application.new(:model => 64, :name => "test64")
             end
 
             invalid_quadrants = [1,2]
@@ -268,7 +270,7 @@ describe Surface do
 
           describe "and given an unregistered 128 app" do
             before(:each) do
-              @app128 = Application.new(:model => 128)
+              @app128 = Application.new(:model => 128, :name => "test128")
             end
 
             invalid_quadrants = [[1,2], [1,3], [2,4]]
@@ -285,7 +287,7 @@ describe Surface do
 
           describe "and given an unregistered 256 app" do
             before(:each) do
-              @app256 = Application.new(:model => 256)
+              @app256 = Application.new(:model => 256, :name => "test256")
             end
 
             it "should raise an error if a 256 was placed on quadrants 1,2,3,4" do
@@ -311,7 +313,7 @@ describe Surface do
       end
       describe "with a 256 application" do
         before(:each) do
-          @app = Application.new(:model => 256)
+          @app = Application.new(:model => 256, :name => "test")
         end
 
         it "should be possible to register it on a blank surface" do
@@ -325,7 +327,7 @@ describe Surface do
 
           describe "and given an unregistered 64 app" do
             before(:each) do
-              @app64 = Application.new(:model => 64)
+              @app64 = Application.new(:model => 64, :name => "test64")
             end
 
             invalid_quadrants = [1,2,3,4]
@@ -338,7 +340,7 @@ describe Surface do
 
           describe "and given an unregistered 128 app" do
             before(:each) do
-              @app128 = Application.new(:model => 128)
+              @app128 = Application.new(:model => 128, :name => "test128")
             end
 
             invalid_quadrants = [[1,2], [3,4], [1,3], [2,4]]
@@ -351,7 +353,7 @@ describe Surface do
 
           describe "and given an unregistered 256 app" do
             before(:each) do
-              @app256 = Application.new(:model => 256)
+              @app256 = Application.new(:model => 256, :name => "test256")
             end
 
             it "should raise an error if the 256 is placed on the surface" do
