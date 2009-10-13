@@ -56,6 +56,10 @@ module Polynome
       @projections[quadrants] = projection
     end
 
+    def registered_applications
+      []
+    end
+
     private
 
     def register_quadrants(quadrants)

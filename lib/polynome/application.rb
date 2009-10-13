@@ -17,6 +17,7 @@ module Polynome
     end
 
     attr_reader :orientation
+    attr_reader :name
 
     def initialize(opts = {})
       opts.reverse_merge! :orientation => :landscape
