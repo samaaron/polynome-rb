@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper.rb'
 include Polynome
 
 describe Surface do
-  before(:each) {Application.reset_registered_names!}
+  before(:each) {Application.reset_registered_applications!}
 
   it "should resolve to the correct constant from this context" do
     Surface.should == Polynome::Surface
@@ -97,6 +97,16 @@ describe Surface do
         @surface4.registered_applications.should =~ [@app64, @app128]
         @surface4.remove_application(@app64.name)
         @surface4.registered_applications.should =~ [@app128]
+      end
+
+      it "should be possible to register an application into a space where an application has just been removed" do
+        @surface4.register_application(@app64, :quadrant => 1)
+        @surface4.register_application(@app128, :quadrants => [3,4])
+        @surface4.registered_applications.should =~ [@app64, @app128]
+        @surface4.remove_application(@app64.name)
+        new_app = Application.new(:model => 128, :name => "new_app128")
+        @surface4.register_application(new_app, :quadrants => [1,2])
+        @surface4.registered_applications.should =~ [@app128, new_app]
       end
     end
 

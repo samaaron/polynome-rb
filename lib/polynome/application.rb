@@ -1,19 +1,32 @@
 module Polynome
   class Application
     class NameInUseError < Exception ; end
+    class UnknownName    < Exception ; end
 
     def self.name_already_registered?(name)
-      @registered_names ||= []
-      @registered_names.include?(name)
+      find_application_by_name(name)  if @applications
     end
 
-    def self.register_name(name)
-      @registered_names ||= []
-      @registered_names << name
+    def self.register_application(application)
+      @applications ||= []
+      @applications << application
     end
 
-    def self.reset_registered_names!
-      @registered_names = []
+    def self.reset_registered_applications!
+      @applications = []
+    end
+
+    def self.[](name)
+      app = find_application_by_name(name)
+      unless app then
+        raise UnknownName,
+        "Unable to find an application with the name #{name}"
+      end
+      return app
+    end
+
+    def self.find_application_by_name(name)
+      application = @applications.find{|app| app.name == name} if @applications
     end
 
     attr_reader :orientation
@@ -43,8 +56,8 @@ module Polynome
       model        = Model.get_model(opts[:model].to_s, opts[:orientation])
       @orientation = opts[:orientation]
       @interface   = Interface.new(model)
-      self.class.register_name(opts[:name])
       @name        = opts[:name]
+      self.class.register_application(self)
     end
 
     def num_quadrants

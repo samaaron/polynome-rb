@@ -62,16 +62,26 @@ module Polynome
     end
 
     def remove_application(application_name)
-      num_registered_apps_before_removal = @projections.size
-      removed = @projections.delete_if {|_, projection| projection.application.name == application_name}
-      unless num_registered_apps_before_removal > @projections.size then
+      projection_to_remove =  find_projection_by_application_name(application_name)
+      unless projection_to_remove then
         raise UnknownAppError,
         "The application #{application_name} is not registered " +
           "with this surface."
       end
+
+      @projections.delete_if {|_, projection| projection.application.name == application_name}
+      deregister_quadrants(projection_to_remove.quadrants)
     end
 
     private
+
+    def find_projection_by_application_name(name)
+      @projections.values.find{|projection| projection.application.name == name}
+    end
+
+    def deregister_quadrants(quadrants)
+      quadrants.ids.each {|id| @allocated_quadrants[id] = false}
+    end
 
     def register_quadrants(quadrants)
       #check whether quadrants are available

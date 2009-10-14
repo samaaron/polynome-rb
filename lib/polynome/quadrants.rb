@@ -86,6 +86,10 @@ module Polynome
       @ids == other.ids
     end
 
+    def inspect
+      "#<QUADRANTS count: #{count}, ids: #{ids.inspect}>"
+    end
+
     private
 
     def all_valid_quadrant_combinations

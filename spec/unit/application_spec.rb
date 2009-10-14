@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper.rb'
 include Polynome
 
 describe Application do
-  before(:each) {Application.reset_registered_names!}
+  before(:each) {Application.reset_registered_applications!}
 
   it "should resolve to the correct constant from this context" do
     Application.should == Polynome::Application
@@ -32,6 +32,17 @@ it "should be possible to initialise an application with a model and an orientat
     it "should raise an error if the name specified is already in use" do
       Application.new(:model => "256", :name => "beans")
       lambda{Application.new(:model => "256", :name => "beans")}.should raise_error(Application::NameInUseError)
+    end
+  end
+
+  describe ".[]" do
+    it "should be possible to fetch application instances using the class [] method" do
+      adoo = Application.new(:model => '256', :name => "adoo_adoo")
+      Application["adoo_adoo"].should == adoo
+    end
+
+    it "should raise an application uknown error if no applications match the name given" do
+      lambda{Application["unknown_application"]}.should raise_error(Application::UnknownName)
     end
   end
 

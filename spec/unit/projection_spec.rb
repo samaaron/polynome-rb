@@ -8,7 +8,7 @@ describe 'sanity check' do
 end
 
 describe Projection do
-  before(:each) {Application.reset_registered_names!}
+  before(:each) {Application.reset_registered_applications!}
 
   describe "with a 64 app" do
     describe "#initialize" do

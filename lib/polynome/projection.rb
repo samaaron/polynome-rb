@@ -33,5 +33,9 @@ module Polynome
       @rotation    = rotation
       @quadrants   = quadrants
     end
+
+    def inspect
+      "#<PROJECTION application: #{application.name}, rotation: #{rotation}, quadrants: #{quadrants.inspect}>"
+    end
   end
 end
