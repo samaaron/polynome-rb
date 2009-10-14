@@ -87,9 +87,16 @@ describe Surface do
         @surface1.registered_applications.should == []
         @surface1.register_application(@app64, :quadrant => 1)
         @surface1.registered_applications.should == [@app64]
-        puts "hi thiere, #{@app64.name}"
         @surface1.remove_application(@app64.name)
         @surface1.registered_applications.should == []
+      end
+
+      it "should remove the correct application if you have registered multiple applications" do
+        @surface4.register_application(@app64, :quadrant => 1)
+        @surface4.register_application(@app128, :quadrants => [3,4])
+        @surface4.registered_applications.should =~ [@app64, @app128]
+        @surface4.remove_application(@app64.name)
+        @surface4.registered_applications.should =~ [@app128]
       end
     end
 

@@ -63,8 +63,7 @@ module Polynome
 
     def remove_application(application_name)
       num_registered_apps_before_removal = @projections.size
-      removed = @projections.delete_if {|_, projection| puts "yo: #{projection.application.name == application_name}" ;  projection.application.name == application_name}
-      puts removed.inspect
+      removed = @projections.delete_if {|_, projection| projection.application.name == application_name}
       unless num_registered_apps_before_removal > @projections.size then
         raise UnknownAppError,
         "The application #{application_name} is not registered " +

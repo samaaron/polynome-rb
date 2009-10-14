@@ -13,10 +13,9 @@ Polynome is in a state where frames can be created and displayed
 [*] Move the cable orientation checks into model
 [*] Teach Quadrants how to return possible quadrants given a cable orientation
 [*] Add Projection skeleton
-[ ] Allow surface quadrants to be mapped to app interface quadrants
-[ ] Allow an app connector to register with a given surface
-[ ] Allow an app connector to specify its rotation on registration
-[ ] Only permit valid rotations and sizes given the monome's size
+[*] Allow an application to register with a given surface
+[*] Allow an app connector to specify its rotation on registration
+[*] Only permit valid rotations and sizes given the monome's size
 [ ] Allow interface frame updates be sent via the surface to the display
 [ ] Create a dummy 64 app that updates the buffer with alternating frames
 [ ] Create a dummy 128 app that updates the buffer with alternating frames

@@ -21,7 +21,7 @@ it "should be possible to initialise an application with a model and an orientat
       lambda{Application.new()}.should raise_error(ArgumentError)
     end
 
-    it "should raise an ArgumentError if no name is specifiec" do
+    it "should raise an ArgumentError if no name is specified" do
       lambda{Application.new(:model => "256")}.should raise_error(ArgumentError)
     end
 
