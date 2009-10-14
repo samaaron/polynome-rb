@@ -67,11 +67,30 @@ describe Surface do
       end
 
       it "should return the application you have already registered" do
-        # @surface1.register_application
+        @surface1.register_application(@app64, :quadrant => 1)
+        @surface1.registered_applications.should == [@app64]
+      end
+
+      it "should return multiple applications if you have registered multiple applications" do
+        @surface4.register_application(@app64, :quadrant => 1)
+        @surface4.register_application(@app128, :quadrants => [3,4])
+        @surface4.registered_applications.should =~ [@app64, @app128]
       end
     end
 
     describe "#remove_application" do
+      it "should raise an error if the application you tried to remove isn't registered" do
+        lambda{@surface1.remove_application("foobarbaz")}.should raise_error(Surface::UnknownAppError)
+      end
+
+      it "should remove an application you have previously registered" do
+        @surface1.registered_applications.should == []
+        @surface1.register_application(@app64, :quadrant => 1)
+        @surface1.registered_applications.should == [@app64]
+        puts "hi thiere, #{@app64.name}"
+        @surface1.remove_application(@app64.name)
+        @surface1.registered_applications.should == []
+      end
     end
 
     describe "#update_display" do

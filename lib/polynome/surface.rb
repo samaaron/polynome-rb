@@ -5,6 +5,7 @@ module Polynome
     class DuplicateSurfaceError < StandardError ; end
     class SurfaceSizeError      < StandardError ; end
     class QuadrantInUseError    < StandardError ; end
+    class UnknownAppError       < StandardError ; end
 
     attr_reader :num_quadrants, :name
 
@@ -57,7 +58,18 @@ module Polynome
     end
 
     def registered_applications
-      []
+      @projections.values.map{|projection| projection.application}
+    end
+
+    def remove_application(application_name)
+      num_registered_apps_before_removal = @projections.size
+      removed = @projections.delete_if {|_, projection| puts "yo: #{projection.application.name == application_name}" ;  projection.application.name == application_name}
+      puts removed.inspect
+      unless num_registered_apps_before_removal > @projections.size then
+        raise UnknownAppError,
+        "The application #{application_name} is not registered " +
+          "with this surface."
+      end
     end
 
     private

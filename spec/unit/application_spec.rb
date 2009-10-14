@@ -14,7 +14,7 @@ it "should be possible to initialise an application with a model and an orientat
   end
 
     it "should raise an ArgumentError if an unknown cable orientation is specified" do
-      lambda{Application.new(:model => "256",  :name => "test", :orientation => :dreamscape)}.should raise_error(ArgumentError)
+      lambda{Application.new(:model => "256",  :name => "test", :orientation => :dreamscape)}.should raise_error(Model::InvalidOrientation)
     end
 
     it "should raise an ArgumentError if no model is specified" do
@@ -34,6 +34,19 @@ it "should be possible to initialise an application with a model and an orientat
       lambda{Application.new(:model => "256", :name => "beans")}.should raise_error(Application::NameInUseError)
     end
   end
+
+  describe "#name" do
+    it "should be able to return its name" do
+      Application.new(:model => "64", :name => "foobar").name.should == "foobar"
+    end
+  end
+
+  describe "#orientation" do
+    it "should be able to return its orientation" do
+      Application.new(:model =>"128", :name => "barbaz", :orientation => :landscape).orientation.should == :landscape
+    end
+  end
+
 
   describe "#num_quadrants" do
     it "should return 1 for a 64 app initialized with a string model name" do

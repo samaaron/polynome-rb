@@ -40,17 +40,11 @@ module Polynome
           "application. Please specify a unique name"
       end
 
-      unless Model.valid_orientation?(opts[:orientation]) then
-        raise ArgumentError,
-          "Unknown orientation: #{opts[:orientation]}, " +
-          "expected #{Model.list_possible_orientations}"
-      end
-
-
-      model        = Model.get_model(opts[:model].to_s)
+      model        = Model.get_model(opts[:model].to_s, opts[:orientation])
       @orientation = opts[:orientation]
       @interface   = Interface.new(model)
       self.class.register_name(opts[:name])
+      @name        = opts[:name]
     end
 
     def num_quadrants

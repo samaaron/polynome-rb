@@ -22,7 +22,7 @@ describe Projection do
       end
 
       it "should store the app" do
-        Projection.new(@app, 0, @quadrants).app.should == @app
+        Projection.new(@app, 0, @quadrants).application.should == @app
       end
 
       it "should store the rotation" do
