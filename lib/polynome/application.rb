@@ -29,8 +29,8 @@ module Polynome
       application = @applications.find{|app| app.name == name} if @applications
     end
 
-    attr_reader :orientation
-    attr_reader :name
+    attr_reader :orientation, :name
+    attr_accessor :projection
 
     def initialize(opts = {})
       opts.reverse_merge! :orientation => :landscape

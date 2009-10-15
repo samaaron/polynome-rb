@@ -7,13 +7,14 @@ module Polynome
     class QuadrantInUseError    < StandardError ; end
     class UnknownAppError       < StandardError ; end
 
-    attr_reader :num_quadrants, :name
+    attr_reader :num_quadrants, :name, :display
 
-    def initialize(name, num_quadrants)
+    def initialize(name, num_quadrants, monome)
       raise ArgumentError, "Unexpected quadrant count. Expected one of the set {#{Quadrants.list_valid_quadrant_counts}}. Got #{num_quadrants}" unless Quadrants.valid_quadrant_count?(num_quadrants)
 
       @name = name.to_s
       @num_quadrants = num_quadrants
+      @monome = monome
       @projections = {}
       @allocated_quadrants = {}
     end
@@ -52,9 +53,10 @@ module Polynome
 
       quadrants = Quadrants.new(opts[:quadrants])
       register_quadrants(quadrants)
-      projection = Projection.new(application, opts[:rotation], quadrants)
-
+      projection = Projection.new(self, application, opts[:rotation], quadrants)
+      application.projection = projection
       @projections[quadrants] = projection
+      return projection
     end
 
     def registered_applications

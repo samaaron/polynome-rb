@@ -6,8 +6,9 @@ module Polynome
     VALID_ROTATIONS           = [0, 90, 180, 270]
     INVALID_128_APP_ROTATIONS = [90, 270]
 
-    attr_reader :application, :rotation, :quadrants
-    def initialize(application, rotation, quadrants)
+    attr_reader :application, :rotation, :quadrants, :surface
+
+    def initialize(surface, application, rotation, quadrants)
       unless VALID_ROTATIONS.include?(rotation) then
         raise ArgumentError,
         "Invalid rotation #{rotation}, expected " +
@@ -29,6 +30,7 @@ module Polynome
           "as it is not square like the 64 or 256."
       end
 
+      @surface     = surface
       @application = application
       @rotation    = rotation
       @quadrants   = quadrants

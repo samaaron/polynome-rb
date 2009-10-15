@@ -12,7 +12,7 @@ module Polynome
       @model = Model.get_model(opts[:model])
       @cable_orientation = opts[:cable_orientation]
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
-      @surfaces = [Surface.new("base", num_frame_buffers)]
+      @surfaces = [Surface.new("base", num_frame_buffers, self)]
       @current_surface = @surfaces[0]
       @frame_buffer = FrameBuffer.new
     end
@@ -54,7 +54,7 @@ module Polynome
         "A surface with the name #{name} already exists!"
       end
 
-      @surfaces << Surface.new(name, num_frame_buffers)
+      @surfaces << Surface.new(name, num_frame_buffers, self)
       self
     end
 

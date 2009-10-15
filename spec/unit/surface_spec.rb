@@ -2,7 +2,18 @@ require File.dirname(__FILE__) + '/../spec_helper.rb'
 include Polynome
 
 describe Surface do
-  before(:each) {Application.reset_registered_applications!}
+  before(:each) do
+    Application.reset_registered_applications!
+    @app64  = Application.new(:model => 64,  :name => "app64")
+    @app128 = Application.new(:model => 128, :name => "app128")
+    @app256 = Application.new(:model => 256, :name => "app256")
+    @monome64  = Monome.new(:io_file => "blah", :model => "64",  :cable_orientation => :top)
+    @monome128 = Monome.new(:io_file => "blah", :model => "128", :cable_orientation => :top)
+    @monome256 = Monome.new(:io_file => "blah", :model => "256", :cable_orientation => :top)
+    @surface1 = Surface.new("surface1", 1, @monome64)
+    @surface2 = Surface.new("surface2", 2, @monome128)
+    @surface4 = Surface.new("surface4", 4, @monome256)
+  end
 
   it "should resolve to the correct constant from this context" do
     Surface.should == Polynome::Surface
@@ -10,32 +21,23 @@ describe Surface do
 
   describe "#initialize" do
     it "should be possible to initialize a surface specifying the number of frames that surface consists of" do
-      lambda{Surface.new("test", 1)}.should_not raise_error
+      lambda{Surface.new("test", 1, @monome64)}.should_not raise_error
     end
 
     it "should raise an ArgumentError if the number of frames specified is less than 1" do
-      lambda{Surface.new("test", 0)}.should raise_error(ArgumentError)
+      lambda{Surface.new("test", 0, @monome64)}.should raise_error(ArgumentError)
     end
 
     it "should raise an ArgumentError if the number of frames specified is 3" do
-      lambda{Surface.new("test", 3)}.should raise_error(ArgumentError)
+      lambda{Surface.new("test", 3, @monome256)}.should raise_error(ArgumentError)
     end
 
     it "should raise an ArgumentError if the number of frames specified is greater than 4" do
-      lambda{Surface.new("test", 5)}.should raise_error(ArgumentError)
+      lambda{Surface.new("test", 5, @monome256)}.should raise_error(ArgumentError)
     end
   end
 
   describe "given 3 applications, one 64, one 128 and one 256, 3 surfaces (1,2, 4 quadrants)" do
-    before(:each) do
-      @app64  = Application.new(:model => 64,  :name => "app64")
-      @app128 = Application.new(:model => 128, :name => "app128")
-      @app256 = Application.new(:model => 256, :name => "app256")
-      @surface1 = Surface.new("surface1", 1)
-      @surface2 = Surface.new("surface2", 2)
-      @surface4 = Surface.new("surface4", 4)
-    end
-
     describe "#num_quadrants" do
       it "should report that a surface initialised with four frames has four frames" do
         @surface4.num_quadrants.should == 4
@@ -128,6 +130,11 @@ describe Surface do
     end
 
     describe "#register_application" do
+      it "should register the application's projection with the application itself" do
+        projection = @surface1.register_application(@app64, :quadrant => 1)
+        @app64.projection.should == projection
+      end
+
       describe "with respect to a one-quadrant surface" do
         it "should raise an error if no quadrant option is passed" do
           lambda{@surface1.register_application(@app64, :rotation => 0)}.should raise_error(ArgumentError)
