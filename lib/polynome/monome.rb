@@ -53,23 +53,53 @@ module Polynome
         raise Surface::DuplicateSurfaceError,
         "A surface with the name #{name} already exists!"
       end
-
-      @surfaces << Surface.new(name, num_frame_buffers, self)
-      self
+      surface = Surface.new(name, num_frame_buffers, self)
+      @surfaces << surface
+      return surface
     end
 
     def remove_surface(name)
+      validate_surface_name!(name)
       index = find_surface_index_by_name(name)
-      unless index then
-        raise Surface::UnknownSurfaceError,
-        "A surface with the name #{name} does not exist"
-      end
-
       @surfaces.delete_at(index)
-      self
+    end
+
+    def fetch_surface(name)
+      validate_surface_name!(name)
+      @surfaces.find{|surface| surface.name == name.to_s}
+    end
+
+    def switch_to_surface(name)
+      validate_surface_name!(name)
+      @current_surface = find_surface_by_name(name)
+    end
+
+    def next_surface
+      index = find_surface_index_by_name(@current_surface.name)
+      index += 1
+      index = 0 if index >= @surfaces.size
+      @current_surface = @surfaces[index]
+    end
+
+    def previous_surface
+      index = find_surface_index_by_name(@current_surface.name)
+      index -= 1
+      index = @surfaces.size - 1 if index <= 0
+      @current_surface = @surfaces[index]
     end
 
     private
+
+    def validate_surface_name!(name)
+      unless find_surface_index_by_name(name) then
+        raise Surface::UnknownSurfaceError,
+        "A surface with the name #{name} does not exist"
+      end
+    end
+
+    def find_surface_by_name(name)
+      @surfaces.find{|surface| surface.name == name.to_s}
+    end
 
     def find_surface_index_by_name(name)
       @surfaces.find_index{|surface| surface.name == name.to_s}
