@@ -67,5 +67,13 @@ module Polynome
     def interface_type
       @interface.model_type
     end
+
+    def update_display(*frames)
+      if frames.size != num_quadrants then
+        raise ArgumentError,
+        "Incorrect number of frames sent for update. "\
+        "Expected #{num_quadrants}, got #{frames.size}."
+      end
+    end
   end
 end

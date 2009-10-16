@@ -107,4 +107,33 @@ it "should be possible to initialise an application with a model and an orientat
       @app64.projection.should == @projection
     end
   end
+
+  describe "#update_display" do
+    before(:each) do
+      @app64 = Application.new(:model => 64, :name => "app64")
+      @app128 = Application.new(:model => 128, :name => "app128")
+      @app256 = Application.new(:model => 256, :name => "app256")
+      @frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
+    end
+
+    it "should raise an error if too few frames are sent" do
+      lambda{@app64.update_display()}.should raise_error(ArgumentError)
+      lambda{@app128.update_display(@frame)}.should raise_error(ArgumentError)
+      lambda{@app256.update_display(@frame, @frame, @frame)}.should raise_error(ArgumentError)
+    end
+
+    it "should raise an error if too many frames are sent" do
+      lambda{@app64.update_display(@frame, @frame)}.should raise_error(ArgumentError)
+      lambda{@app128.update_display(@frame, @frame, @frame)}.should raise_error(ArgumentError)
+      lambda{@app256.update_display(@frame, @frame, @frame, @frame, @frame)}.should raise_error(ArgumentError)
+    end
+
+    it "should not raise an error if the correct number of frames are sent" do
+      lambda{@app64.update_display(@frame)}.should_not raise_error
+      lambda{@app128.update_display(@frame, @frame)}.should_not raise_error
+      lambda{@app256.update_display(@frame, @frame, @frame, @frame)}.should_not raise_error
+    end
+
+  end
+
 end
