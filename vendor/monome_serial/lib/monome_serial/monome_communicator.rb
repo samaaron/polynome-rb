@@ -10,7 +10,7 @@ module MonomeSerial
     attr_reader :communicator, :serial, :protocol
 
     def initialize(tty_path, protocol="series")
-      raise ArgumentError, "Unexpected protocol type" unless protocol == "40h" || protocol == "series"
+      raise ArgumentError, "Unexpected protocol type: #{protocol}. Expected 40h or series" unless protocol == "40h" || protocol == "series"
 
       @protocol = protocol
 

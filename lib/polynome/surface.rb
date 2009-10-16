@@ -20,15 +20,13 @@ module Polynome
     end
 
     def update_display(index, frame)
-      if (index < 1) || (index > @num_frames) then
+      if (index < 1) || (index > @num_quadrants) then
         raise ArgumentError,
           "Unexpected frame index. Expected one of the set " +
-          "#{(1..@num_frames).to_a.join(', ')}, got #{num_frames}"
+          "#{(1..@num_quadrants).to_a.join(', ')}, got #{num_quadrants}"
       end
 
-      #TODO: implement me!
-      #if this is the current surface, update monome's display
-      #if it isn't, then just store the frame locally
+      @monome.update_frame_buffer(frame)
     end
 
     def fetch_frame_buffer

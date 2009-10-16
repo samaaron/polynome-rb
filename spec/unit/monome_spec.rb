@@ -194,27 +194,4 @@ describe Monome do
       end
     end
   end
-
-  describe "with a 64 with a mocked out serial communicator" do
-    before(:each) do
-      @serial = MonomeSerial::SerialCommunicator::DummyCommunicator.new
-      MonomeSerial::SerialCommunicator.should_receive(:get_communicator).and_return(@serial)
-      @monome = Monome.new(:io_file => 'foo/bar', :model => "64")
-    end
-
-    it "should have 1 frame buffer" do
-      @monome.num_frame_buffers.should == 1
-    end
-
-    describe "#update_display" do
-      describe "with a frame containing all 1s" do
-        before do
-          @frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-        end
-
-        #it "should send the contents of the frame buffer to the serial communicator"
-
-      end
-    end
-  end
 end

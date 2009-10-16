@@ -110,10 +110,10 @@ it "should be possible to initialise an application with a model and an orientat
 
   describe "#update_display" do
     before(:each) do
-      @app64 = Application.new(:model => 64, :name => "app64")
+      @app64  = Application.new(:model => 64, :name => "app64")
       @app128 = Application.new(:model => 128, :name => "app128")
       @app256 = Application.new(:model => 256, :name => "app256")
-      @frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
+      @frame  = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
     end
 
     it "should raise an error if too few frames are sent" do

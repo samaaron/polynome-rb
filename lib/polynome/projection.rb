@@ -40,6 +40,13 @@ module Polynome
       @surface.current_surface?
     end
 
+    def update_display(*frames)
+      #need to iterate through each frame, translating it to the
+      #appropriate quadrant (and also transforming it appropriately)
+      #and finally sending it to the surface
+      @surface.update_display(1, frames.first)
+    end
+
     def inspect
       "#<PROJECTION application: #{application.name}, rotation: #{rotation}, quadrants: #{quadrants.inspect}>"
     end

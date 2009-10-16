@@ -74,6 +74,8 @@ module Polynome
         "Incorrect number of frames sent for update. "\
         "Expected #{num_quadrants}, got #{frames.size}."
       end
+
+      projection.update_display(*frames) if projection
     end
   end
 end

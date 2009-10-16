@@ -71,11 +71,27 @@ module Polynome
     attr_reader :count, :ids
 
     def initialize(quadrant_ids)
-      raise QuadrantCountError, "Too many quadrants specified. Expected 1, 2 or 4, got #{quadrant_ids.size}" if quadrant_ids.size < 1 || quadrant_ids.size > 4 || quadrant_ids.size == 3
-      quadrant_ids.each{|id| raise QuadrantIDError, "Unknown quadrant id. Expected one of (#{self.class.list_valid_quadrant_ids}), got #{id}" unless self.class.valid_quadrant_id?(id)}
+      if quadrant_ids.size < 1 || quadrant_ids.size > 4 || quadrant_ids.size == 3 then
+        raise QuadrantCountError,
+        "Too many quadrants specified. Expected 1, 2 or 4, "\
+        "got #{quadrant_ids.size}"
+      end
+
+      quadrant_ids.each do|id|
+        unless self.class.valid_quadrant_id?(id) then
+          raise QuadrantIDError,
+          "Unknown quadrant id. Expected one of "\
+          "(#{self.class.list_valid_quadrant_ids}), got #{id}"
+        end
+      end
 
       sorted_quadrant_ids = quadrant_ids.sort
-      raise QuadrantCombinationError, "Invalid quadrant combination. Got #{sorted_quadrant_ids.inspect}, expected one of #{all_valid_quadrant_combinations.inspect}" unless valid_quadrant_combination?(sorted_quadrant_ids)
+
+      unless valid_quadrant_combination?(sorted_quadrant_ids) then
+        raise QuadrantCombinationError,
+        "Invalid quadrant combination. Got #{sorted_quadrant_ids.inspect}, "\
+        "expected one of #{all_valid_quadrant_combinations.inspect}"
+      end
 
       @count = sorted_quadrant_ids.size
       @ids   = sorted_quadrant_ids

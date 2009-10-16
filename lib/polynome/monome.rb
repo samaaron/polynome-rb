@@ -1,6 +1,6 @@
 module Polynome
   class Monome
-    attr_reader :cable_orientation, :model, :current_surface, :t1, :t2
+    attr_reader :cable_orientation, :model, :current_surface
 
     def initialize(opts={})
       opts.reverse_merge! :cable_orientation => :top
@@ -18,13 +18,16 @@ module Polynome
     end
 
     def update_frame_buffer(*frames)
-      if frames.size != num_frames then
+      if frames.size != num_frame_buffers then
         raise ArgumentError,
-        "Incorret number of frames sent. Was expecting " +
-          "#{num_frames}, got #{frames.size}"
+        "Incorrect number of frames sent. Was expecting " +
+          "#{num_frame_buffers}, got #{frames.size}"
       end
 
-      @frame_queue << frames
+      #TODO need to map frames based on cable orientation
+      frames.each_with_index do |frame, index|
+        @communicator.illuminate_frame(index + 1, frame.read)
+      end
     end
 
     def num_frame_buffers
