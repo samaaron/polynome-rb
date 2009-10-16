@@ -2,42 +2,43 @@ require File.dirname(__FILE__) + '/../spec_helper.rb'
 include Polynome
 
 describe Surface do
-  before(:each) do
-    Application.reset_registered_applications!
-    @app64  = Application.new(:model => 64,  :name => "app64")
-    @app128 = Application.new(:model => 128, :name => "app128")
-    @app256 = Application.new(:model => 256, :name => "app256")
-    @monome64  = Monome.new(:io_file => "blah", :model => "64",  :cable_orientation => :top)
-    @monome128 = Monome.new(:io_file => "blah", :model => "128", :cable_orientation => :top)
-    @monome256 = Monome.new(:io_file => "blah", :model => "256", :cable_orientation => :top)
-    @surface1 = Surface.new("surface1", 1, @monome64)
-    @surface2 = Surface.new("surface2", 2, @monome128)
-    @surface4 = Surface.new("surface4", 4, @monome256)
-  end
-
-  it "should resolve to the correct constant from this context" do
-    Surface.should == Polynome::Surface
-  end
-
-  describe "#initialize" do
-    it "should be possible to initialize a surface specifying the number of frames that surface consists of" do
-      lambda{Surface.new("test", 1, @monome64)}.should_not raise_error
-    end
-
-    it "should raise an ArgumentError if the number of frames specified is less than 1" do
-      lambda{Surface.new("test", 0, @monome64)}.should raise_error(ArgumentError)
-    end
-
-    it "should raise an ArgumentError if the number of frames specified is 3" do
-      lambda{Surface.new("test", 3, @monome256)}.should raise_error(ArgumentError)
-    end
-
-    it "should raise an ArgumentError if the number of frames specified is greater than 4" do
-      lambda{Surface.new("test", 5, @monome256)}.should raise_error(ArgumentError)
-    end
-  end
-
   describe "given 3 applications, one 64, one 128 and one 256, 3 surfaces (1,2, 4 quadrants)" do
+
+    before(:each) do
+      Application.reset_registered_applications!
+      @app64  = Application.new(:model => 64,  :name => "app64")
+      @app128 = Application.new(:model => 128, :name => "app128")
+      @app256 = Application.new(:model => 256, :name => "app256")
+      @monome64  = Monome.new(:io_file => "blah", :model => "64",  :cable_orientation => :top)
+      @monome128 = Monome.new(:io_file => "blah", :model => "128", :cable_orientation => :top)
+      @monome256 = Monome.new(:io_file => "blah", :model => "256", :cable_orientation => :top)
+      @surface1 = @monome64.add_surface("surface1")
+      @surface2 = @monome128.add_surface("surface2")
+      @surface4 = @monome256.add_surface("surface4")
+    end
+
+    it "should resolve to the correct constant from this context" do
+      Surface.should == Polynome::Surface
+    end
+
+    describe "#initialize" do
+      it "should be possible to initialize a surface specifying the number of frames that surface consists of" do
+        lambda{Surface.new("test", 1, @monome64)}.should_not raise_error
+      end
+
+      it "should raise an ArgumentError if the number of frames specified is less than 1" do
+        lambda{Surface.new("test", 0, @monome64)}.should raise_error(ArgumentError)
+      end
+
+      it "should raise an ArgumentError if the number of frames specified is 3" do
+        lambda{Surface.new("test", 3, @monome256)}.should raise_error(ArgumentError)
+      end
+
+      it "should raise an ArgumentError if the number of frames specified is greater than 4" do
+        lambda{Surface.new("test", 5, @monome256)}.should raise_error(ArgumentError)
+      end
+    end
+
     describe "#num_quadrants" do
       it "should report that a surface initialised with four frames has four frames" do
         @surface4.num_quadrants.should == 4
@@ -109,6 +110,14 @@ describe Surface do
         new_app = Application.new(:model => 128, :name => "new_app128")
         @surface4.register_application(new_app, :quadrants => [1,2])
         @surface4.registered_applications.should =~ [@app128, new_app]
+      end
+    end
+
+    describe "#current_surface?" do
+      it "should be the current surface if it matches the monome's current surface" do
+        @surface1.should_not be_current_surface
+        @monome64.switch_to_surface("surface1")
+        @surface1.should be_current_surface
       end
     end
 

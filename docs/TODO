@@ -16,7 +16,7 @@ Polynome is in a state where frames can be created and displayed
 [*] Allow an application to register with a given surface
 [*] Allow an app connector to specify its rotation on registration
 [*] Only permit valid rotations and sizes given the monome's size
-[ ] Add ability for an app to determine whether it's on the current surface
+[*] Add ability for a projection to determine whether it's on the current surface
 [ ] Allow an app to update the surface
 [ ] Allow interface frame updates be sent via the surface to the display
 [ ] Create a dummy 64 app that updates the buffer with alternating frames

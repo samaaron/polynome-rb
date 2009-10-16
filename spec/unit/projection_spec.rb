@@ -11,9 +11,32 @@ describe Projection do
   before(:each) do
     Application.reset_registered_applications!
     @monome = Monome.new(:io_file => "blah", :model => "256", :cable_orientation => :top)
-    @surface = Surface.new("surface", 4, @monome)
+    @surface = @monome.fetch_surface(:base)
+    @second_surface = @monome.add_surface(:second_surface)
   end
 
+  describe "#on_current_surface?" do
+    before(:each) do
+      @app = Application.new(:model => "64", :name => "test")
+      @quadrants = Quadrants.new([1])
+    end
+
+    it "should be on the current surface if the projection is registered on the base surface (before surface switching)" do
+      Projection.new(@surface, @app, 0, @quadrants).should be_on_current_surface
+    end
+
+    it "should not be on the current surface if the projection is registered on a different surface (before surface switching)" do
+      Projection.new(@second_surface, @app, 0, @quadrants).should_not be_on_current_surface
+    end
+
+    it "should be on the current surface is the monome is switched to the surface the projection was registered on" do
+      projection = Projection.new(@second_surface, @app, 0, @quadrants)
+      projection.should_not be_on_current_surface
+      @monome.switch_to_surface(@second_surface.name)
+      projection.should be_on_current_surface
+    end
+
+  end
 
   describe "with a 64 app" do
     describe "#initialize" do

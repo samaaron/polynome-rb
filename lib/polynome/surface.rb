@@ -75,6 +75,10 @@ module Polynome
       deregister_quadrants(projection_to_remove.quadrants)
     end
 
+    def current_surface?
+      self == @monome.current_surface
+    end
+
     private
 
     def find_projection_by_application_name(name)

@@ -36,6 +36,10 @@ module Polynome
       @quadrants   = quadrants
     end
 
+    def on_current_surface?
+      @surface.current_surface?
+    end
+
     def inspect
       "#<PROJECTION application: #{application.name}, rotation: #{rotation}, quadrants: #{quadrants.inspect}>"
     end
