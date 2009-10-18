@@ -256,13 +256,13 @@ module MonomeSerial
         end
 
         def frame_pattern(quadrant)
-          raise ArgumentError, "Expecting quadrang to be between 0 and 3 inclusively, got #{quadrant}" unless quadrant >= 0 && quadrant <= 3
+          raise ArgumentError, "Expecting quadrant to be between 1 and 4 inclusively, got #{quadrant}" unless quadrant >= 1 && quadrant <= 4
 
           quadrant_pattern = case quadrant
-                             when 0 then "00"
-                             when 1 then "01"
-                             when 2 then "10"
-                             when 3 then "11"
+                             when 1 then "00"
+                             when 2 then "01"
+                             when 3 then "10"
+                             when 4 then "11"
                              end
           "100000" + quadrant_pattern
         end
