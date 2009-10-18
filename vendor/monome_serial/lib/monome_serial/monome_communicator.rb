@@ -71,8 +71,8 @@ module MonomeSerial
 
     def illuminate_frame(quadrant, patterns)
       raise ArgumentError, "Incorrect number of patterns sent to MonomeSerial::Monome#illuminate_frame. Expected 8, got #{patterns.size}" unless patterns.size == 8
-
-      @communicator.write([frame_pattern(quadrant), *patterns])
+      reversed_patterns = patterns.map{|pat| pat.reverse}
+      @communicator.write([frame_pattern(quadrant), *reversed_patterns])
     end
 
     def brightness=(intensity)

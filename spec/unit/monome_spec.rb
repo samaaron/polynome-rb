@@ -26,8 +26,8 @@ describe Monome do
       @monome = Monome.new(:io_file => 'foo/bar', :model => "256")
     end
 
-    it "should have a cable orientation of top" do
-      @monome.cable_orientation.should == :top
+    it "should have a cable orientation of left" do
+      @monome.cable_orientation.should == :left
     end
 
     it "should have kind TwoFiftySix" do

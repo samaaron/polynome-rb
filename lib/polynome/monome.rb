@@ -3,7 +3,7 @@ module Polynome
     attr_reader :cable_orientation, :model, :current_surface
 
     def initialize(opts={})
-      opts.reverse_merge! :cable_orientation => :top
+      opts.reverse_merge! :cable_orientation => :left
 
       raise ArgumentError, "Polynome::Monome#initialize requires an io_file to be specified" unless opts[:io_file]
       raise ArgumentError, "Polynome::Monome#initialize requires a model to be specified"    unless opts[:model]
