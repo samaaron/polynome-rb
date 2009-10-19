@@ -1,8 +1,10 @@
 module Polynome
   class Frame
+    attr_reader :rotation
     def initialize(binary_string)
       raise ArgumentError, "Expected 64 bits to be used, found #{binary_string.length}" unless binary_string.length == 64
       @bit_array = convert_binary_string_to_bit_array(binary_string)
+      @rotation = 0
     end
 
     def read
@@ -16,6 +18,18 @@ module Polynome
 
       self
     end
+
+    def rotate(amount)
+      unless [-270, -180, -90, 90, 180, 270].include? amount then
+        raise ArgumentError,
+        "Rotation amount not supported. Expected one of [-270, -180, -90, 90, 180, 270]. "\
+        "Got #{amount}."
+      end
+
+      @rotation += amount
+      @rotation = @rotation % 360
+    end
+
 
     private
     def convert_binary_string_to_bit_array(binary_string)

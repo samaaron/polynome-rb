@@ -126,4 +126,127 @@ describe Frame do
       end
     end
   end
+
+  describe "rotation" do
+    describe "#rotate" do
+      before(:each) do
+        @frame = Frame.new("0000000000000000000000000000000000000000000000000000000000000000")
+      end
+
+      it "should be possible to rotate by 90" do
+        @frame.rotate(90)
+        @frame.rotation.should == 90
+      end
+
+      it "should be possible to rotate by 180" do
+        @frame.rotate(180)
+        @frame.rotation.should == 180
+      end
+
+      it "should be possible to rotate by 270" do
+        @frame.rotate(270)
+        @frame.rotation.should == 270
+      end
+
+      it "should wrap round from 270 -> 0" do
+        @frame.rotate(270)
+        @frame.rotate(90)
+        @frame.rotation.should == 0
+      end
+
+      it "should wrap round from 180 -> 90" do
+        @frame.rotate(180)
+        @frame.rotate(270)
+        @frame.rotation.should == 90
+      end
+
+      it "should be possible to rotate by -90" do
+        @frame.rotate(-90)
+        @frame.rotation.should == 270
+      end
+
+      it "should be possible to rotate by -180" do
+        @frame.rotate(-180)
+        @frame.rotation.should == 180
+      end
+
+      it "should be possible to rotate by -270" do
+        @frame.rotate(-270)
+        @frame.rotation.should == 90
+      end
+
+      it "should negatively wrap round from 270 -> 0" do
+        @frame.rotate(-90)
+        @frame.rotate(-270)
+        @frame.rotation.should == 0
+      end
+
+      it "should negatively wrap round from 180 -> 270" do
+        @frame.rotate(-180)
+        @frame.rotate(-270)
+        @frame.rotation.should == 270
+      end
+
+      it "should not be possible to use any other value than [-270, -180, -90, 90, 180, 270]" do
+        lambda{@frame.rotate(0)}.should raise_error(ArgumentError)
+        lambda{@frame.rotate(1)}.should raise_error(ArgumentError)
+        lambda{@frame.rotate(360)}.should raise_error(ArgumentError)
+        lambda{@frame.rotate(-360)}.should raise_error(ArgumentError)
+        lambda{@frame.rotate(450)}.should raise_error(ArgumentError)
+        lambda{@frame.rotate(91)}.should raise_error(ArgumentError)
+        lambda{@frame.rotate(-91)}.should raise_error(ArgumentError)
+      end
+    end
+
+    describe "#rotation" do
+      it "should start out with a default rotation of 0" do
+        Frame.new("0000000000000000000000000000000000000000000000000000000000000000").rotation.should == 0
+      end
+    end
+
+    describe "with example fixtures" do
+      before(:each) do
+        test64 =
+          "00000000"\
+        "11100010"\
+        "10000110"\
+        "10001010"\
+        "11101111"\
+        "10100010"\
+        "11100010"\
+        "00000000"
+
+        test64_90 =
+          "01111100"\
+        "01010010"\
+        "01110010"\
+        "00000000"\
+        "00011000"\
+        "00010100"\
+        "01111110"\
+        "00010000"
+
+        test64_180 =
+          "00000000"\
+        "01000111"\
+        "01000101"\
+        "11110111"\
+        "01010001"\
+        "01100001"\
+        "01000110"\
+        "00000000"
+
+        test64_270 =
+          "00001000"\
+        "01111110"\
+        "00101000"\
+        "00011000"\
+        "00000000"\
+        "01001110"\
+        "01001010"\
+        "00111110"
+      end
+    end
+
+  end
 end
