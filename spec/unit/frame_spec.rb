@@ -128,6 +128,13 @@ describe Frame do
   end
 
   describe "rotation" do
+
+     describe "#rotation" do
+      it "should start out with a default rotation of 0" do
+        Frame.new("0000000000000000000000000000000000000000000000000000000000000000").rotation.should == 0
+      end
+    end
+
     describe "#rotate" do
       before(:each) do
         @frame = Frame.new("0000000000000000000000000000000000000000000000000000000000000000")
@@ -196,57 +203,89 @@ describe Frame do
         lambda{@frame.rotate(91)}.should raise_error(ArgumentError)
         lambda{@frame.rotate(-91)}.should raise_error(ArgumentError)
       end
-    end
 
-    describe "#rotation" do
-      it "should start out with a default rotation of 0" do
-        Frame.new("0000000000000000000000000000000000000000000000000000000000000000").rotation.should == 0
+      it "should return the frame after rotation" do
+        @frame.rotate(90).should == @frame
       end
     end
 
     describe "with example fixtures" do
       before(:each) do
-        test64 =
-          "00000000"\
-        "11100010"\
-        "10000110"\
-        "10001010"\
-        "11101111"\
-        "10100010"\
-        "11100010"\
-        "00000000"
+        @bit_array     = [
+                           "00000000",
+                           "11100010",
+                           "10000110",
+                           "10001010",
+                           "11101111",
+                           "10100010",
+                           "11100010",
+                           "00000000"
+                          ]
 
-        test64_90 =
-          "01111100"\
-        "01010010"\
-        "01110010"\
-        "00000000"\
-        "00011000"\
-        "00010100"\
-        "01111110"\
-        "00010000"
+        @bit_array_90  = [
+                           "01111110",
+                           "01010010",
+                           "01110010",
+                           "00000000",
+                           "00011000",
+                           "00010100",
+                           "01111110",
+                           "00010000"
+                          ]
 
-        test64_180 =
-          "00000000"\
-        "01000111"\
-        "01000101"\
-        "11110111"\
-        "01010001"\
-        "01100001"\
-        "01000110"\
-        "00000000"
+        @bit_array_180 = [
+                           "00000000",
+                           "01000111",
+                           "01000101",
+                           "11110111",
+                           "01010001",
+                           "01100001",
+                           "01000111",
+                           "00000000"
+                          ]
 
-        test64_270 =
-          "00001000"\
-        "01111110"\
-        "00101000"\
-        "00011000"\
-        "00000000"\
-        "01001110"\
-        "01001010"\
-        "00111110"
+        @bit_array_270 = [
+                           "00001000",
+                           "01111110",
+                           "00101000",
+                           "00011000",
+                           "00000000",
+                           "01001110",
+                           "01001010",
+                           "01111110"
+                          ]
+
+
+        @frame = Frame.new(@bit_array.join)
+      end
+
+      it "should return the correct bit array" do
+        @frame.read.should == @bit_array
+      end
+
+      it "should return the correct bit array after a rotation of 90" do
+        @frame.rotate(90).read.should == @bit_array_90
+      end
+
+      it "should return the correct bit array after a rotation of 180" do
+        @frame.rotate(180).read.should == @bit_array_180
+      end
+
+      it "should return the correct bit array after a rotation of 270" do
+        @frame.rotate(270).read.should == @bit_array_270
+      end
+
+      it "should return the correct bit array after a full rotation" do
+        @frame.rotate(270).rotate(90).read.should == @bit_array
+      end
+
+      it "should return the correct bit array after more than one rotation" do
+        @frame.rotate(270).rotate(180).read.should == @bit_array_90
+      end
+
+      it "should return the correct bit array after more than one negative rotation" do
+        @frame.rotate(-270).rotate(-180).read.should == @bit_array_270
       end
     end
-
   end
 end

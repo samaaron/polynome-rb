@@ -8,7 +8,13 @@ module Polynome
     end
 
     def read
-      @bit_array
+      case @rotation
+      when 0   then @bit_array
+      when 90  then rotate90
+      when 180 then rotate180
+      when 270 then rotate270
+      else raise "Unexpected internal rotation. Expected one of [0, 90, 180, 270], found #{@rotation}"
+      end
     end
 
     def invert!
@@ -28,10 +34,38 @@ module Polynome
 
       @rotation += amount
       @rotation = @rotation % 360
+      self
     end
 
 
     private
+
+    def rotate90
+      result = []
+      8.times{ result << []}
+
+      @bit_array.each_with_index do |row, row_index|
+        row.chars.to_a.each_with_index{|digit, index| result[index][7 - row_index] = digit}
+      end
+      result.map{|row| row.join}
+    end
+
+    def rotate180
+      @bit_array.reverse.map{|row| row.reverse}
+    end
+
+    def rotate270
+      result = []
+      8.times{ result << []}
+
+
+
+      @bit_array.each_with_index do |row, row_index|
+        row.chars.to_a.each_with_index{|digit, index| result[7 - index][row_index] = digit}
+      end
+      result.map{|row| row.join}
+    end
+
     def convert_binary_string_to_bit_array(binary_string)
       [
        binary_string[0..7],
