@@ -20,6 +20,23 @@ describe Frame do
     end
   end
 
+  describe "#==" do
+    it "should see two similar frames (same bit_array, same rotation) as identical" do
+      frame1 = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
+      frame2 = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
+
+      frame1.should == frame2
+    end
+
+    it "should see two different frames (same bit_array, different rotation) as different" do
+      frame1 = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
+      frame2 = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
+      frame1.rotate(90)
+
+      frame1.should != frame2
+    end
+  end
+
   describe "with a frame initialised with a 64 bit string of 0s" do
     before(:each) do
       string = "0000000000000000000000000000000000000000000000000000000000000000"
@@ -210,81 +227,28 @@ describe Frame do
     end
 
     describe "with example fixtures" do
-      before(:each) do
-        @bit_array     = [
-                           "00000000",
-                           "11100010",
-                           "10000110",
-                           "10001010",
-                           "11101111",
-                           "10100010",
-                           "11100010",
-                           "00000000"
-                          ]
-
-        @bit_array_90  = [
-                           "01111110",
-                           "01010010",
-                           "01110010",
-                           "00000000",
-                           "00011000",
-                           "00010100",
-                           "01111110",
-                           "00010000"
-                          ]
-
-        @bit_array_180 = [
-                           "00000000",
-                           "01000111",
-                           "01000101",
-                           "11110111",
-                           "01010001",
-                           "01100001",
-                           "01000111",
-                           "00000000"
-                          ]
-
-        @bit_array_270 = [
-                           "00001000",
-                           "01111110",
-                           "00101000",
-                           "00011000",
-                           "00000000",
-                           "01001110",
-                           "01001010",
-                           "01111110"
-                          ]
-
-
-        @frame = Frame.new(@bit_array.join)
+      it "should return the correct frame after a rotation of 90" do
+        FrameFixtures.frame64.rotate(90).should == FrameFixtures.frame64_90
       end
 
-      it "should return the correct bit array" do
-        @frame.read.should == @bit_array
+      it "should return the correct frame after a rotation of 180" do
+        FrameFixtures.frame64.rotate(180).should == FrameFixtures.frame64_180
       end
 
-      it "should return the correct bit array after a rotation of 90" do
-        @frame.rotate(90).read.should == @bit_array_90
+      it "should return the correct frame after a rotation of 270" do
+        FrameFixtures.frame64.rotate(270).should == FrameFixtures.frame64_270
       end
 
-      it "should return the correct bit array after a rotation of 180" do
-        @frame.rotate(180).read.should == @bit_array_180
+      it "should return the correct frame after a full rotation" do
+        FrameFixtures.frame64.rotate(90).rotate(270).should == FrameFixtures.frame64
       end
 
-      it "should return the correct bit array after a rotation of 270" do
-        @frame.rotate(270).read.should == @bit_array_270
+      it "should return the correct frame after more than one rotation" do
+        FrameFixtures.frame64.rotate(270).rotate(180).should == FrameFixtures.frame64_90
       end
 
-      it "should return the correct bit array after a full rotation" do
-        @frame.rotate(270).rotate(90).read.should == @bit_array
-      end
-
-      it "should return the correct bit array after more than one rotation" do
-        @frame.rotate(270).rotate(180).read.should == @bit_array_90
-      end
-
-      it "should return the correct bit array after more than one negative rotation" do
-        @frame.rotate(-270).rotate(-180).read.should == @bit_array_270
+      it "should return the correct frame after more than one negative rotation" do
+        FrameFixtures.frame64.rotate(-270).rotate(-180).should == FrameFixtures.frame64_270
       end
     end
   end

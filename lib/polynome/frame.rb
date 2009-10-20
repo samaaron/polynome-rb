@@ -37,6 +37,10 @@ module Polynome
       self
     end
 
+    def ==(other)
+      other.read == read
+    end
+
 
     private
 
@@ -57,8 +61,6 @@ module Polynome
     def rotate270
       result = []
       8.times{ result << []}
-
-
 
       @bit_array.each_with_index do |row, row_index|
         row.chars.to_a.each_with_index{|digit, index| result[7 - index][row_index] = digit}
