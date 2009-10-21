@@ -31,7 +31,7 @@ describe Frame do
     it "should see two different frames (same bit_array, different rotation) as different" do
       frame1 = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
       frame2 = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-      frame1.rotate(90)
+      frame1.rotate!(90)
 
       frame1.should != frame2
     end
@@ -157,98 +157,106 @@ describe Frame do
         @frame = Frame.new("0000000000000000000000000000000000000000000000000000000000000000")
       end
 
+      it "should be possible to rotate by 0" do
+        @frame.rotate!(0)
+        @frame.rotation.should == 0
+      end
+
       it "should be possible to rotate by 90" do
-        @frame.rotate(90)
+        @frame.rotate!(90)
         @frame.rotation.should == 90
       end
 
       it "should be possible to rotate by 180" do
-        @frame.rotate(180)
+        @frame.rotate!(180)
         @frame.rotation.should == 180
       end
 
       it "should be possible to rotate by 270" do
-        @frame.rotate(270)
+        @frame.rotate!(270)
         @frame.rotation.should == 270
       end
 
       it "should wrap round from 270 -> 0" do
-        @frame.rotate(270)
-        @frame.rotate(90)
+        @frame.rotate!(270)
+        @frame.rotate!(90)
         @frame.rotation.should == 0
       end
 
       it "should wrap round from 180 -> 90" do
-        @frame.rotate(180)
-        @frame.rotate(270)
+        @frame.rotate!(180)
+        @frame.rotate!(270)
         @frame.rotation.should == 90
       end
 
       it "should be possible to rotate by -90" do
-        @frame.rotate(-90)
+        @frame.rotate!(-90)
         @frame.rotation.should == 270
       end
 
       it "should be possible to rotate by -180" do
-        @frame.rotate(-180)
+        @frame.rotate!(-180)
         @frame.rotation.should == 180
       end
 
       it "should be possible to rotate by -270" do
-        @frame.rotate(-270)
+        @frame.rotate!(-270)
         @frame.rotation.should == 90
       end
 
       it "should negatively wrap round from 270 -> 0" do
-        @frame.rotate(-90)
-        @frame.rotate(-270)
+        @frame.rotate!(-90)
+        @frame.rotate!(-270)
         @frame.rotation.should == 0
       end
 
       it "should negatively wrap round from 180 -> 270" do
-        @frame.rotate(-180)
-        @frame.rotate(-270)
+        @frame.rotate!(-180)
+        @frame.rotate!(-270)
         @frame.rotation.should == 270
       end
 
-      it "should not be possible to use any other value than [-270, -180, -90, 90, 180, 270]" do
-        lambda{@frame.rotate(0)}.should raise_error(ArgumentError)
-        lambda{@frame.rotate(1)}.should raise_error(ArgumentError)
-        lambda{@frame.rotate(360)}.should raise_error(ArgumentError)
-        lambda{@frame.rotate(-360)}.should raise_error(ArgumentError)
-        lambda{@frame.rotate(450)}.should raise_error(ArgumentError)
-        lambda{@frame.rotate(91)}.should raise_error(ArgumentError)
-        lambda{@frame.rotate(-91)}.should raise_error(ArgumentError)
+      it "should not be possible to use any other value than [-270, -180, -90, 0, 90, 180, 270]" do
+        lambda{@frame.rotate!(1)}.should raise_error(ArgumentError)
+        lambda{@frame.rotate!(360)}.should raise_error(ArgumentError)
+        lambda{@frame.rotate!(-360)}.should raise_error(ArgumentError)
+        lambda{@frame.rotate!(450)}.should raise_error(ArgumentError)
+        lambda{@frame.rotate!(91)}.should raise_error(ArgumentError)
+        lambda{@frame.rotate!(-91)}.should raise_error(ArgumentError)
       end
 
       it "should return the frame after rotation" do
-        @frame.rotate(90).should == @frame
+        @frame.rotate!(90).should == @frame
       end
     end
 
     describe "with example fixtures" do
+      it "should return the correct frame after a rotation of 0" do
+        FrameFixtures.frame64.rotate!(0).should == FrameFixtures.frame64
+      end
+
       it "should return the correct frame after a rotation of 90" do
-        FrameFixtures.frame64.rotate(90).should == FrameFixtures.frame64_90
+        FrameFixtures.frame64.rotate!(90).should == FrameFixtures.frame64_90
       end
 
       it "should return the correct frame after a rotation of 180" do
-        FrameFixtures.frame64.rotate(180).should == FrameFixtures.frame64_180
+        FrameFixtures.frame64.rotate!(180).should == FrameFixtures.frame64_180
       end
 
       it "should return the correct frame after a rotation of 270" do
-        FrameFixtures.frame64.rotate(270).should == FrameFixtures.frame64_270
+        FrameFixtures.frame64.rotate!(270).should == FrameFixtures.frame64_270
       end
 
       it "should return the correct frame after a full rotation" do
-        FrameFixtures.frame64.rotate(90).rotate(270).should == FrameFixtures.frame64
+        FrameFixtures.frame64.rotate!(90).rotate!(270).should == FrameFixtures.frame64
       end
 
       it "should return the correct frame after more than one rotation" do
-        FrameFixtures.frame64.rotate(270).rotate(180).should == FrameFixtures.frame64_90
+        FrameFixtures.frame64.rotate!(270).rotate!(180).should == FrameFixtures.frame64_90
       end
 
       it "should return the correct frame after more than one negative rotation" do
-        FrameFixtures.frame64.rotate(-270).rotate(-180).should == FrameFixtures.frame64_270
+        FrameFixtures.frame64.rotate!(-270).rotate!(-180).should == FrameFixtures.frame64_270
       end
     end
   end

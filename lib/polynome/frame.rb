@@ -25,10 +25,10 @@ module Polynome
       self
     end
 
-    def rotate(amount)
-      unless [-270, -180, -90, 90, 180, 270].include? amount then
+    def rotate!(amount)
+      unless [-270, -180, -90, 0, 90, 180, 270].include? amount then
         raise ArgumentError,
-        "Rotation amount not supported. Expected one of [-270, -180, -90, 90, 180, 270]. "\
+        "Rotation amount not supported. Expected one of [-270, -180, -90, 0, 90, 180, 270]. "\
         "Got #{amount}."
       end
 

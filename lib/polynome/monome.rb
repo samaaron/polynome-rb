@@ -26,25 +26,13 @@ module Polynome
 
       #TODO need to map frames based on cable orientation
       frames.each_with_index do |frame, index|
+        rotate_frame_based_on_cable_orientation(frame)
         @communicator.illuminate_frame(index + 1, frame.read)
       end
     end
 
     def num_frame_buffers
       @model.num_quadrants
-    end
-
-    def display_buffer
-      buffer_to_display = current_surface.fetch_frame_buffer
-      buffer_to_display.each_with_index do |frame, index|
-        @communicator.illuminate_frame(index, frame.read)
-      end
-    end
-
-    def run_display
-      @t2 = Thread.new do
-        loop{display_buffer}
-      end
     end
 
     def num_surfaces
@@ -106,6 +94,15 @@ module Polynome
 
     def find_surface_index_by_name(name)
       @surfaces.find_index{|surface| surface.name == name.to_s}
+    end
+
+    def rotate_frame_based_on_cable_orientation(frame)
+      case @cable_orientation
+      when :top   then frame.rotate!(270)
+      when :right then frame.rotate!(90)
+      when :bottom then frame.rotate!(180)
+      else frame
+      end
     end
   end
 end
