@@ -15,11 +15,11 @@ module Polynome
     end
 
     def self.lit_string
-      all_lit_array.join
+      lit_array.join
     end
 
     def self.lit
-      Frame.new(all_lit_string)
+      Frame.new(lit_string)
     end
 
     def self.blank_array

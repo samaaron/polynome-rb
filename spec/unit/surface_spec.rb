@@ -55,12 +55,12 @@ describe Surface do
 
     describe "#update_frame_buffer" do
       it "should raise an ArgumentError if no frames are sent" do
-        lambda{@surface1.update_display()}.should raise_error(ArgumentError)
+        lambda{@surface1.light_quadrant()}.should raise_error(ArgumentError)
       end
 
       it "should raise an ArgumentError if a frame with an index of 0 is sent" do
         frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-        lambda{@surface1.update_display(0, frame)}.should raise_error(ArgumentError)
+        lambda{@surface1.light_quadrant(0, frame)}.should raise_error(ArgumentError)
       end
     end
 
@@ -121,20 +121,20 @@ describe Surface do
       end
     end
 
-    describe "#update_display" do
+    describe "#light_quadrant" do
       it "should raise an ArgumentError if a frame with an index of 2 is sent" do
         frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-        lambda{@surface1.update_display(2, frame)}.should raise_error(ArgumentError)
+        lambda{@surface1.light_quadrant(2, frame)}.should raise_error(ArgumentError)
       end
 
       it "should raise an ArgumentError if an index of 3 sent" do
         frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-        lambda{@surface2.update_display(3, frame)}.should raise_error(ArgumentError)
+        lambda{@surface2.light_quadrant(3, frame)}.should raise_error(ArgumentError)
       end
 
       it "should raise an ArgumentError if a frame with an index of 5 is sent" do
         frame = Frame.new("1111111111111111111111111111111111111111111111111111111111111111")
-        lambda{@surface4.update_display(5, frame)}.should raise_error(ArgumentError)
+        lambda{@surface4.light_quadrant(5, frame)}.should raise_error(ArgumentError)
       end
     end
 
@@ -145,8 +145,8 @@ describe Surface do
       end
 
       describe "with respect to a one-quadrant surface" do
-        it "should raise an error if no quadrant option is passed" do
-          lambda{@surface1.register_application(@app64, :rotation => 0)}.should raise_error(ArgumentError)
+        it "should be possible to omit the quadrant option" do
+          lambda{@surface1.register_application(@app64, :rotation => 0)}.should_not raise_error(ArgumentError)
         end
 
         it "should default to a rotation of 0 if no rotation option is passed" do
@@ -159,8 +159,8 @@ describe Surface do
         end
 
 
-        it "should raise a SurfaceSizeError if more than one quadrant is specified" do
-          lambda{@surface1.register_application(@app64, :quadrants => [1,2])}.should raise_error(Surface::SurfaceSizeError)
+        it "should default to the first quadrant regardless of what quadrants option is passed" do
+          lambda{@surface1.register_application(@app64, :quadrants => [1,2])}.should_not raise_error
         end
       end
 

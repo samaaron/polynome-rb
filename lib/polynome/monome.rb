@@ -1,6 +1,6 @@
 module Polynome
   class Monome
-    attr_reader :cable_orientation, :model, :current_surface
+    attr_reader  :model, :current_surface
 
     def initialize(opts={})
       opts.reverse_merge! :cable_orientation => :top
@@ -13,14 +13,8 @@ module Polynome
         raise ArgumentError,
         "Polynome::Monome#initialize requires a model to be specified"
       end
-      unless Model.valid_cable_orientation?(opts[:cable_orientation]) then
-        raise ArgumentError,
-        "Unknown cable orientation: #{opts[:cable_orientation]}, "\
-        "expected #{Model.list_possible_cable_orientations}"
-      end
 
-      @model = Model.get_model(opts[:model])
-      @cable_orientation = opts[:cable_orientation]
+      @model = Model.get_model(opts[:model], :landscape,  opts[:cable_orientation])
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
       @surfaces = [Surface.new("base", num_quadrants, self)]
       @current_surface = @surfaces[0]
@@ -35,9 +29,13 @@ module Polynome
           "#{(1..num_quadrants).to_a.join(', ')}, got #{quadrant_id}"
       end
 
-      rotate_frame_based_on_cable_orientation!(frame)
-      mapped_quadrant_id = map_quadrant_based_on_cable_orientation(quadrant_id)
+      @model.rotate_frame_accordingly(frame)
+      mapped_quadrant_id = @model.map_quadrant_accordingly(quadrant_id)
       @communicator.illuminate_frame(mapped_quadrant_id, frame.read)
+    end
+
+    def cable_orientation
+      @model.cable_orientation
     end
 
     def num_quadrants
@@ -107,15 +105,6 @@ module Polynome
 
     def find_surface_index_by_name(name)
       @surfaces.find_index{|surface| surface.name == name.to_s}
-    end
-
-    def rotate_frame_based_on_cable_orientation(frame)
-      case @cable_orientation
-      when :top   then frame.rotate!(270)
-      when :right then frame.rotate!(90)
-      when :bottom then frame.rotate!(180)
-      else frame
-      end
     end
   end
 end

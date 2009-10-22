@@ -34,6 +34,7 @@ module Polynome
     end
 
     def register_application(application, opts={})
+      opts.reverse_merge! :quadrant => 1 if num_quadrants == 1
       opts.reverse_merge! :rotation => 0
       opts[:quadrants] = [opts[:quadrant]] if opts[:quadrant]
 

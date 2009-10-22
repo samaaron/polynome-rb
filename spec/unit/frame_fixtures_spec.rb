@@ -1,15 +1,14 @@
-
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 include Polynome
 
 describe Polynome::FrameFixtures do
   describe "frame -> bit array -> bit string mapping" do
 
-    describe "all lit" do
+    describe "lit" do
       it "should be sane" do
-        frame = Frame.new(FrameFixtures.all_lit_string)
-        frame.read.should == FrameFixtures.all_lit_array
-        frame.should == FrameFixtures.all_lit_frame
+        frame = Frame.new(FrameFixtures.lit_string)
+        frame.read.should == FrameFixtures.lit_array
+        frame.should == FrameFixtures.lit
       end
     end
 
@@ -17,7 +16,7 @@ describe Polynome::FrameFixtures do
       it "should be sane" do
         frame = Frame.new(FrameFixtures.blank_string)
         frame.read.should == FrameFixtures.blank_array
-        frame.should == FrameFixtures.blank_frame
+        frame.should == FrameFixtures.blank
       end
     end
 
