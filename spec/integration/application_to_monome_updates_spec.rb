@@ -23,7 +23,6 @@ describe "Application to Monome updates" do
           @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64)
           @app64.update_display(FrameFixtures.frame64)
         end
-
       end
 
       describe "With a 64 monome with cable orientation top with an app registered on its base surface with the default projection" do
@@ -89,6 +88,32 @@ describe "Application to Monome updates" do
           @monome.fetch_surface(:base).register_application(@app64, :quadrant => 1, :rotation => 270)
           @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64_270)
           @app64.update_display(FrameFixtures.frame64)
+        end
+      end
+    end
+
+    describe "Given a 128 with the default cable orientation" do
+      before(:each) do
+        @monome    = Monome.new(:io_file => 'foo/bar', :model => "128")
+        @surface   = @monome.fetch_surface(:base)
+      end
+
+      describe "With two 64 apps" do
+        before(:each) do
+          @app64_1 = Application.new(:model => 64, :name => "app64_1")
+          @app64_2 = Application.new(:model => 64, :name => "app64_2")
+        end
+
+        describe "When registered with the surface with no rotation in the projection" do
+          before(:each) do
+            @surface.register_application(@app64_1, :quadrant => 1)
+            @surface.register_application(@app64_1, :quadrant => 2)
+          end
+
+          it "on updating the display of the first app, should only illuminate the first frame with no rotation applied" do
+            @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64)
+            @app64_1.update_display(FrameFixtures.frame64)
+          end
         end
       end
     end

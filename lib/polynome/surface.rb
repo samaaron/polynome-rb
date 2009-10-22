@@ -19,14 +19,14 @@ module Polynome
       @allocated_quadrants = {}
     end
 
-    def update_display(index, frame)
-      if (index < 1) || (index > @num_quadrants) then
+    def light_quadrant(quadrant, frame)
+      if (quadrant < 1) || (quadrant > @num_quadrants) then
         raise ArgumentError,
           "Unexpected frame index. Expected one of the set " +
           "#{(1..@num_quadrants).to_a.join(', ')}, got #{num_quadrants}"
       end
 
-      @monome.update_frame_buffer(frame)
+      @monome.light_quadrant(quadrant, frame)
     end
 
     def fetch_frame_buffer

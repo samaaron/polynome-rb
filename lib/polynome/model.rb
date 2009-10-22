@@ -42,12 +42,13 @@ module Polynome
     def initialize(orientation)
       super
       validate_orientation!
-      @name            = "40h"
-      @width           = 8
-      @height          = 8
-      @protocol        = "40h"
-      @num_quadrants   = 1
-      @valid_quadrants = Quadrants.get_valid_quadrants(@num_quadrants)
+      @name                      = "40h"
+      @width                     = 8
+      @height                    = 8
+      @protocol                  = "40h"
+      @num_quadrants             = 1
+      @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
+      @device_orientation_offset = 0
     end
   end
 
@@ -55,23 +56,25 @@ module Polynome
     def initialize(orientation)
       super
       validate_orientation!
-      @name          = "64"
-      @width         = 8
-      @height        = 8
-      @protocol      = "series"
-      @num_quadrants = 1
-      @valid_quadrants = Quadrants.get_valid_quadrants(@num_quadrants)
+      @name                      = "64"
+      @width                     = 8
+      @height                    = 8
+      @protocol                  = "series"
+      @num_quadrants             = 1
+      @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
+      @device_orientation_offset = 0
     end
   end
 
   class OneTwentyEight < Model
     def initialize(orientation)
       super
-      validate_orientation!(VALID_ORIENTATIONS + [:portrait])
-      @name            = "128"
-      @protocol        = "series"
-      @num_quadrants   = 2
-      @valid_quadrants = Quadrants.get_valid_quadrants(@num_quadrants)
+      validate_orientation!(DEFAULT_VALID_ORIENTATIONS + [:portrait])
+      @name                      = "128"
+      @protocol                  = "series"
+      @num_quadrants             = 2
+      @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
+      @device_orientation_offset = 0
       @width  = @orientation == :landscape ? 16 : 8
       @height = @orientation == :landscape ? 8  : 16
     end
@@ -81,12 +84,13 @@ module Polynome
     def initialize(orientation)
       super
       validate_orientation!
-      @name            = "256"
-      @width           = 16
-      @height          = 16
-      @protocol        = "series"
-      @num_quadrants   = 4
-      @valid_quadrants = Quadrants.get_valid_quadrants(@num_quadrants)
+      @name                      = "256"
+      @width                     = 16
+      @height                    = 16
+      @protocol                  = "series"
+      @num_quadrants             = 4
+      @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
+      @device_orientation_offset = 0
     end
   end
 end

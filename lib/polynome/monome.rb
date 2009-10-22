@@ -3,36 +3,49 @@ module Polynome
     attr_reader :cable_orientation, :model, :current_surface
 
     def initialize(opts={})
-      opts.reverse_merge! :cable_orientation => :left
+      opts.reverse_merge! :cable_orientation => :top
 
-      raise ArgumentError, "Polynome::Monome#initialize requires an io_file to be specified" unless opts[:io_file]
-      raise ArgumentError, "Polynome::Monome#initialize requires a model to be specified"    unless opts[:model]
-      raise ArgumentError, "Unknown cable orientation: #{opts[:cable_orientation]}, expected #{Model.list_possible_cable_orientations}" unless Model.valid_cable_orientation?(opts[:cable_orientation])
+      unless opts[:io_file] then
+        raise ArgumentError,
+        "Polynome::Monome#initialize requires an io_file to be specified"
+      end
+      unless opts[:model] then
+        raise ArgumentError,
+        "Polynome::Monome#initialize requires a model to be specified"
+      end
+      unless Model.valid_cable_orientation?(opts[:cable_orientation]) then
+        raise ArgumentError,
+        "Unknown cable orientation: #{opts[:cable_orientation]}, "\
+        "expected #{Model.list_possible_cable_orientations}"
+      end
 
       @model = Model.get_model(opts[:model])
       @cable_orientation = opts[:cable_orientation]
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
-      @surfaces = [Surface.new("base", num_frame_buffers, self)]
+      @surfaces = [Surface.new("base", num_quadrants, self)]
       @current_surface = @surfaces[0]
       @frame_buffer = FrameBuffer.new
     end
 
-    def update_frame_buffer(*frames)
-      if frames.size != num_frame_buffers then
+
+    def light_quadrant(quadrant_id, frame)
+      if (quadrant_id < 1) || (quadrant_id > num_quadrants) then
         raise ArgumentError,
-        "Incorrect number of frames sent. Was expecting " +
-          "#{num_frame_buffers}, got #{frames.size}"
+          "Unexpected quadrant id. Expected one of the set " +
+          "#{(1..num_quadrants).to_a.join(', ')}, got #{quadrant_id}"
       end
 
-      #TODO need to map frames based on cable orientation
-      frames.each_with_index do |frame, index|
-        rotate_frame_based_on_cable_orientation(frame)
-        @communicator.illuminate_frame(index + 1, frame.read)
-      end
+      rotate_frame_based_on_cable_orientation!(frame)
+      mapped_quadrant_id = map_quadrant_based_on_cable_orientation(quadrant_id)
+      @communicator.illuminate_frame(mapped_quadrant_id, frame.read)
     end
 
-    def num_frame_buffers
+    def num_quadrants
       @model.num_quadrants
+    end
+
+    def cable_orientation_offset
+      @model.cable_orientation_offset(@cable_orientation)
     end
 
     def num_surfaces
@@ -44,7 +57,7 @@ module Polynome
         raise Surface::DuplicateSurfaceError,
         "A surface with the name #{name} already exists!"
       end
-      surface = Surface.new(name, num_frame_buffers, self)
+      surface = Surface.new(name, num_quadrants, self)
       @surfaces << surface
       return surface
     end

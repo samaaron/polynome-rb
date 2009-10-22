@@ -44,7 +44,7 @@ module Polynome
       #need to iterate through each frame, translating it to the
       #appropriate quadrant (and also transforming it appropriately)
       #and finally sending it to the surface
-      @surface.update_display(1, frames.first.rotate!(@rotation))
+      @surface.light_quadrant(1, frames.first.rotate!(@rotation))
     end
 
     def inspect

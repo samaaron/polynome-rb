@@ -1,7 +1,7 @@
 module Polynome
   module FrameFixtures
 
-    def self.all_lit_array
+    def self.lit_array
       [
        "11111111",
        "11111111",
@@ -14,11 +14,11 @@ module Polynome
       ]
     end
 
-    def self.all_lit_string
+    def self.lit_string
       all_lit_array.join
     end
 
-    def self.all_lit_frame
+    def self.lit
       Frame.new(all_lit_string)
     end
 
@@ -39,7 +39,7 @@ module Polynome
       blank_array.join
     end
 
-    def self.blank_frame
+    def self.blank
       Frame.new(blank_string)
     end
 

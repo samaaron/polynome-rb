@@ -26,16 +26,16 @@ describe Monome do
       @monome = Monome.new(:io_file => 'foo/bar', :model => "256")
     end
 
-    it "should have a cable orientation of left" do
-      @monome.cable_orientation.should == :left
+    it "should have a cable orientation of top" do
+      @monome.cable_orientation.should == :top
     end
 
     it "should have kind TwoFiftySix" do
       @monome.model.should be_kind_of(TwoFiftySix)
     end
 
-    it "should have 4 frame buffers" do
-      @monome.num_frame_buffers.should == 4
+    it "should have 4 quadrants" do
+      @monome.num_quadrants.should == 4
     end
 
     it "should start with 1 surface" do

@@ -22,6 +22,7 @@ Polynome is in a state where frames can be created and displayed
 [*] Allow frames to output themselves after rotating the appropriate amount
 [*] Allow an app to update the surface
 [*] Test all fixture frames to see if they're accurate (visibility testing)
+[ ] Make cable orientation top the starting (default) orientation for the monome
 [ ] Test and implement app projection rotation
 [ ] Test and implement monome cable orientation updates
 [ ] Allow interface frame updates be sent via the surface to the display
