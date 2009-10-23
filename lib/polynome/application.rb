@@ -29,7 +29,7 @@ module Polynome
       application = @applications.find{|app| app.name == name} if @applications
     end
 
-    attr_reader :orientation, :name
+    attr_reader :orientation, :name, :model
     attr_accessor :projection
 
     def initialize(opts = {})
@@ -53,7 +53,7 @@ module Polynome
           "application. Please specify a unique name"
       end
 
-      model        = Model.get_model(opts[:model].to_s, opts[:orientation])
+      @model        = Model.get_model(opts[:model].to_s, opts[:orientation])
       @orientation = opts[:orientation]
       @interface   = Interface.new(model)
       @name        = opts[:name]

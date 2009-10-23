@@ -29,8 +29,8 @@ module Polynome
           "#{(1..num_quadrants).to_a.join(', ')}, got #{quadrant_id}"
       end
 
-      @model.rotate_frame_accordingly(frame)
-      mapped_quadrant_id = @model.map_quadrant_accordingly(quadrant_id)
+      @model.default_rotate_frame_according_to_device_offset_and_cable_orientation(frame)
+      mapped_quadrant_id = @model.default_map_quadrant_according_to_device_offset_and_cable_orientation(quadrant_id)
       @communicator.illuminate_frame(mapped_quadrant_id, frame.read)
     end
 

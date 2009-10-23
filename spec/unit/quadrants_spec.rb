@@ -140,4 +140,76 @@ describe Quadrants do
       Quadrants.new([1]).should_not == Quadrants.new([1,2])
     end
   end
+
+  describe "#include?" do
+    it "should return true if the quadrant id is in the set of quadrants" do
+      Quadrants.new([1]).include?(1).should == true
+      Quadrants.new([1,2]).include?(2).should == true
+      Quadrants.new([1,2,3,4]).include?(3).should == true
+    end
+
+    it "should return false if the quadrant id is not in the set of quadrants" do
+      Quadrants.new([1]).include?(0).should == false
+      Quadrants.new([1,2]).include?(3).should == false
+      Quadrants.new([1,2,3,4]).include?(5).should == false
+      Quadrants.new([1,2,3,4]).include?("cheese").should == false
+    end
+  end
+
+  describe "#size" do
+    it "should indicate that a set of quadrants with one id has a size of one" do
+      Quadrants.new([1]).size.should == 1
+    end
+
+    it "should indicate that a set of quadrants with two ids has a size of two" do
+      Quadrants.new([1, 2]).size.should == 2
+    end
+
+    it "should indicate that a set of quadrants with four ids has a size of four" do
+      Quadrants.new([1, 2, 3, 4]).size.should == 4
+    end
+  end
+
+  describe "#index" do
+    it "should return the index of the id if present" do
+      Quadrants.new([1]).index(1).should == 0
+      Quadrants.new([1,2]).index(2).should == 1
+      Quadrants.new([1,2,3,4]).index(4).should == 3
+    end
+
+    it "should be able to take a block to perform matching" do
+      Quadrants.new([1, 2]).index{|i| i > 1}.should == 1
+    end
+
+    it "should return nil if no match is found" do
+      Quadrants.new([1]).index(2).should == nil
+      Quadrants.new([1, 2]).index(0).should == nil
+      Quadrants.new([1, 2, 3, 4]).index(5).should == nil
+      Quadrants.new([1, 2]).index{|i| i > 10}.should == nil
+    end
+  end
+
+  describe "#to_a" do
+    it "should return an array containing the quadrant ids" do
+      Quadrants.new([1]).to_a.should == [1]
+      Quadrants.new([1,2]).to_a.should == [1,2]
+      Quadrants.new([1,2,3,4]).to_a.should == [1,2,3,4]
+      Quadrants.new([4,3,2,1]).to_a.should == [1,2,3,4]
+    end
+  end
+
+
+  describe "#[]" do
+    it "should return a 0 indexed element from the list of quadrant ids" do
+      Quadrants.new([1])[0].should == 1
+      Quadrants.new([1,2])[1].should == 2
+      Quadrants.new([1,2,3,4])[2].should == 3
+    end
+
+    it "should raise an error if the index is out of bounds" do
+      lambda{Quadrants.new([1])[-10]}.should raise_error(Quadrants::QuadrantIndexOutOfBoundsError)
+      lambda{Quadrants.new([1,2])[2]}.should raise_error(Quadrants::QuadrantIndexOutOfBoundsError)
+      lambda{Quadrants.new([1,2,3,4])[10]}.should raise_error(Quadrants::QuadrantIndexOutOfBoundsError)
+    end
+  end
 end

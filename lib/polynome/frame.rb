@@ -41,6 +41,9 @@ module Polynome
       other.read == read
     end
 
+    def inspect
+      "FRAME: #{read.inspect} (having been rotated by: #{rotation})"
+    end
 
     private
 

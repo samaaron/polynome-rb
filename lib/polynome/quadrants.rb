@@ -45,10 +45,10 @@ module Polynome
     # |         |
     # + - - - - +
 
-    class QuadrantCountError       < StandardError ; end
-    class QuadrantIDError          < StandardError ; end
-    class QuadrantCombinationError < StandardError ; end
-
+    class QuadrantCountError            < StandardError ; end
+    class QuadrantIDError               < StandardError ; end
+    class QuadrantCombinationError      < StandardError ; end
+    class QuadrantIndexOutOfBoundsError < StandardError ; end
 
     VALID_QUADRANT_COMBINATIONS = {
       1 => [ [1],   [2],   [3],   [4]   ], # one-quadrant variations
@@ -110,9 +110,39 @@ module Polynome
       @ids   = sorted_quadrant_ids
     end
 
+    def [](index)
+      if (index < -@count) || (index >= @count) then
+        raise QuadrantIndexOutOfBoundsError,
+        "Index out of bounds. Expected an index in "\
+        "the range (0..#{@count - 1}), got #{index}"
+      end
+
+      @ids[index]
+    end
+
     def ==(other)
       other.kind_of?(Quadrants) &&
       @ids == other.ids
+    end
+
+    def include?(element)
+      @ids.include?(element)
+    end
+
+    def size
+      @ids.size
+    end
+
+    def index(element = nil, &block)
+      if block_given?
+        @ids.index(&block)
+      else
+        @ids.index(element)
+      end
+    end
+
+    def to_a
+      @ids
     end
 
     def inspect

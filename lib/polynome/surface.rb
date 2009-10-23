@@ -10,7 +10,11 @@ module Polynome
     attr_reader :num_quadrants, :name, :display
 
     def initialize(name, num_quadrants, monome)
-      raise ArgumentError, "Unexpected quadrant count. Expected one of the set {#{Quadrants.list_valid_quadrant_counts}}. Got #{num_quadrants}" unless Quadrants.valid_quadrant_count?(num_quadrants)
+      unless Quadrants.valid_quadrant_count?(num_quadrants) then
+        raise ArgumentError,
+        "Unexpected quadrant count. Expected one of the set "\
+        "{#{Quadrants.list_valid_quadrant_counts}}. Got #{num_quadrants}"
+      end
 
       @name = name.to_s
       @num_quadrants = num_quadrants
@@ -19,14 +23,14 @@ module Polynome
       @allocated_quadrants = {}
     end
 
-    def light_quadrant(quadrant, frame)
-      if (quadrant < 1) || (quadrant > @num_quadrants) then
+    def light_quadrant(quadrant_id, frame)
+      if (quadrant_id < 1) || (quadrant_id > @num_quadrants) then
         raise ArgumentError,
           "Unexpected frame index. Expected one of the set " +
-          "#{(1..@num_quadrants).to_a.join(', ')}, got #{num_quadrants}"
+          "(#{(1..@num_quadrants).to_a.join(', ')}), got #{quadrant_id}"
       end
 
-      @monome.light_quadrant(quadrant, frame)
+      @monome.light_quadrant(quadrant_id, frame)
     end
 
     def fetch_frame_buffer
