@@ -22,15 +22,15 @@ describe Projection do
     end
 
     it "should be on the current surface if the projection is registered on the base surface (before surface switching)" do
-      Projection.new(@surface, @app, 0, @quadrants).should be_on_current_surface
+      Projection.new(@surface, @app, @quadrants).should be_on_current_surface
     end
 
     it "should not be on the current surface if the projection is registered on a different surface (before surface switching)" do
-      Projection.new(@second_surface, @app, 0, @quadrants).should_not be_on_current_surface
+      Projection.new(@second_surface, @app, @quadrants).should_not be_on_current_surface
     end
 
     it "should be on the current surface is the monome is switched to the surface the projection was registered on" do
-      projection = Projection.new(@second_surface, @app, 0, @quadrants)
+      projection = Projection.new(@second_surface, @app, @quadrants)
       projection.should_not be_on_current_surface
       @monome.switch_to_surface(@second_surface.name)
       projection.should be_on_current_surface
@@ -46,36 +46,36 @@ describe Projection do
       end
 
       it "should raise an error when given an invalid rotation" do
-        lambda{Projection.new(@surface, @app, 1080, @quadrants)}.should raise_error(ArgumentError)
+        lambda{Projection.new(@surface, @app, @quadrants, :rotation => 1080)}.should raise_error(ArgumentError)
       end
 
       it "should store the app" do
-        Projection.new(@surface, @app, 0, @quadrants).application.should == @app
+        Projection.new(@surface, @app, @quadrants).application.should == @app
       end
 
       it "should store the rotation" do
-        Projection.new(@surface, @app, 0, @quadrants).rotation.should == 0
+        Projection.new(@surface, @app, @quadrants).rotation.should == 0
       end
 
       it "should store the quadrants" do
-        Projection.new(@surface, @app, 0, @quadrants).quadrants.should == @quadrants
+        Projection.new(@surface, @app, @quadrants).quadrants.should == @quadrants
       end
 
       describe "valid rotations" do
         it "should allow initialisation with a rotation of 0" do
-          lambda{Projection.new(@surface, @app, 0, @quadrants)}.should_not raise_error
+          lambda{Projection.new(@surface, @app, @quadrants)}.should_not raise_error
         end
 
         it "should allow initialisation with a rotation of 90" do
-          lambda{Projection.new(@surface, @app, 90, @quadrants)}.should_not raise_error
+          lambda{Projection.new(@surface, @app, @quadrants, :rotation => 90)}.should_not raise_error
         end
 
         it "should allow initialisation with a rotation of 180" do
-          lambda{Projection.new(@surface, @app, 180, @quadrants)}.should_not raise_error
+          lambda{Projection.new(@surface, @app, @quadrants, :rotation => 180)}.should_not raise_error
         end
 
         it "should allow initialisation with a rotation of 270" do
-          lambda{Projection.new(@surface, @app, 270, @quadrants)}.should_not raise_error
+          lambda{Projection.new(@surface, @app, @quadrants, :rotation => 270)}.should_not raise_error
         end
       end
     end
@@ -90,19 +90,19 @@ describe Projection do
     describe "#inititialize" do
       describe "valid rotations" do
         it "should allow initialisation with a rotation of 0" do
-          lambda{Projection.new(@surface, @app, 0, @quadrants)}.should_not raise_error
+          lambda{Projection.new(@surface, @app, @quadrants)}.should_not raise_error
         end
 
         it "should not allow initialisation with a rotation of 90" do
-          lambda{Projection.new(@surface, @app, 90, @quadrants)}.should raise_error(Projection::RotationOrientationMismatchError)
+          lambda{Projection.new(@surface, @app, @quadrants, :rotation => 90)}.should raise_error(Projection::RotationOrientationMismatchError)
         end
 
         it "should allow initialisation with a rotation of 180" do
-          lambda{Projection.new(@surface, @app, 180, @quadrants)}.should_not raise_error
+          lambda{Projection.new(@surface, @app, @quadrants, :rotation => 180)}.should_not raise_error
         end
 
         it "should not allow initialisation with a rotation of 270" do
-          lambda{Projection.new(@surface, @app, 270, @quadrants)}.should raise_error(Projection::RotationOrientationMismatchError)
+          lambda{Projection.new(@surface, @app, @quadrants, :rotation => 270)}.should raise_error(Projection::RotationOrientationMismatchError)
         end
       end
     end
@@ -117,19 +117,19 @@ describe Projection do
     describe "#inititialize" do
       describe "valid rotations" do
         it "should allow initialisation with a rotation of 0" do
-          lambda{Projection.new(@surface, @app, 0, @quadrants)}.should_not raise_error
+          lambda{Projection.new(@surface, @app, @quadrants)}.should_not raise_error
         end
 
         it "should not allow initialisation with a rotation of 90" do
-          lambda{Projection.new(@surface, @app, 90, @quadrants)}.should raise_error(Projection::RotationOrientationMismatchError)
+          lambda{Projection.new(@surface, @app, @quadrants, :rotation => 90)}.should raise_error(Projection::RotationOrientationMismatchError)
         end
 
         it "should allow initialisation with a rotation of 180" do
-          lambda{Projection.new(@surface, @app, 180, @quadrants)}.should_not raise_error
+          lambda{Projection.new(@surface, @app, @quadrants, :rotation => 180)}.should_not raise_error
         end
 
         it "should not allow initialisation with a rotation of 270" do
-          lambda{Projection.new(@surface, @app, 270, @quadrants)}.should raise_error(Projection::RotationOrientationMismatchError)
+          lambda{Projection.new(@surface, @app, @quadrants, :rotation => 270)}.should raise_error(Projection::RotationOrientationMismatchError)
         end
       end
     end

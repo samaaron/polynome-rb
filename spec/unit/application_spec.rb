@@ -95,7 +95,7 @@ it "should be possible to initialise an application with a model and an orientat
       @app64 = Application.new(:model => 64, :name => "test")
       @monome = Monome.new(:io_file => "blah", :model => "256", :cable_orientation => :top)
       @surface = Surface.new("surf", 4, @monome)
-      @projection = Projection.new(@surface, @app64, 0, Quadrants.new([1]))
+      @projection = Projection.new(@surface, @app64, Quadrants.new([1]))
     end
 
     it "should be possible to register a projection" do

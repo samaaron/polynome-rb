@@ -56,7 +56,7 @@ module Polynome
 
       quadrants = Quadrants.new(opts[:quadrants])
       register_quadrants(quadrants)
-      projection = Projection.new(self, application, opts[:rotation], quadrants)
+      projection = Projection.new(self, application, quadrants, opts)
       application.projection = projection
       @projections[quadrants] = projection
       return projection

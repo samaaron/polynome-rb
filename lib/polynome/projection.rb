@@ -8,10 +8,12 @@ module Polynome
 
     attr_reader :application, :rotation, :quadrants, :surface
 
-    def initialize(surface, application, rotation, quadrants)
-      unless VALID_ROTATIONS.include?(rotation) then
+    def initialize(surface, application, quadrants, opts={})
+      opts.reverse_merge! :rotation => 0, :invert => false
+
+      unless VALID_ROTATIONS.include?(opts[:rotation]) then
         raise ArgumentError,
-        "Invalid rotation #{rotation}, expected " +
+        "Invalid rotation #{opts[:rotation]}, expected " +
           "#{VALID_ROTATIONS.to_sentence :last_word_connector => ' or'}."
       end
       unless quadrants.kind_of?(Quadrants) then
@@ -24,18 +26,19 @@ module Polynome
           "the capacity of the application you specified. "       +
           "Expected #{application.num_quadrants}, got #{quadrants.count}"
       end
-      if application.interface_type == "128" && INVALID_128_APP_ROTATIONS.include?(rotation) then
+      if application.interface_type == "128" && INVALID_128_APP_ROTATIONS.include?(opts[:rotation]) then
         raise RotationOrientationMismatchError,
-        "The rotation you have specified (#{rotation}) is invalid for the 128 "\
+        "The rotation you have specified (#{opts[:rotation]}) is invalid for the 128 "\
         "as it is not square like the 64 or 256 monomes. You should specify one "\
         "of the following: #{(VALID_ROTATIONS - INVALID_128_APP_ROTATIONS).inspect}."
       end
 
       @surface     = surface
       @application = application
-      @rotation    = rotation
       @quadrants   = quadrants
       @model       = application.model
+      @rotation    = opts[:rotation]
+      @options     = opts
     end
 
     def on_current_surface?
@@ -44,6 +47,7 @@ module Polynome
 
     def update_display(*frames)
       frames.each_with_index do |frame, index|
+        apply_options!(frame)
         @model.rotate_frame(frame, @quadrants, @rotation)
         mapped_quadrant_id = @model.map_quadrant(@quadrants[index], @quadrants, rotation_offset)
         @surface.light_quadrant(mapped_quadrant_id, frame)
@@ -55,6 +59,10 @@ module Polynome
     end
 
     private
+
+    def apply_options!(frame)
+      frame.invert! if @options[:invert]
+    end
 
     def rotation_offset
       case @rotation
