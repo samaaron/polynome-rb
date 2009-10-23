@@ -18,25 +18,25 @@
 
 
 Polynome is still in a very early phase of development. The following
-are the goals of the application:
-
+are the goals of the framework:
 
 Polynome is a monome driver, extended emulator, switcher and splitter.
 
 A Driver
 --------
-Polynome drives your monome. Button presses are registered with
-Polynome, and Polynome sends signals to light the LEDs correctly.
+Polynome drives your monome. It communicates directly with it via the
+USB serial port. Button presses are received from your monome and
+Polynome sends signals to light its LEDs correctly.
 
 
 An Extended Emulator
 --------------------
-Polynome presents itself as a standard monome via OSC
-(http://opensoundcontrol.org/). It listens to all the standard monome
-OSC messages and reacts appropriately. Polynome can therefore be
-connected with any current monome application available - just make
-sure the output port of the application matches the input port of
-Polynome.
+Polynome presents the standard monome OSC protocol.
+(http://opensoundcontrol.org/). This means that it's able to listen
+and send all the standard monome OSC messages and react
+appropriately. Polynome can therefore be connected with any currently
+available monome application - just make sure the input/output ports
+of the application match those you register with Polynome.
 
 Polynome also provides extensions to the standard OSC messages for
 more flexible control. This allows more powerful abstractions to be
@@ -46,12 +46,13 @@ used to manipulate the monome's LEDs.
 A Switcher
 ----------
 Polynome allows connections from more than one application. Each
-connected application is assigned a virtual monome. Polynome provides
-mechanisms to select which virtual monome is currently displayed and
-therefore which application receives button press and release signals
-at a given moment. Whilst an application's virtual monome is not
-currently active (i.e. driving the monome) it can still receive
-signals from the connected application as if it were the real monome.
+connected application is assigned a virtual monome (called a
+surface). Polynome provides mechanisms to select which surface is
+currently displayed and therefore which application receives button
+press and release signals at a given moment. Whilst an application's
+surface is not currently active (i.e. driving the monome) it can still
+receive signals from the connected application as if it were the real
+monome.
 
 
 A Splitter

@@ -227,7 +227,7 @@ describe Monome do
       end
     end
 
-    describe "With a 256 with cable orientation top" do
+    describe "With a 256 with cable orientation right" do
       before(:each) do
         @monome = Monome.new(:io_file => 'foo/bar', :model => "256", :cable_orientation => :right)
       end
