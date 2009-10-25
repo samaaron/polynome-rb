@@ -26,6 +26,16 @@ describe Polynome::FrameFixtures do
           frame = Frame.new(FrameFixtures.bit_string64)
           frame.read.should == FrameFixtures.bit_array64
           frame.should == FrameFixtures.frame64
+          frame.invert!.should == FrameFixtures.frame64_i
+        end
+      end
+
+      describe "with 0 degree rotation (inverted)" do
+        it "should be sane" do
+          frame = Frame.new(FrameFixtures.bit_string64_i)
+          frame.read.should == FrameFixtures.bit_array64_i
+          frame.should == FrameFixtures.frame64_i
+          frame.invert!.should == FrameFixtures.frame64
         end
       end
 
@@ -35,6 +45,17 @@ describe Polynome::FrameFixtures do
           frame.read.should == FrameFixtures.bit_array64_90
           frame.should == FrameFixtures.frame64_90
           frame.should == FrameFixtures.frame64.rotate!(90)
+          frame.invert!.should == FrameFixtures.frame64_90_i
+        end
+      end
+
+      describe "with 90 degree rotation (inverted)" do
+        it "should be sane" do
+          frame = Frame.new(FrameFixtures.bit_string64_90_i)
+          frame.read.should == FrameFixtures.bit_array64_90_i
+          frame.should == FrameFixtures.frame64_90_i
+          frame.should == FrameFixtures.frame64_i.rotate!(90)
+          frame.invert!.should == FrameFixtures.frame64_90
         end
       end
 
@@ -44,6 +65,17 @@ describe Polynome::FrameFixtures do
           frame.read.should == FrameFixtures.bit_array64_180
           frame.should == FrameFixtures.frame64_180
           frame.should == FrameFixtures.frame64.rotate!(180)
+          frame.invert!.should == FrameFixtures.frame64_180_i
+        end
+      end
+
+      describe "with 180 degree rotation (inverted)" do
+        it "should be sane" do
+          frame = Frame.new(FrameFixtures.bit_string64_180_i)
+          frame.read.should == FrameFixtures.bit_array64_180_i
+          frame.should == FrameFixtures.frame64_180_i
+          frame.should == FrameFixtures.frame64_i.rotate!(180)
+          frame.invert!.should == FrameFixtures.frame64_180
         end
       end
 
@@ -53,6 +85,17 @@ describe Polynome::FrameFixtures do
           frame.read.should == FrameFixtures.bit_array64_270
           frame.should == FrameFixtures.frame64_270
           frame.should == FrameFixtures.frame64.rotate!(270)
+          frame.invert!.should == FrameFixtures.frame64_270_i
+        end
+      end
+
+      describe "with 270 degree rotation (inverted)" do
+        it "should be sane" do
+          frame = Frame.new(FrameFixtures.bit_string64_270_i)
+          frame.read.should == FrameFixtures.bit_array64_270_i
+          frame.should == FrameFixtures.frame64_270_i
+          frame.should == FrameFixtures.frame64_i.rotate!(270)
+          frame.invert!.should == FrameFixtures.frame64_270
         end
       end
     end
@@ -64,6 +107,16 @@ describe Polynome::FrameFixtures do
           frame = Frame.new(FrameFixtures.bit_string128_1)
           frame.read.should == FrameFixtures.bit_array128_1
           frame.should == FrameFixtures.frame128_1
+          frame.invert!.should == FrameFixtures.frame128_1_i
+        end
+      end
+
+      describe "with 0 degree rotation (inverted)" do
+        it "should be sane" do
+          frame = Frame.new(FrameFixtures.bit_string128_1_i)
+          frame.read.should == FrameFixtures.bit_array128_1_i
+          frame.should == FrameFixtures.frame128_1_i
+          frame.invert!.should == FrameFixtures.frame128_1
         end
       end
 

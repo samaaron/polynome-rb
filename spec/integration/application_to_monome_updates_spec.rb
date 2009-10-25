@@ -5,30 +5,41 @@ describe "Application to Monome updates" do
     Application.reset_registered_applications!
   end
 
-  describe "Basic 64 app viewing with different projection rotations" do
-    describe "With a 64 monome with the default cable orientation (left) and a 64 app" do
-      before(:each) do
-        @monome    = Monome.new(:io_file => 'foo/bar', :model => "64")
-        @app64     = Application.new(:model => 64, :name => "app64")
-      end
+  describe "Given a 64 monome with a 64 app" do
+    before(:each) do
+      @monome    = Monome.new(:io_file => 'foo/bar', :model => "64")
+      @app64     = Application.new(:model => 64, :name => "app64")
+      @surface   = @monome.fetch_surface(:base)
+    end
 
-      it "should rotate the frame 90 with a projection rotation of 90" do
-        @monome.fetch_surface(:base).register_application(@app64, :rotation => 90)
-        @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_90)
-        @app64.update_display(FrameFixtures.frame64)
-      end
+    it "should rotate the frame 90 with a projection rotation of 90" do
+      @surface.register_application(@app64, :rotation => 90)
+      @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_90)
+      @app64.update_display(FrameFixtures.frame64)
+    end
 
-      it "should rotate the frame 90 with a projection rotation of 180" do
-        @monome.fetch_surface(:base).register_application(@app64, :rotation => 180)
-        @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_180)
-        @app64.update_display(FrameFixtures.frame64)
-      end
+    it "should rotate the frame 90 with a projection rotation of 180" do
+      @surface.register_application(@app64, :rotation => 180)
+      @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_180)
+      @app64.update_display(FrameFixtures.frame64)
+    end
 
-      it "should rotate the frame 90 with a projection rotation of 270" do
-        @monome.fetch_surface(:base).register_application(@app64, :rotation => 270)
-        @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_270)
-        @app64.update_display(FrameFixtures.frame64)
-      end
+    it "should rotate the frame 90 with a projection rotation of 270" do
+      @surface.register_application(@app64, :rotation => 270)
+      @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_270)
+      @app64.update_display(FrameFixtures.frame64)
+    end
+
+    it "should invert the frame if the invert option is set to true" do
+      @surface.register_application(@app64, :invert => true)
+      @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_i)
+      @app64.update_display(FrameFixtures.frame64)
+    end
+
+    it "should both invert the frame and rotate it by 180 if both options are set" do
+      @surface.register_application(@app64, :rotation => 180, :invert => true)
+      @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_180_i)
+      @app64.update_display(FrameFixtures.frame64)
     end
   end
 

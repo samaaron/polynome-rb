@@ -61,7 +61,7 @@ describe Projection do
         Projection.new(@surface, @app, @quadrants).quadrants.should == @quadrants
       end
 
-      describe "valid rotations" do
+      describe "valid options" do
         it "should allow initialisation with a rotation of 0" do
           lambda{Projection.new(@surface, @app, @quadrants)}.should_not raise_error
         end
@@ -77,6 +77,10 @@ describe Projection do
         it "should allow initialisation with a rotation of 270" do
           lambda{Projection.new(@surface, @app, @quadrants, :rotation => 270)}.should_not raise_error
         end
+
+        it "should allow initialisation with invert set to true" do
+          lambda{Projection.new(@surface, @app, @quadrants, :invert => true)}.should_not raise_error
+        end
       end
     end
   end
@@ -88,7 +92,7 @@ describe Projection do
     end
 
     describe "#inititialize" do
-      describe "valid rotations" do
+      describe "valid options" do
         it "should allow initialisation with a rotation of 0" do
           lambda{Projection.new(@surface, @app, @quadrants)}.should_not raise_error
         end
@@ -103,6 +107,10 @@ describe Projection do
 
         it "should not allow initialisation with a rotation of 270" do
           lambda{Projection.new(@surface, @app, @quadrants, :rotation => 270)}.should raise_error(Projection::RotationOrientationMismatchError)
+        end
+
+        it "should allow initialisation with invert set to true" do
+          lambda{Projection.new(@surface, @app, @quadrants, :invert => true)}.should_not raise_error
         end
       end
     end
@@ -115,7 +123,7 @@ describe Projection do
     end
 
     describe "#inititialize" do
-      describe "valid rotations" do
+      describe "valid options" do
         it "should allow initialisation with a rotation of 0" do
           lambda{Projection.new(@surface, @app, @quadrants)}.should_not raise_error
         end
@@ -130,6 +138,10 @@ describe Projection do
 
         it "should not allow initialisation with a rotation of 270" do
           lambda{Projection.new(@surface, @app, @quadrants, :rotation => 270)}.should raise_error(Projection::RotationOrientationMismatchError)
+        end
+
+        it "should allow initialisation with invert set to true" do
+          lambda{Projection.new(@surface, @app, @quadrants, :invert => true)}.should_not raise_error
         end
       end
     end

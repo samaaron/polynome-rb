@@ -56,12 +56,33 @@ module Polynome
       ]
     end
 
+    def self.bit_array64_i
+      [
+       "11111111",
+       "00011101",
+       "01111001",
+       "01110101",
+       "00010000",
+       "01011101",
+       "00011101",
+       "11111111"
+      ]
+    end
+
     def self.bit_string64
       bit_array64.join
     end
 
+    def self.bit_string64_i
+      bit_array64_i.join
+    end
+
     def self.frame64
       Frame.new(bit_string64)
+    end
+
+    def self.frame64_i
+      Frame.new(bit_string64_i)
     end
 
     def self.bit_array64_90
@@ -77,12 +98,34 @@ module Polynome
       ]
     end
 
+    def self.bit_array64_90_i
+      [
+
+       "10000001",
+       "10101101",
+       "10001101",
+       "11111111",
+       "11100111",
+       "11101011",
+       "10000001",
+       "11101111"
+      ]
+    end
+
     def self.bit_string64_90
       bit_array64_90.join
     end
 
+    def self.bit_string64_90_i
+      bit_array64_90_i.join
+    end
+
     def self.frame64_90
       Frame.new(bit_string64_90)
+    end
+
+    def self.frame64_90_i
+      Frame.new(bit_string64_90_i)
     end
 
     def self.bit_array64_180
@@ -98,14 +141,34 @@ module Polynome
       ]
     end
 
+    def self.bit_array64_180_i
+      [
+       "11111111",
+       "10111000",
+       "10111010",
+       "00001000",
+       "10101110",
+       "10011110",
+       "10111000",
+       "11111111"
+      ]
+    end
+
     def self.bit_string64_180
       bit_array64_180.join
+    end
+
+    def self.bit_string64_180_i
+      bit_array64_180_i.join
     end
 
     def self.frame64_180
       Frame.new(bit_string64_180)
     end
 
+    def self.frame64_180_i
+      Frame.new(bit_string64_180_i)
+    end
 
     def self.bit_array64_270
       [
@@ -120,12 +183,33 @@ module Polynome
       ]
     end
 
+    def self.bit_array64_270_i
+      [
+       "11110111",
+       "10000001",
+       "11010111",
+       "11100111",
+       "11111111",
+       "10110001",
+       "10110101",
+       "10000001"
+      ]
+    end
+
     def self.bit_string64_270
       bit_array64_270.join
     end
 
+    def self.bit_string64_270_i
+      bit_array64_270_i.join
+    end
+
     def self.frame64_270
       Frame.new(bit_string64_270)
+    end
+
+    def self.frame64_270_i
+      Frame.new(bit_string64_270_i)
     end
 
     def self.bit_array128_1
@@ -141,12 +225,33 @@ module Polynome
       ]
     end
 
+    def self.bit_array128_1_i
+      [
+       "11111111",
+       "11001100",
+       "10101111",
+       "11101111",
+       "11101100",
+       "11101101",
+       "11101101",
+       "10000100"
+      ]
+    end
+
     def self.bit_string128_1
       bit_array128_1.join
     end
 
+    def self.bit_string128_1_i
+      bit_array128_1_i.join
+    end
+
     def self.frame128_1
       Frame.new(bit_string128_1)
+    end
+
+    def self.frame128_1_i
+      Frame.new(bit_string128_1_i)
     end
 
     def self.bit_array128_1_90
