@@ -129,14 +129,7 @@ module Polynome
     end
 
     def map_quadrant(quadrant_id, quadrants, positive_rotational_offset)
-      unless positive_rotational_offset % 2 then
-        raise ArgumentError,
-        "For a OneTwentyEight, the positive rotational offset "\
-        "needs to be even, i.e. if initialized with the "\
-        "orientation portrait, it should stay as portrait"
-      end
-
-      if (positive_rotational_offset % 4) == 2
+      if [1,2].include?(positive_rotational_offset % 4)
         swap_quadrant_ids(quadrant_id, quadrants)
       else
         quadrant_id

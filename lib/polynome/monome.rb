@@ -1,6 +1,6 @@
 module Polynome
   class Monome
-    attr_reader  :model, :current_surface
+    attr_reader  :model, :current_surface, :communicator
 
     def initialize(opts={})
       opts.reverse_merge! :cable_orientation => :top

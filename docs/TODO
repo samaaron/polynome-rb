@@ -26,9 +26,9 @@ Polynome is in a state where frames can be created and displayed
 [*] Test and implement app projection rotation
 [*] Test and implement monome cable orientation updates
 [*] Allow interface frame updates be sent via the surface to the display
-[ ] Test projection inversion
+[*] Test projection inversion
 [ ] Create a dummy 64 app that updates the buffer with alternating frames
 [ ] Create a dummy 128 app that updates the buffer with alternating frames
-[ ] Allow the dummy 128 app to be rotated if the device contains a sufficient number of frames
+[*] Allow the dummy 128 app to be rotated if the device contains a sufficient number of frames
 [ ] Allow the monome to have two surfaces each containing a different app
 [ ] Allow switching between surfaces - for each app on the surface, update surface

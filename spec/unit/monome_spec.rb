@@ -350,69 +350,68 @@ describe Monome do
     end
 
 
-    #TODO, test these with the actual 128 first
-    #describe "With a 128 with cable orientation top" do
-    #  before(:each) do
-    #    @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_orientation => :top)
-    #  end
-    #
-    #  it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 0" do
-    #    @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_1)
-    #    @monome.light_quadrant(1, FrameFixtures.frame128_1)
-    #  end
-    #
-    #  it "should map and rotate a frame in quadrant 2 to quadrant 2 with rotation 0" do
-    #    @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array128_2)
-    #    @monome.light_quadrant(2, FrameFixtures.frame128_2)
-    #  end
-    #end
-    #
-    #describe "With a 128 with cable orientation bottom" do
-    #  before(:each) do
-    #    @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_orientation => :bottom)
-    #  end
-    #
-    #  it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 0" do
-    #    @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_1)
-    #    @monome.light_quadrant(1, FrameFixtures.frame128_1)
-    #  end
-    #
-    #  it "should map and rotate a frame in quadrant 2 to quadrant 2 with rotation 0" do
-    #    @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array128_2)
-    #    @monome.light_quadrant(2, FrameFixtures.frame128_2)
-    #  end
-    #end
-    #
-    #describe "With a 128 with cable orientation left" do
-    #  before(:each) do
-    #    @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_orientation => :left)
-    #  end
-    #
-    #  it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 0" do
-    #    @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_1)
-    #    @monome.light_quadrant(1, FrameFixtures.frame128_1)
-    #  end
-    #
-    #  it "should map and rotate a frame in quadrant 2 to quadrant 2 with rotation 0" do
-    #    @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array128_2)
-    #    @monome.light_quadrant(2, FrameFixtures.frame128_2)
-    #  end
-    #end
-    #
-    #describe "With a 128 with cable orientation right" do
-    #  before(:each) do
-    #    @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_orientation => :right)
-    #  end
-    #
-    #  it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 0" do
-    #    @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_1)
-    #    @monome.light_quadrant(1, FrameFixtures.frame128_1)
-    #  end
-    #
-    #  it "should map and rotate a frame in quadrant 2 to quadrant 2 with rotation 0" do
-    #    @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array128_2)
-    #    @monome.light_quadrant(2, FrameFixtures.frame128_2)
-    #  end
-    #end
+    describe "With a 128 with cable orientation top" do
+      before(:each) do
+        @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_orientation => :top)
+      end
+
+      it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 0" do
+        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_1)
+        @monome.light_quadrant(1, FrameFixtures.frame128_1)
+      end
+
+      it "should map and rotate a frame in quadrant 2 to quadrant 2 with rotation 0" do
+        @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array128_2)
+        @monome.light_quadrant(2, FrameFixtures.frame128_2)
+      end
+    end
+
+    describe "With a 128 with cable orientation bottom" do
+      before(:each) do
+        @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_orientation => :bottom)
+      end
+
+      it "should map and rotate a frame in quadrant 1 to quadrant 2 with rotation 180" do
+        @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array128_1_180)
+        @monome.light_quadrant(1, FrameFixtures.frame128_1)
+      end
+
+      it "should map and rotate a frame in quadrant 2 to quadrant 1 with rotation 180" do
+        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_2_180)
+        @monome.light_quadrant(2, FrameFixtures.frame128_2)
+      end
+    end
+
+    describe "With a 128 with cable orientation left" do
+      before(:each) do
+        @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_orientation => :left)
+      end
+
+      it "should map and rotate a frame in quadrant 1 to quadrant 2 with rotation 90" do
+        @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array128_1_90)
+        @monome.light_quadrant(1, FrameFixtures.frame128_1)
+      end
+
+      it "should map and rotate a frame in quadrant 2 to quadrant 1 with rotation 90" do
+        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_2_90)
+        @monome.light_quadrant(2, FrameFixtures.frame128_2)
+      end
+    end
+
+    describe "With a 128 with cable orientation right" do
+      before(:each) do
+        @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_orientation => :right)
+      end
+
+      it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 270" do
+        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_1_270)
+        @monome.light_quadrant(1, FrameFixtures.frame128_1)
+      end
+
+      it "should map and rotate a frame in quadrant 2 to quadrant 2 with rotation 270" do
+        @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array128_2_270)
+        @monome.light_quadrant(2, FrameFixtures.frame128_2)
+      end
+    end
   end
 end
