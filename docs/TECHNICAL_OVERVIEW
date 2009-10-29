@@ -19,8 +19,6 @@ key abstractions:
 
 Monome       - A representation of a physical monome.
 
-Display      - A representation of the physical set of LEDs on a monome.
-
 Buttons      - A representation of the  physical set of buttons on a
                monome
 
@@ -28,7 +26,7 @@ Quadrant     - An 8x8 grid of buttons/LEDs. This is called a quadrant as
                the largest monome, the 256 has four of these grids. The
                128 happens to have 2 and the 64 and 40h just consist of one.
                This is the fundamental conceptual building block of
-               interfaces, surfaces and the display itself.
+               interfaces and surfaces.
 
 Frame        - The state of all the LEDs (on or off) for a given quadrant.
 
@@ -55,11 +53,11 @@ Projection   - The projection of a given application's
 Basic Overview
 -------------
 
-A monome has a display and a set of buttons. The display consists of a
-list of surfaces (each surface is essentially a virtual display). Each
-surface consists of multiple quadrants and can host the projections of
-the interfaces of multiple applications. Each interface consists of 1,
-2 or 4 quadrants and is associated with a given application.
+A monome consists of a list of surfaces (each surface is essentially a
+virtual display).  Each surface consists of multiple quadrants and can
+host the projections of the interfaces of multiple applications. Each
+interface consists of 1, 2 or 4 quadrants and is associated with a
+given application.
 
 
 Lighting the Monome
@@ -69,12 +67,11 @@ An application receives OSC commands which it translates to frame
 updates. It sends these frame udpates to its interface which in turn
 sends them to the projection on the associated surface that the
 application connector is hosted in. If the surface is the
-current_surface it sends the frame updates to the monome's display
-which are stored in the display's frame buffer and rendered on the
-physical monome as soon as possible. If it isn't the current_surface
-it just replaces the surface's single frame buffer with the new
-frame(s). If the user switches surface to the one hosting this
-particular app, that frame buffer will be used to initialise the
+current_surface it sends the frame updates to the monome which are
+then directly forwarded to the physical monome itself. If it isn't the
+current_surface it just replaces the surface's single frame buffer
+with the new frame(s). If the user switches surface to the one hosting
+this particular app, that frame buffer will be used to initialise the
 monome to the current lighting position.
 
 
@@ -95,7 +92,7 @@ Orientation
 -----------
 
 Each monome has an orientation which is mirrored by the physical
-monome itself. The monome's display and each of its screens inherit
+monome itself. The monome and each of its screens inherit
 this orientation. Also, every application has a default rotation
 orientation (landscape or portrait) which the application's interface
 inherits. Finally on registration with at particular surface, each
