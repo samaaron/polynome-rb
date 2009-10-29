@@ -18,7 +18,6 @@ module Polynome
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
       @surfaces = [Surface.new("base", num_quadrants, self)]
       @current_surface = @surfaces[0]
-      @frame_buffer = FrameBuffer.new
     end
 
 
