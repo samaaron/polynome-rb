@@ -9,7 +9,6 @@ end
 
 describe Projection do
   before(:each) do
-    Application.reset_registered_applications!
     @monome = Monome.new(:io_file => "blah", :model => "256", :cable_orientation => :top)
     @surface = @monome.fetch_surface(:base)
     @second_surface = @monome.add_surface(:second_surface)

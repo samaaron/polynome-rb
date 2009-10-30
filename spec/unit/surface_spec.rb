@@ -5,7 +5,6 @@ describe Surface do
   describe "given 3 applications, one 64, one 128 and one 256, 3 surfaces (1,2, 4 quadrants)" do
 
     before(:each) do
-      Application.reset_registered_applications!
       @app64  = Application.new(:model => 64,  :name => "app64")
       @app128 = Application.new(:model => 128, :name => "app128")
       @app256 = Application.new(:model => 256, :name => "app256")

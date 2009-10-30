@@ -3,7 +3,6 @@ include Polynome
 
 describe FrameUpdate do
   before(:each) do
-    Application.reset_registered_applications!
     @app64 = Application.new(:model => 64, :name => "app64")
   end
 

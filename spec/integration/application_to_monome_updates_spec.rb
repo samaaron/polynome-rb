@@ -1,10 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 include Polynome
 describe "Application to Monome updates" do
-  before(:each) do
-    Application.reset_registered_applications!
-  end
-
   describe "Given a 64 monome with a 64 app" do
     before(:each) do
       @monome    = Monome.new(:io_file => 'foo/bar', :model => "64")
