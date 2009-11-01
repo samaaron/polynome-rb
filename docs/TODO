@@ -27,7 +27,8 @@ Polynome is in a state where frames can be created and displayed
 [*] Test and implement monome cable orientation updates
 [*] Allow interface frame updates be sent via the surface to the display
 [*] Test projection inversion
-[ ] Create a queue for all app frame updates
+[*] Repurpose Rack as an application container
+[*] Create a queue for all app frame updates
 [ ] Create a consumer to pass the updates onto the correct surface
 [ ] Create a mutex-locked variable defining the current surface
 [ ] Create a dummy 64 app that updates the buffer with alternating frames

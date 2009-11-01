@@ -1,7 +1,7 @@
 module Polynome
   class Application
     attr_reader :orientation, :name, :model
-    attr_accessor :projection
+    attr_accessor :rack
 
     def initialize(opts = {})
       opts.reverse_merge! :orientation => :landscape
@@ -38,8 +38,8 @@ module Polynome
         "Incorrect number of frames sent for update. "\
         "Expected #{num_quadrants}, got #{frames.size}."
       end
-
-      projection.update_display(*frames) if projection
+      frame_update = FrameUpdate.new(self, frames)
+      rack.update_frame(frame_update) if @rack
     end
   end
 end

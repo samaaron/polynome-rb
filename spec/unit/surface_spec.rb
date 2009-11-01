@@ -138,11 +138,6 @@ describe Surface do
     end
 
     describe "#register_application" do
-      it "should register the application's projection with the application itself" do
-        projection = @surface1.register_application(@app64, :quadrant => 1)
-        @app64.projection.should == projection
-      end
-
       describe "with respect to a one-quadrant surface" do
         it "should be possible to omit the quadrant option" do
           lambda{@surface1.register_application(@app64, :rotation => 0)}.should_not raise_error(ArgumentError)

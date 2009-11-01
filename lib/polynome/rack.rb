@@ -5,6 +5,7 @@ module Polynome
 
     def initialize
       @applications = []
+      @frame_buffer = SizedQueue.new(Defaults::FRAME_BUFFER_SIZE)
     end
 
     def name_already_registered?(name)
@@ -35,5 +36,8 @@ module Polynome
       application = @applications.find{|app| app.name == name}
     end
 
+    def update_frame(frame_update)
+      @frame_buffer.push(frame_update)
+    end
   end
 end
