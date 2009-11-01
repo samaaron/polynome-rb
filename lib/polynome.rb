@@ -31,6 +31,7 @@ require 'polynome/buttons'
 require 'polynome/interface'
 require 'polynome/projection'
 require 'polynome/surface'
+require 'polynome/carousel'
 require 'polynome/frame'
 require 'polynome/model'
 require 'polynome/frame_update'
@@ -38,6 +39,7 @@ require 'polynome/monome'
 require 'polynome/light_bank'
 require 'polynome/application'
 require 'polynome/rack'
+require 'polynome/table'
 
 
 

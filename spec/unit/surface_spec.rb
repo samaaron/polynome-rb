@@ -11,9 +11,9 @@ describe Surface do
       @monome64  = Monome.new(:io_file => "blah", :model => "64",  :cable_orientation => :top)
       @monome128 = Monome.new(:io_file => "blah", :model => "128", :cable_orientation => :top)
       @monome256 = Monome.new(:io_file => "blah", :model => "256", :cable_orientation => :top)
-      @surface1 = @monome64.add_surface("surface1")
-      @surface2 = @monome128.add_surface("surface2")
-      @surface4 = @monome256.add_surface("surface4")
+      @surface1 = @monome64.carousel.add("surface1")
+      @surface2 = @monome128.carousel.add("surface2")
+      @surface4 = @monome256.carousel.add("surface4")
     end
 
     it "should resolve to the correct constant from this context" do
@@ -21,20 +21,8 @@ describe Surface do
     end
 
     describe "#initialize" do
-      it "should be possible to initialize a surface specifying the number of frames that surface consists of" do
-        lambda{Surface.new("test", 1, @monome64)}.should_not raise_error
-      end
-
-      it "should raise an ArgumentError if the number of frames specified is less than 1" do
-        lambda{Surface.new("test", 0, @monome64)}.should raise_error(ArgumentError)
-      end
-
-      it "should raise an ArgumentError if the number of frames specified is 3" do
-        lambda{Surface.new("test", 3, @monome256)}.should raise_error(ArgumentError)
-      end
-
-      it "should raise an ArgumentError if the number of frames specified is greater than 4" do
-        lambda{Surface.new("test", 5, @monome256)}.should raise_error(ArgumentError)
+      it "should be possible to initialize a surface for a given monomef" do
+        lambda{Surface.new("test", @monome64)}.should_not raise_error
       end
     end
 
@@ -115,7 +103,7 @@ describe Surface do
     describe "#current_surface?" do
       it "should be the current surface if it matches the monome's current surface" do
         @surface1.should_not be_current_surface
-        @monome64.switch_to_surface("surface1")
+        @monome64.carousel.switch_to("surface1")
         @surface1.should be_current_surface
       end
     end

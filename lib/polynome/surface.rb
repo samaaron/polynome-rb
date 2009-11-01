@@ -9,15 +9,10 @@ module Polynome
 
     attr_reader :num_quadrants, :name, :display
 
-    def initialize(name, num_quadrants, monome)
-      unless Quadrants.valid_quadrant_count?(num_quadrants) then
-        raise ArgumentError,
-        "Unexpected quadrant count. Expected one of the set "\
-        "{#{Quadrants.list_valid_quadrant_counts}}. Got #{num_quadrants}"
-      end
+    def initialize(name, monome)
+      @num_quadrants = monome.num_quadrants
 
       @name = name.to_s
-      @num_quadrants = num_quadrants
       @monome = monome
       @projections = {}
       @allocated_quadrants = {}
@@ -78,7 +73,7 @@ module Polynome
     end
 
     def current_surface?
-      self == @monome.current_surface
+      self == @monome.carousel.current
     end
 
     private

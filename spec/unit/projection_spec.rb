@@ -10,8 +10,8 @@ end
 describe Projection do
   before(:each) do
     @monome = Monome.new(:io_file => "blah", :model => "256", :cable_orientation => :top)
-    @surface = @monome.fetch_surface(:base)
-    @second_surface = @monome.add_surface(:second_surface)
+    @surface = @monome.carousel.fetch(:base)
+    @second_surface = @monome.carousel.add(:second_surface)
   end
 
   describe "#on_current_surface?" do
@@ -31,7 +31,7 @@ describe Projection do
     it "should be on the current surface is the monome is switched to the surface the projection was registered on" do
       projection = Projection.new(@second_surface, @app, @quadrants)
       projection.should_not be_on_current_surface
-      @monome.switch_to_surface(@second_surface.name)
+      @monome.carousel.switch_to(@second_surface.name)
       projection.should be_on_current_surface
     end
 

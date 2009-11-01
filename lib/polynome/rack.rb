@@ -3,9 +3,9 @@ module Polynome
     class UnknownApplicationName < Exception ; end
     class ApplicationNameInUseError < Exception ; end
 
-    def initialize
+    def initialize(frame_buffer)
+      @frame_buffer = frame_buffer
       @applications = []
-      @frame_buffer = SizedQueue.new(Defaults::FRAME_BUFFER_SIZE)
     end
 
     def name_already_registered?(name)
