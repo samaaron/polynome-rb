@@ -24,7 +24,6 @@ module Polynome
           "Unexpected frame index. Expected one of the set " +
           "(#{(1..@num_quadrants).to_a.join(', ')}), got #{quadrant_id}"
       end
-
       @monome.light_quadrant(quadrant_id, frame)
     end
 
@@ -74,6 +73,16 @@ module Polynome
 
     def current_surface?
       self == @monome.carousel.current
+    end
+
+    def displays_application?(application)
+      !!@projections.values.find{|projection| projection.application.name == application.name}
+    end
+
+    def process_frame_update(frame_update)
+      if (current_surface? && displays_application?(frame_update.application))
+        find_projection_by_application_name(frame_update.application.name).process_frame_update(frame_update)
+      end
     end
 
     private

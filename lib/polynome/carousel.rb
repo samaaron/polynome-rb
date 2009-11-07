@@ -52,6 +52,10 @@ module Polynome
       @surfaces.size
     end
 
+    def process_frame_update(frame_update)
+      @surfaces.each{|surface| surface.process_frame_update(frame_update)}
+    end
+
     private
 
     def validate_surface_name!(name)

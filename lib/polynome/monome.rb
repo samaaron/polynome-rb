@@ -42,5 +42,9 @@ module Polynome
     def cable_orientation_offset
       @model.cable_orientation_offset(@cable_orientation)
     end
+
+    def process_frame_update(frame_update)
+      carousel.process_frame_update(frame_update)
+    end
   end
 end

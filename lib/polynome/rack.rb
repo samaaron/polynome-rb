@@ -3,6 +3,8 @@ module Polynome
     class UnknownApplicationName < Exception ; end
     class ApplicationNameInUseError < Exception ; end
 
+    attr_reader :applications
+
     def initialize(frame_buffer)
       @frame_buffer = frame_buffer
       @applications = []
@@ -19,6 +21,8 @@ module Polynome
           "application. Please specify a unique name"
       end
 
+      application.frame_buffer = @frame_buffer
+
       @applications << application
       self
     end
@@ -33,7 +37,7 @@ module Polynome
     end
 
     def find_application_by_name(name)
-      application = @applications.find{|app| app.name == name}
+      application = @applications.find{|app| app.name == name.to_s }
     end
 
     def update_frame(frame_update)

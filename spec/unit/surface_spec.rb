@@ -26,6 +26,18 @@ describe Surface do
       end
     end
 
+    describe "#displays_application?" do
+      it "should return false before any apps have been registered" do
+        Surface.new("test", @monome64).displays_application?(@app64).should == false
+      end
+
+      it "should return true if the application has been registered with this surface" do
+        surface = Surface.new("test", @monome64)
+        surface.register_application(@app64)
+        surface.displays_application?(@app64).should == true
+      end
+    end
+
     describe "#num_quadrants" do
       it "should report that a surface initialised with four frames has four frames" do
         @surface4.num_quadrants.should == 4

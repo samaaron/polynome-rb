@@ -58,6 +58,10 @@ module Polynome
       "#<PROJECTION application: #{application.name}, rotation: #{rotation}, quadrants: #{quadrants.inspect}>"
     end
 
+    def process_frame_update(frame_update)
+      update_display(*frame_update.frames)
+    end
+
     private
 
     def apply_options!(frame)
@@ -72,6 +76,5 @@ module Polynome
       when 270 then 3
       end
     end
-
   end
 end

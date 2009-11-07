@@ -1,7 +1,7 @@
 module Polynome
   class Application
     attr_reader :orientation, :name, :model
-    attr_accessor :rack
+    attr_accessor :frame_buffer
 
     def initialize(opts = {})
       opts.reverse_merge! :orientation => :landscape
@@ -21,7 +21,7 @@ module Polynome
       @model        = Model.get_model(opts[:model].to_s, opts[:orientation])
       @orientation = opts[:orientation]
       @interface   = Interface.new(model)
-      @name        = opts[:name]
+      @name        = opts[:name].to_s
     end
 
     def num_quadrants
@@ -39,7 +39,7 @@ module Polynome
         "Expected #{num_quadrants}, got #{frames.size}."
       end
       frame_update = FrameUpdate.new(self, frames)
-      rack.update_frame(frame_update) if @rack
+      @frame_buffer.push(frame_update) if @frame_buffer
     end
   end
 end
