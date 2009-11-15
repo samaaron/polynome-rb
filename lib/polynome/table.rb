@@ -2,6 +2,7 @@ module Polynome
   class Table
     class MonomeNameNotAvailableError < StandardError ; end
     class MonomeNameNotSpecifiedError < StandardError ; end
+    class MonomeNameUnknownError      < StandardError ; end
 
     def initialize
       @frame_buffer = SizedQueue.new(Defaults::FRAME_BUFFER_SIZE)
@@ -9,8 +10,22 @@ module Polynome
       @monomes = {}
     end
 
+    def register_application(application_name, opts={})
+      opts.reverse_merge! :surface => "base"
+
+      unless monome(opts[:monome]) then
+        raise MonomeNameUnknownError,
+        "Monome name unknown. Please specify a name of a monome that "\
+        "has already been registered"
+      end
+
+      monome(opts[:monome]).carousel.fetch(opts[:surface]).register_application(app(application_name), opts)
+    end
+
     def add_app(opts={})
-      @rack << Application.new(opts)
+      new_app = Application.new(opts)
+      @rack << new_app
+      new_app
     end
 
     def add_monome(opts={})
@@ -23,16 +38,17 @@ module Polynome
         raise MonomeNameNotAvailableError,
         "This name has already been taken. Please choose another for your monome"
       end
-
-      @monomes[opts[:name]] = Monome.new(opts)
-    end
-
-    def monome(name)
-      @monomes[name.to_s]
+      new_monome = Monome.new(opts)
+      @monomes[opts[:name]] = new_monome
+      new_monome
     end
 
     def app(name)
       @rack.find_application_by_name(name)
+    end
+
+    def monome(name)
+      @monomes[name.to_s]
     end
 
     def monomes

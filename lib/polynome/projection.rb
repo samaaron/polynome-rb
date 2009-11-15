@@ -20,19 +20,22 @@ module Polynome
         raise ArgumentError,
         "Quadrants should be of kind Quadrants, not #{quadrants.class}"
       end
+
+
       if application.num_quadrants != quadrants.count then
         raise QuadrantCountMismatchError,
         "The number of quadrants you specified does not match " +
           "the capacity of the application you specified. "       +
           "Expected #{application.num_quadrants}, got #{quadrants.count}"
       end
+
+
       if application.interface_type == "128" && INVALID_128_APP_ROTATIONS.include?(opts[:rotation]) then
         raise RotationOrientationMismatchError,
         "The rotation you have specified (#{opts[:rotation]}) is invalid for the 128 "\
         "as it is not square like the 64 or 256 monomes. You should specify one "\
         "of the following: #{(VALID_ROTATIONS - INVALID_128_APP_ROTATIONS).inspect}."
       end
-
       @surface     = surface
       @application = application
       @quadrants   = quadrants

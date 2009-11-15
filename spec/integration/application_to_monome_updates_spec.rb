@@ -3,16 +3,14 @@ include Polynome
 describe "Application to Monome updates" do
   describe "Given a 64 monome with a 64 app" do
     before(:each) do
-      @table     = Table.new
-      @table.add_monome(:io_file => 'foo/bar', :model => "64", :name => "main")
-      @table.add_app(:model => 64, :name => "app64")
-      @monome = @table.monome("main")
-      @app64  = @table.app(:app64)
-      @surface   = @monome.carousel.fetch(:base)
+      @table   = Table.new
+      @monome  = @table.add_monome(:io_file => 'foo/bar', :model => "64", :name => "main")
+      @app64   = @table.add_app(:model => 64, :name => "app64")
+      @surface = @monome.carousel.fetch(:base)
     end
 
     it "should rotate the frame 90 with a projection rotation of 90" do
-      @surface.register_application(@app64, :rotation => 90)
+      @table.register_application("app64", :monome => "main", :surface => "base", :rotation => 90)
       @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_90)
       @app64.update_display(FrameFixtures.frame64)
       @table.send(:update_frame)
@@ -46,57 +44,60 @@ describe "Application to Monome updates" do
       @table.send(:update_frame)
     end
   end
+
+  describe "Given a 128 monome" do
+    before(:each) do
+      @table   = Table.new
+      @monome  = @table.add_monome(:io_file => 'foo/bar', :model => "128", :name => "main")
+      @surface = @monome.carousel.fetch(:base)
+    end
+
+    describe "With two 64 apps" do
+      before(:each) do
+        @app64_1 = @table.add_app(:model => 64, :name => "app64_1")
+        @app64_2 = @table.add_app(:model => 64, :name => "app64_2")
+      end
+
+      describe "When registered with the surface with no rotation in the projection" do
+        before(:each) do
+          @surface.register_application(@app64_1, :quadrant => 1)
+          @surface.register_application(@app64_2, :quadrant => 2)
+        end
+
+        it "on updating the display of the first app, should only illuminate the first frame with no rotation applied" do
+          @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64)
+          @app64_1.update_display(FrameFixtures.frame64)
+          @table.send(:update_frame)
+        end
+
+        it "on updating the display of the second app, should only illuminate the second frame with no rotation applied" do
+          @monome.should_receive(:light_quadrant).with(2, FrameFixtures.frame64)
+          @app64_2.update_display(FrameFixtures.frame64)
+          @table.send(:update_frame)
+        end
+      end
+
+      describe "When registered with the surface with one of rotation 90 and the other rotation 270 in theie projections" do
+        before(:each) do
+          @surface.register_application(@app64_1, :quadrant => 1, :rotation => 90)
+          @surface.register_application(@app64_2, :quadrant => 2, :rotation => 270)
+        end
+
+        it "on updating the display of the first app, should only illuminate the first frame with no rotation applied" do
+          @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_90)
+          @app64_1.update_display(FrameFixtures.frame64)
+          @table.send(:update_frame)
+        end
+
+        it "on updating the display of the second app, should only illuminate the second frame with no rotation applied" do
+          @monome.should_receive(:light_quadrant).with(2, FrameFixtures.frame64_270)
+          @app64_2.update_display(FrameFixtures.frame64)
+          @table.send(:update_frame)
+        end
+      end
+    end
+  end
 end
-  #end
-#
-#  describe "Given a 128 monome" do
-#    before(:each) do
-#      @monome    = Monome.new(:io_file => 'foo/bar', :model => "128")
-#      @surface   = @monome.fetch_surface(:base)
-#    end
-#
-#    describe "With two 64 apps" do
-#      before(:each) do
-#        @app64_1 = Application.new(:model => 64, :name => "app64_1")
-#        @app64_2 = Application.new(:model => 64, :name => "app64_2")
-#      end
-#
-#      describe "When registered with the surface with no rotation in the projection" do
-#        before(:each) do
-#          @surface.register_application(@app64_1, :quadrant => 1)
-#          @surface.register_application(@app64_2, :quadrant => 2)
-#        end
-#
-#        it "on updating the display of the first app, should only illuminate the first frame with no rotation applied" do
-#          @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64)
-#          @app64_1.update_display(FrameFixtures.frame64)
-#        end
-#
-#        it "on updating the display of the second app, should only illuminate the second frame with no rotation applied" do
-#          @monome.should_receive(:light_quadrant).with(2, FrameFixtures.frame64)
-#          @app64_2.update_display(FrameFixtures.frame64)
-#        end
-#      end
-#
-#      describe "When registered with the surface with one of rotation 90 and the other rotation 270 in theie projections" do
-#        before(:each) do
-#          @surface.register_application(@app64_1, :quadrant => 1, :rotation => 90)
-#          @surface.register_application(@app64_2, :quadrant => 2, :rotation => 270)
-#        end
-#
-#        it "on updating the display of the first app, should only illuminate the first frame with no rotation applied" do
-#          @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_90)
-#          @app64_1.update_display(FrameFixtures.frame64)
-#
-#        end
-#
-#        it "on updating the display of the second app, should only illuminate the second frame with no rotation applied" do
-#          @monome.should_receive(:light_quadrant).with(2, FrameFixtures.frame64_270)
-#          @app64_2.update_display(FrameFixtures.frame64)
-#        end
-#      end
-#    end
-#
 #    describe "With one 128 app" do
 #      before(:each) do
 #        @app128 = Application.new(:model => 128, :name => "app128")
