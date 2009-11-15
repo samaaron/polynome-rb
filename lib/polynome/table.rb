@@ -43,6 +43,8 @@ module Polynome
       new_monome
     end
 
+    private
+
     def app(name)
       @rack.find_application_by_name(name)
     end
@@ -58,8 +60,6 @@ module Polynome
     def apps
       @rack.applications
     end
-
-    private
 
     def update_frame
       frame_update = @frame_buffer.pop

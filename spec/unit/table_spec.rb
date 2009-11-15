@@ -8,13 +8,13 @@ describe Table do
 
   describe "#monomes" do
     it "should return an empty array before any monomes have been added" do
-      Table.new.monomes.should == []
+      Table.new.send(:monomes).should == []
     end
   end
 
   describe "apps" do
     it "should return an empty array before any applications have been added" do
-      Table.new.apps.should == []
+      Table.new.send(:apps).should == []
     end
   end
 
@@ -67,18 +67,18 @@ describe Table do
       end
 
       it "should have incremented the number of apps by 2" do
-        @table.apps.size.should == 2
+        @table.send(:apps).size.should == 2
       end
 
       it "should have created the correct 64 app" do
-        app = @table.app(:app64)
+        app = @table.send(:app, :app64)
         app.should_not be_nil
         app.name.should == "app64"
         app.num_quadrants.should == 1
       end
 
       it "should have created the correct 128 app" do
-        app = @table.app("app128")
+        app = @table.send(:app, "app128")
         app.should_not be_nil
         app.name.should == "app128"
         app.num_quadrants.should == 2
@@ -107,26 +107,26 @@ describe Table do
       end
 
       it "increment the number of monomes by 2" do
-        @table.monomes.size.should == 2
+        @table.send(:monomes).size.should == 2
       end
 
       it "should have created the correct 64 monome" do
-        monome = @table.monome(:test64)
+        monome = @table.send(:monome, :test64)
         monome.should_not be_nil
         monome.num_quadrants.should == 1
         monome.cable_orientation.should == :bottom
       end
 
       it "should have created the correct 128 monome" do
-        monome = @table.monome(:test128)
+        monome = @table.send(:monome, :test128)
         monome.should_not be_nil
         monome.num_quadrants.should == 2
         monome.cable_orientation.should == :top
       end
 
       it "should have returned the newly created monome" do
-        @test64.should == @table.monome(:test64)
-        @test128.should == @table.monome(:test128)
+        @test64.should == @table.send(:monome, :test64)
+        @test128.should == @table.send(:monome, :test128)
       end
     end
   end
