@@ -43,5 +43,9 @@ module Polynome
     def update_frame(frame_update)
       @frame_buffer.push(frame_update)
     end
+
+    def inspect
+      "Rack, #{@applications.count} applications: #{@applications.map(&:name).inspect}"
+    end
   end
 end

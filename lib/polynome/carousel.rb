@@ -56,6 +56,10 @@ module Polynome
       @surfaces.each{|surface| surface.process_frame_update(frame_update)}
     end
 
+    def inspect
+      "Carousel, #{@surfaces.size} surfaces, #{@surfaces.map(&:name).inspect}"
+    end
+
     private
 
     def validate_surface_name!(name)

@@ -20,6 +20,7 @@ module Polynome
     end
 
     def light_quadrant(quadrant_id, frame)
+
       if (quadrant_id < 1) || (quadrant_id > num_quadrants) then
         raise ArgumentError,
           "Unexpected quadrant id. Expected one of the set " +
@@ -45,6 +46,10 @@ module Polynome
 
     def process_frame_update(frame_update)
       carousel.process_frame_update(frame_update)
+    end
+
+    def inspect
+      "Monome, model: #{@model.name}, cable_orientation: #{@model.cable_orientation}, carousel: #{@carousel.inspect}"
     end
   end
 end

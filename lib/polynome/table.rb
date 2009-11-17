@@ -73,6 +73,19 @@ module Polynome
       self
     end
 
+    def start
+      @thread = Thread.new do
+        loop do
+          update_frame
+          sleep 0.01
+        end
+      end
+    end
+
+    def inspect
+      "Table, \n  monomes: #{@monomes.inspect}\n  rack: #{@rack.inspect}\n  connections: #{@connections.inspect}\n"
+    end
+
     private
 
     def app(name)
@@ -102,6 +115,10 @@ module Polynome
 
     def connections
       @connections
+    end
+
+    def frame_buffer_size
+      @frame_buffer.size
     end
   end
 end
