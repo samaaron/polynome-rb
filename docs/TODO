@@ -29,9 +29,9 @@ Polynome is in a state where frames can be created and displayed
 [*] Test projection inversion
 [*] Repurpose Rack as an application container
 [*] Create a queue for all app frame updates
-[ ] Create a consumer to pass the updates onto the correct surface
+[*] Create a consumer to pass the updates onto the correct surface
 [ ] Create a mutex-locked variable defining the current surface
-[ ] Create a dummy 64 app that updates the buffer with alternating frames
+[*] Create a dummy 64 app that updates the buffer with alternating frames
 [ ] Create a dummy 128 app that updates the buffer with alternating frames
 [*] Allow the dummy 128 app to be rotated if the device contains a sufficient number of frames
 [ ] Allow the monome to have two surfaces each containing a different app

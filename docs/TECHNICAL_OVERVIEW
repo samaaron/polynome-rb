@@ -17,6 +17,9 @@ developer think about the problems involved and break them up
 appropriately in order to divide and conquer. The following are the
 key abstractions:
 
+Table        - The virtual workspace where monomes and apps are placed
+               and connected with each other
+
 Monome       - A representation of a physical monome.
 
 Buttons      - A representation of the  physical set of buttons on a
