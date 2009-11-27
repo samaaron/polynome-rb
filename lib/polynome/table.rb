@@ -3,6 +3,7 @@ module Polynome
     class MonomeNameNotAvailableError       < StandardError ; end
     class MonomeNameNotSpecifiedError       < StandardError ; end
     class MonomeNameUnknownError            < StandardError ; end
+    class MonomeCreationError               < StandardError ; end
     class ConnectionNameAlreadyExistsError  < StandardError ; end
     class ApplicationNameUnknownError       < StandardError ; end
 
@@ -58,6 +59,13 @@ module Polynome
         "This name has already been taken. Please choose another for your monome"
       end
       new_monome = Monome.new(opts)
+
+      unless new_monome.has_real_communicator? then
+        raise MonomeCreationError,
+        "Unable to connect to the monome. Perhaps the following io_file is incorrect: "\
+        "#{opts[:io_file]}."
+      end
+
       @monomes[opts[:name].to_s] = new_monome
       self
     end

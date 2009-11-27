@@ -60,6 +60,10 @@ module Polynome
       "Monome, model: #{@model.name}, cable_orientation: #{@model.cable_orientation}, carousel: #{@carousel.inspect}".color(:blue)
     end
 
+    def has_real_communicator?
+      @communicator.is_real?
+    end
+
     def listen
       unless block_given? then
         raise ArgumentError,

@@ -82,5 +82,9 @@ module MonomeSerial
     def read
       @communicator.read
     end
+
+    def is_real?
+      MonomeSerial::SerialCommunicator::RealCommunicator ===  @communicator
+    end
   end
 end
