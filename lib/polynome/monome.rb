@@ -22,7 +22,7 @@ module Polynome
       end
 
       @name = opts[:name]
-      @model = Model.get_model(opts[:model], :landscape,  opts[:cable_orientation])
+      @model = Model.get_model(opts[:model].to_s, :landscape,  opts[:cable_orientation])
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
       @carousel = Carousel.new(self)
     end
@@ -58,6 +58,19 @@ module Polynome
 
     def inspect
       "Monome, model: #{@model.name}, cable_orientation: #{@model.cable_orientation}, carousel: #{@carousel.inspect}".color(:blue)
+    end
+
+    def listen
+      unless block_given? then
+        raise ArgumentError,
+        "Please pass me a block so I can yield the action and x,y coords on button presses"
+      end
+
+      @listen_thread = Thread.new do
+        loop do
+          yield @communicator.read
+        end
+      end
     end
   end
 end

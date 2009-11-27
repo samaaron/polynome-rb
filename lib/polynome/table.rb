@@ -76,11 +76,16 @@ module Polynome
 
     def start
       @thread = Thread.new do
+        @monomes.values.each{|monome| monome.listen{|action, x, y| puts "Action: #{action}, x: #{x}, y: #{y}"}}
+
         loop do
           update_frame
           sleep 0.01 # don't update the device faster than it can handle!
         end
+
       end
+
+
     end
 
     def inspect

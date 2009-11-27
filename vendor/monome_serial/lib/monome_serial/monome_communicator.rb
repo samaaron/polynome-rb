@@ -78,5 +78,9 @@ module MonomeSerial
     def brightness=(intensity)
       @communicator.write([brightness_pattern(intensity)])
     end
+
+    def read
+      @communicator.read
+    end
   end
 end
