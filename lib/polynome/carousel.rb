@@ -57,7 +57,7 @@ module Polynome
     end
 
     def inspect
-      "Carousel, #{@surfaces.size} surfaces, #{@surfaces.map(&:name).inspect}"
+      "Carousel, #{@surfaces.size} surfaces, #{@surfaces.map(&:name).inspect}".color(:green)
     end
 
     private

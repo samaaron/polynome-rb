@@ -26,19 +26,8 @@ module Polynome
         "Connection name already taken, please select another"
       end
 
-      unless monome then
-        raise MonomeNameUnknownError,
-        "Monome with name #{opts[:monome]} unknown. Please specify"\
-        "a name of a monme that has already been registered."
-      end
+      surface = find_or_create_surface(opts[:monome], opts[:surface])
 
-      unless app then
-        raise ApplicationNameUnknownError,
-        "Application with name #{opts[:app]} unknown. Please specify a "\
-        "name of an application has already been registered."
-      end
-
-      surface = surface(opts[:monome], opts[:surface])
       projection = surface.register_application(app, opts)
 
       @connections << {
@@ -73,35 +62,69 @@ module Polynome
       self
     end
 
+    def next_surface(monome_name)
+      monome(monome_name).carousel.next
+    end
+
+    def prev_surface(monome_name)
+      monome(monome_name).carousel.previous
+    end
+
+    def jump_to_surface(monome_name, surface_name)
+      monome(monome_name).carousel.switch_to(surface_name)
+    end
+
     def start
       @thread = Thread.new do
         loop do
           update_frame
-          sleep 0.01
+          sleep 0.01 # don't update the device faster than it can handle!
         end
       end
     end
 
     def inspect
-      "Table, \n  monomes: #{@monomes.inspect}\n  rack: #{@rack.inspect}\n  connections: #{@connections.inspect}\n"
+      connection_list = @connections.map{|conn| "name: #{conn[:name]}, app: #{conn[:app].name}, monome: #{conn[:monome].name}, surface: #{conn[:surface].name}, projection: #{conn[:projection].inspect}"}.inspect.color(:cyan)
+      "Table, \n  monomes: #{@monomes.inspect}\n  rack: #{@rack.inspect}\n  connections: #{connection_list}\n"
     end
 
     private
 
     def app(name)
-      @rack.find_application_by_name(name)
+      app = @rack.find_application_by_name(name)
+
+      unless app then
+        raise ApplicationNameUnknownError,
+        "Application with name #{name} unknown. Please specify a "\
+        "name of an application has already been registered."
+      end
+
+      return app
     end
 
     def monome(name = "main")
-      @monomes[name.to_s]
+      monome = @monomes[name.to_s]
+
+      unless monome then
+        raise MonomeNameUnknownError,
+        "Monome with name #{opts[:monome]} unknown. Please specify"\
+        "a name of a monme that has already been registered."
+      end
+
+      return monome
     end
 
     def monomes
       @monomes.values
     end
 
-    def surface(monome_name, surface_name)
-      @monomes[monome_name].carousel.fetch(surface_name)
+    def find_or_create_surface(monome_name, surface_name)
+      monome = @monomes[monome_name]
+      begin
+        return monome.carousel.fetch(surface_name)
+      rescue Surface::UnknownSurfaceError
+        return monome.carousel.add(surface_name)
+      end
     end
 
     def apps

@@ -41,5 +41,10 @@ module Polynome
       frame_update = FrameUpdate.new(self, frames)
       @frame_buffer.push(frame_update) if @frame_buffer
     end
+
+    def inspect
+      "Application, name: #{@name}, model: #{@model.name}, orientation: #{@orientation}".color(:yellow)
+    end
   end
 end
+

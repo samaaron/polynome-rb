@@ -25,7 +25,7 @@ describe Table do
       end
 
       it "should complain if the application name isn't registered" do
-        lambda{@table.connect(:app => "sooze", :monome => "test64")}.should raise_error(Table::MonomeNameUnknownError)
+        lambda{@table.connect(:app => "sooze", :monome => "test64")}.should raise_error(Table::ApplicationNameUnknownError)
       end
     end
 

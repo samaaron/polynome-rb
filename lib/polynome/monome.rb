@@ -1,19 +1,27 @@
 module Polynome
   class Monome
-    attr_reader  :model, :communicator, :carousel
+    attr_reader  :model, :communicator, :carousel, :name
 
     def initialize(opts={})
       opts.reverse_merge! :cable_orientation => :top
+      opts.reverse_merge! :name => opts[:io_file]
 
       unless opts[:io_file] then
         raise ArgumentError,
         "Polynome::Monome#initialize requires an io_file to be specified"
       end
+
       unless opts[:model] then
         raise ArgumentError,
         "Polynome::Monome#initialize requires a model to be specified"
       end
 
+      unless opts[:name] then
+        raise ArgumentError,
+        "Polynome::Monome#initialize requires a name to be specified"
+      end
+
+      @name = opts[:name]
       @model = Model.get_model(opts[:model], :landscape,  opts[:cable_orientation])
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
       @carousel = Carousel.new(self)
@@ -49,7 +57,7 @@ module Polynome
     end
 
     def inspect
-      "Monome, model: #{@model.name}, cable_orientation: #{@model.cable_orientation}, carousel: #{@carousel.inspect}"
+      "Monome, model: #{@model.name}, cable_orientation: #{@model.cable_orientation}, carousel: #{@carousel.inspect}".color(:blue)
     end
   end
 end

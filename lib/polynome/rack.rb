@@ -45,7 +45,7 @@ module Polynome
     end
 
     def inspect
-      "Rack, #{@applications.count} applications: #{@applications.map(&:name).inspect}"
+      "Rack, #{@applications.count} applications: #{@applications.map(&:name).inspect}".color(:red)
     end
   end
 end
