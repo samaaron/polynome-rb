@@ -1,11 +1,10 @@
 module Polynome
   class Carousel
-    attr_reader :current
-
     def initialize(monome)
       @surfaces = [Surface.new("base", monome)]
-      @current = @surfaces[0]
+      @current_surface = @surfaces[0]
       @monome = monome
+      @current_surface_semaphore = Mutex.new
     end
 
     def add(name)
@@ -31,21 +30,21 @@ module Polynome
 
     def switch_to(name)
       validate_surface_name!(name)
-      @current = find_surface_by_name(name)
+      self.current_surface = find_surface_by_name(name)
     end
 
     def next
-      index = find_surface_index_by_name(@current.name)
+      index = find_surface_index_by_name(current_surface.name)
       index += 1
       index = 0 if index >= @surfaces.size
-      @current = @surfaces[index]
+      self.current_surface = @surfaces[index]
     end
 
     def previous
-      index = find_surface_index_by_name(@current.name)
+      index = find_surface_index_by_name(current_surface.name)
       index -= 1
       index = @surfaces.size - 1 if index <= 0
-      @current = @surfaces[index]
+      self.current_surface = @surfaces[index]
     end
 
     def size
@@ -60,7 +59,24 @@ module Polynome
       "Carousel, #{@surfaces.size} surfaces, #{@surfaces.map(&:name).inspect}".color(:green)
     end
 
+    def current
+      #TODO remove this
+      current_surface
+    end
+
     private
+
+    def current_surface
+      @current_surface_semaphore.synchronize do
+        @current_surface
+      end
+    end
+
+    def current_surface=(surface)
+      @current_surface_semaphore.synchronize do
+        @current_surface = surface
+      end
+    end
 
     def validate_surface_name!(name)
       unless find_surface_index_by_name(name) then
@@ -75,6 +91,10 @@ module Polynome
 
     def find_surface_index_by_name(name)
       @surfaces.find_index{|surface| surface.name == name.to_s}
+    end
+
+    def receive_button_event(quadrant, action, x, y)
+      current_surface.receive_button_event(quadrant, action, x, y)
     end
   end
 end

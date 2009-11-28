@@ -34,6 +34,10 @@ describe Carousel do
       end
     end
 
+    describe "#receve_button_event" do
+
+    end
+
     describe "#remove" do
       before(:each) do
         @carousel.add(:new)
