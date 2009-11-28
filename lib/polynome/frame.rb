@@ -2,7 +2,11 @@ module Polynome
   class Frame
     attr_reader :rotation
     def initialize(binary_string)
-      raise ArgumentError, "Expected 64 bits to be used, found #{binary_string.length}" unless binary_string.length == 64
+      unless binary_string.length == 64 then
+        raise ArgumentError,
+        "Expected 64 bits to be used, found #{binary_string.length}",
+        caller
+      end
       @bit_array = convert_binary_string_to_bit_array(binary_string)
       @rotation = 0
     end

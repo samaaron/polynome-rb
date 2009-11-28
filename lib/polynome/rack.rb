@@ -17,8 +17,9 @@ module Polynome
     def <<(application)
       if name_already_registered?(application.name) then
         raise ApplicationNameInUseError,
-        "The name #{application.name} is already in use by another " +
-          "application. Please specify a unique name"
+        "The name #{application.name} is already in use by another "\
+        "application. Please specify a unique name",
+        caller
       end
 
       application.frame_buffer = @frame_buffer
@@ -31,7 +32,8 @@ module Polynome
       app = find_application_by_name(name)
       unless app then
         raise UnknownApplicationName,
-        "Unable to find an application with the name #{name}"
+        "Unable to find an application with the name #{name}",
+        caller
       end
       return app
     end

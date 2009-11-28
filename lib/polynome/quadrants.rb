@@ -76,7 +76,11 @@ module Polynome
     end
 
     def self.get_valid_quadrants(count)
-      raise QuadrantCountError, "Invalid quadrant count" unless valid_quadrant_count?(count)
+      unless valid_quadrant_count?(count) then
+        raise QuadrantCountError,
+        "Invalid quadrant count",
+        caller
+      end
 
       VALID_QUADRANT_COMBINATIONS[count].map{|combo| new(combo)}
     end
@@ -87,14 +91,16 @@ module Polynome
       if quadrant_ids.size < 1 || quadrant_ids.size > 4 || quadrant_ids.size == 3 then
         raise QuadrantCountError,
         "Too many quadrants specified. Expected 1, 2 or 4, "\
-        "got #{quadrant_ids.size}"
+        "got #{quadrant_ids.size}",
+        caller
       end
 
       quadrant_ids.each do|id|
         unless self.class.valid_quadrant_id?(id) then
           raise QuadrantIDError,
           "Unknown quadrant id. Expected one of "\
-          "(#{self.class.list_valid_quadrant_ids}), got #{id}"
+          "(#{self.class.list_valid_quadrant_ids}), got #{id}",
+          caller
         end
       end
 
@@ -103,7 +109,8 @@ module Polynome
       unless valid_quadrant_combination?(sorted_quadrant_ids) then
         raise QuadrantCombinationError,
         "Invalid quadrant combination. Got #{sorted_quadrant_ids.inspect}, "\
-        "expected one of #{all_valid_quadrant_combinations.inspect}"
+        "expected one of #{all_valid_quadrant_combinations.inspect}",
+        caller
       end
 
       @count = sorted_quadrant_ids.size
@@ -114,7 +121,8 @@ module Polynome
       if (index < -@count) || (index >= @count) then
         raise QuadrantIndexOutOfBoundsError,
         "Index out of bounds. Expected an index in "\
-        "the range (0..#{@count - 1}), got #{index}"
+        "the range (0..#{@count - 1}), got #{index}",
+        caller
       end
 
       @ids[index]

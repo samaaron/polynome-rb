@@ -21,8 +21,9 @@ module Polynome
     def light_quadrant(quadrant_id, frame)
       if (quadrant_id < 1) || (quadrant_id > @num_quadrants) then
         raise ArgumentError,
-          "Unexpected frame index. Expected one of the set " +
-          "(#{(1..@num_quadrants).to_a.join(', ')}), got #{quadrant_id}"
+        "Unexpected frame index. Expected one of the set "\
+        "(#{(1..@num_quadrants).to_a.join(', ')}), got #{quadrant_id}",
+        caller
       end
       @monome.light_quadrant(quadrant_id, frame)
     end
@@ -38,14 +39,16 @@ module Polynome
 
       unless opts[:quadrants] then
         raise ArgumentError,
-          "You must specify which quadrant(s) this application " +
-          "wishes to use on this surface"
+        "You must specify which quadrant(s) this application "\
+        "wishes to use on this surface",
+        caller
       end
       if opts[:quadrants].size > num_quadrants then
         raise SurfaceSizeError,
-          "The number of quadrants you specified exceeds the "     +
-          "capacity of this surface. Maximum number of quadrants " +
-          "supported: #{num_quadrants}, got #{opts[:quadrants].size}"
+        "The number of quadrants you specified exceeds the "\
+        "capacity of this surface. Maximum number of quadrants "\
+        "supported: #{num_quadrants}, got #{opts[:quadrants].size}",
+        caller
       end
 
       quadrants = Quadrants.new(opts[:quadrants])
@@ -63,8 +66,9 @@ module Polynome
       projection_to_remove =  find_projection_by_application_name(application_name)
       unless projection_to_remove then
         raise UnknownAppError,
-        "The application #{application_name} is not registered " +
-          "with this surface."
+        "The application #{application_name} is not registered "\
+        "with this surface.",
+        caller
       end
 
       @projections.delete_if {|_, projection| projection.application.name == application_name}
@@ -100,8 +104,9 @@ module Polynome
       quadrants.ids.each do |id|
         if @allocated_quadrants[id] then
           raise QuadrantInUseError,
-            "Sorry, this quadrant is already in use by another " +
-            "application controller"
+          "Sorry, this quadrant is already in use by another "\
+          "application controller",
+          caller
         end
       end
 

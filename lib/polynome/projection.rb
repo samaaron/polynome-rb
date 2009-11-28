@@ -15,19 +15,22 @@ module Polynome
         raise ArgumentError,
         "Invalid rotation value. Expected one of "\
         "(#{VALID_ROTATIONS.to_sentence :last_word_connector => ' or '}), "\
-        "got #{opts[:rotation]}"
+        "got #{opts[:rotation]}",
+        caller
       end
       unless quadrants.kind_of?(Quadrants) then
         raise ArgumentError,
-        "Quadrants should be of kind Quadrants, not #{quadrants.class}"
+        "Quadrants should be of kind Quadrants, not #{quadrants.class}",
+        caller
       end
 
 
       if application.num_quadrants != quadrants.count then
         raise QuadrantCountMismatchError,
-        "The number of quadrants you specified does not match " +
-          "the capacity of the application you specified. "       +
-          "Expected #{application.num_quadrants}, got #{quadrants.count}"
+        "The number of quadrants you specified does not match "\
+        "the capacity of the application you specified. "\
+        "Expected #{application.num_quadrants}, got #{quadrants.count}",
+        caller
       end
 
 
@@ -35,7 +38,8 @@ module Polynome
         raise RotationOrientationMismatchError,
         "The rotation you have specified (#{opts[:rotation]}) is invalid for the 128 "\
         "as it is not square like the 64 or 256 monomes. You should specify one "\
-        "of the following: #{(VALID_ROTATIONS - INVALID_128_APP_ROTATIONS).inspect}."
+        "of the following: #{(VALID_ROTATIONS - INVALID_128_APP_ROTATIONS).inspect}.",
+        caller
       end
       @surface     = surface
       @application = application
