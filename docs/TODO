@@ -30,9 +30,15 @@ Polynome is in a state where frames can be created and displayed
 [*] Repurpose Rack as an application container
 [*] Create a queue for all app frame updates
 [*] Create a consumer to pass the updates onto the correct surface
-[ ] Create a mutex-locked variable defining the current surface
 [*] Create a dummy 64 app that updates the buffer with alternating frames
-[ ] Create a dummy 128 app that updates the buffer with alternating frames
 [*] Allow the dummy 128 app to be rotated if the device contains a sufficient number of frames
+[*] Create a dummy 128 app that updates the buffer with alternating frames
+[ ] Find out which quadrant the button press is within *(FOR 256)*
+[ ] Find out which app has a projection on that quadrant
+[ ] If no app has a projection, ignore the event
+[ ] Map the coords based on the projection's placement and rotation
+[ ] Send event to application
+[ ] Route incoming button presses to the correct application with the correct rotation and translation
+[ ] Create a mutex-locked variable defining the current surface
 [ ] Allow the monome to have two surfaces each containing a different app
 [ ] Allow switching between surfaces - for each app on the surface, update surface

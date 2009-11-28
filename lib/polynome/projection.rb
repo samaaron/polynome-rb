@@ -13,8 +13,9 @@ module Polynome
 
       unless VALID_ROTATIONS.include?(opts[:rotation]) then
         raise ArgumentError,
-        "Invalid rotation #{opts[:rotation]}, expected " +
-          "#{VALID_ROTATIONS.to_sentence :last_word_connector => ' or'}."
+        "Invalid rotation value. Expected one of "\
+        "(#{VALID_ROTATIONS.to_sentence :last_word_connector => ' or '}), "\
+        "got #{opts[:rotation]}"
       end
       unless quadrants.kind_of?(Quadrants) then
         raise ArgumentError,

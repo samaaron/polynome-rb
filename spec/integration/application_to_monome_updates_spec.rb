@@ -3,7 +3,7 @@ include Polynome
 describe "Application to Monome updates" do
   describe "Given a 64 monome with a 64 app" do
     before(:each) do
-      @table   = Table.new
+      @table   = Table.new(:ignore_connection_validity => true)
       @table.add_monome(:io_file => 'foo/bar', :model => "64")
       @table.add_app(:model => 64, :name => "app64")
       @monome = @table.send(:monome, "main")
@@ -48,7 +48,7 @@ describe "Application to Monome updates" do
 
   describe "Given a 128 monome" do
     before(:each) do
-      @table   = Table.new
+      @table   = Table.new(:ignore_connection_validity => true)
       @table.add_monome(:io_file => 'foo/bar', :model => "128")
       @monome = @table.send(:monome)
     end

@@ -65,16 +65,34 @@ module Polynome
     end
 
     def listen
-      unless block_given? then
-        raise ArgumentError,
-        "Please pass me a block so I can yield the action and x,y coords on button presses"
-      end
-
       @listen_thread = Thread.new do
         loop do
-          yield @communicator.read
+          receive_button_event(*@communicator.read)
         end
       end
+    end
+
+    def add_app(app)
+      #TODO remove this when possible!
+      @app = app
+    end
+
+    def receive_button_event(action, x, y)
+      quadrant = button_quadrant(x,y)
+
+      if @app
+        #temporarily here because it's nice to demo it working to
+        #myself for kicks!
+        @app.update_display(FrameFixtures.frame64)   if action == :keydown
+        @app.update_display(FrameFixtures.blank) if action == :keyup
+        puts "#{name}: #{action} - [x: #{x}, y:#{y}], quadrant: #{model.send(:raw_button_quadrant, x, y)}"
+      else
+        @carousel.receive_button_event(quadrant, action, x, y)
+      end
+    end
+
+    def button_quadrant(x,y)
+      model.button_quadrant(x,y)
     end
   end
 end

@@ -21,7 +21,7 @@ describe Table do
   describe "#connect" do
     describe "erroneously" do
       before(:each) do
-        @table = Table.new
+        @table = Table.new(:ignore_connection_validity => true)
       end
 
       it "should complain if the application name isn't registered" do
@@ -31,7 +31,7 @@ describe Table do
 
     describe "successfully (with default opts)" do
       before(:each) do
-        @table = Table.new
+        @table = Table.new(:ignore_connection_validity => true)
         @table.add_app(:model => 64,  :name => "app64")
         @table.add_monome(:io_file => 'foo/bar', :model => "64", :cable_orientation => :bottom, :name => "test64")
         @table.send(:connections).size.should == 0
@@ -60,7 +60,7 @@ describe Table do
 
     describe "successfully (with a rotation of 90)" do
       before(:each) do
-        @table = Table.new
+        @table = Table.new(:ignore_connection_validity => true)
         @table.add_app(:model => 64,  :name => "app64")
         @table.add_monome(:io_file => 'foo/bar', :model => "64", :cable_orientation => :bottom, :name => "test64")
         @table.send(:connections).size.should == 0
@@ -80,7 +80,7 @@ end
 describe "#add_app" do
   describe "successfully adding a 64 and 128 app" do
     before(:each) do
-      @table = Table.new
+      @table = Table.new(:ignore_connection_validity => true)
       @table.add_app(:model => 64,  :name => "app64")
       @table.add_app(:model => 128, :name => :app128)
     end
@@ -106,7 +106,7 @@ describe "#add_app" do
 
   describe "when adding two apps with the same name" do
     it "should raise a duplicate app name error" do
-      @table = Table.new
+      @table = Table.new(:ignore_connection_validity => true)
       lambda{@table.add_app(:model => 64,  :name => "app64")}.should_not raise_error
       lambda{@table.add_app(:model => 128, :name => :app64)}.should raise_error(Rack::ApplicationNameInUseError)
     end
@@ -116,7 +116,7 @@ describe "#add_app" do
 
   describe "#add_monome" do
     it "should raise an error if the name already exists" do
-      table = Table.new
+      table = Table.new(:ignore_connection_validity => true)
       lambda{table.add_monome(:io_file => 'baz/quux', :model => "64",  :name => "fred")}.should_not raise_error
       lambda{table.add_monome(:io_file => 'foo/bar',  :model => "64",  :name => "fred")}.should raise_error(Table::MonomeNameNotAvailableError)
     end
@@ -125,7 +125,7 @@ end
 
 describe "successfully adding a 64 and 128 monome" do
   before(:each) do
-    @table = Table.new
+    @table = Table.new(:ignore_connection_validity => true)
     @table.add_monome(:io_file => 'foo/bar', :model => "64", :cable_orientation => :bottom, :name => "test64")
     @table.add_monome(:io_file => 'baz/quux', :model => "128", :cable_orientation => :top, :name => "test128")
   end

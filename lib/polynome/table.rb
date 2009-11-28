@@ -7,7 +7,8 @@ module Polynome
     class ConnectionNameAlreadyExistsError  < StandardError ; end
     class ApplicationNameUnknownError       < StandardError ; end
 
-    def initialize
+    def initialize(opts={})
+      @ignore_connection_validity = opts[:ignore_connection_validity]
       @frame_buffer = SizedQueue.new(Defaults::FRAME_BUFFER_SIZE)
       @rack = Rack.new(@frame_buffer)
       @monomes = {}
@@ -58,9 +59,10 @@ module Polynome
         raise MonomeNameNotAvailableError,
         "This name has already been taken. Please choose another for your monome"
       end
+
       new_monome = Monome.new(opts)
 
-      unless new_monome.has_real_communicator? then
+      unless new_monome.has_real_communicator? || @ignore_connection_validity then
         raise MonomeCreationError,
         "Unable to connect to the monome. Perhaps the following io_file is incorrect: "\
         "#{opts[:io_file]}."
@@ -84,7 +86,7 @@ module Polynome
 
     def start
       @thread = Thread.new do
-        @monomes.values.each{|monome| monome.listen{|action, x, y| puts "Action: #{action}, x: #{x}, y: #{y}"}}
+        @monomes.values.each{|monome| monome.listen}
 
         loop do
           update_frame

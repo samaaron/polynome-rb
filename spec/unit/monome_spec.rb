@@ -54,24 +54,26 @@ describe Monome do
         @monome = Monome.new(:io_file => 'foo/bar', :model => "256", :cable_orientation => :top)
       end
 
-      it "should map and rotate a frame in quadrant 1 to quadrant 3 with rotation 270" do
-        @comm.should_receive(:illuminate_frame).with(3, FrameFixtures.bit_array256_1_270)
-        @monome.light_quadrant(1, FrameFixtures.frame256_1)
-      end
+      describe "Lighting the device" do
+        it "should map and rotate a frame in quadrant 1 to quadrant 3 with rotation 270" do
+          @comm.should_receive(:illuminate_frame).with(3, FrameFixtures.bit_array256_1_270)
+          @monome.light_quadrant(1, FrameFixtures.frame256_1)
+        end
 
-      it "should map and rotate a frame in quadrant 2 to quadrant 1 with rotation 270" do
-        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array256_2_270)
-        @monome.light_quadrant(2, FrameFixtures.frame256_2)
-      end
+        it "should map and rotate a frame in quadrant 2 to quadrant 1 with rotation 270" do
+          @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array256_2_270)
+          @monome.light_quadrant(2, FrameFixtures.frame256_2)
+        end
 
-      it "should map and rotate a frame in quadrant 3 to quadrant 4 with rotation 270" do
-        @comm.should_receive(:illuminate_frame).with(4, FrameFixtures.bit_array256_3_270)
-        @monome.light_quadrant(3, FrameFixtures.frame256_3)
-      end
+        it "should map and rotate a frame in quadrant 3 to quadrant 4 with rotation 270" do
+          @comm.should_receive(:illuminate_frame).with(4, FrameFixtures.bit_array256_3_270)
+          @monome.light_quadrant(3, FrameFixtures.frame256_3)
+        end
 
-      it "should map and rotate a frame in quadrant 4 to quadrant 2 with rotation 270" do
-        @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array256_4_270)
-        @monome.light_quadrant(4, FrameFixtures.frame256_4)
+        it "should map and rotate a frame in quadrant 4 to quadrant 2 with rotation 270" do
+          @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array256_4_270)
+          @monome.light_quadrant(4, FrameFixtures.frame256_4)
+        end
       end
     end
 
@@ -162,6 +164,36 @@ describe Monome do
         @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64)
         @monome.light_quadrant(1, FrameFixtures.frame64)
       end
+
+      describe "Receiving button presses" do
+        it "should know that a button press of 0,0 is in quadrant 1" do
+          @monome.button_quadrant(0,0).should == 1
+        end
+
+        it "should know that a button press of 5,5 is in quadrant 1" do
+          @monome.button_quadrant(5,5).should == 1
+        end
+
+        it "should know that a button press of 7,7 is in quadrant 1" do
+          @monome.button_quadrant(7,7).should == 1
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(8,3)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(3,8)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(-1,2)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(2,-1)}.should raise_error(Model::InvalidButtonCoord)
+        end
+      end
     end
 
     describe "With a 64 with cable orientation right" do
@@ -172,6 +204,36 @@ describe Monome do
       it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 270" do
         @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64_270)
         @monome.light_quadrant(1, FrameFixtures.frame64)
+      end
+
+      describe "Receiving button presses" do
+        it "should know that a button press of 0,0 is in quadrant 1" do
+          @monome.button_quadrant(0,0).should == 1
+        end
+
+        it "should know that a button press of 5,5 is in quadrant 1" do
+          @monome.button_quadrant(5,5).should == 1
+        end
+
+        it "should know that a button press of 7,7 is in quadrant 1" do
+          @monome.button_quadrant(7,7).should == 1
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(8,3)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(3,8)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(-1,2)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(2,-1)}.should raise_error(Model::InvalidButtonCoord)
+        end
       end
     end
 
@@ -184,6 +246,36 @@ describe Monome do
         @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64_180)
         @monome.light_quadrant(1, FrameFixtures.frame64)
       end
+
+      describe "Receiving button presses" do
+        it "should know that a button press of 0,0 is in quadrant 1" do
+          @monome.button_quadrant(0,0).should == 1
+        end
+
+        it "should know that a button press of 5,5 is in quadrant 1" do
+          @monome.button_quadrant(5,5).should == 1
+        end
+
+        it "should know that a button press of 7,7 is in quadrant 1" do
+          @monome.button_quadrant(7,7).should == 1
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(8,3)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(3,8)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(-1,2)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(2,-1)}.should raise_error(Model::InvalidButtonCoord)
+        end
+      end
     end
 
     describe "With a 64 with cable orientation left" do
@@ -195,22 +287,88 @@ describe Monome do
         @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64_90)
         @monome.light_quadrant(1, FrameFixtures.frame64)
       end
-    end
 
+      describe "Receiving button presses" do
+        it "should know that a button press of 0,0 is in quadrant 1" do
+          @monome.button_quadrant(0,0).should == 1
+        end
+
+        it "should know that a button press of 5,5 is in quadrant 1" do
+          @monome.button_quadrant(5,5).should == 1
+        end
+
+        it "should know that a button press of 7,7 is in quadrant 1" do
+          @monome.button_quadrant(7,7).should == 1
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(8,3)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(3,8)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(-1,2)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(2,-1)}.should raise_error(Model::InvalidButtonCoord)
+        end
+      end
+    end
 
     describe "With a 128 with cable orientation top" do
       before(:each) do
         @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_orientation => :top)
       end
 
-      it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 0" do
-        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_1)
-        @monome.light_quadrant(1, FrameFixtures.frame128_1)
+      describe "Illumniation" do
+        it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 0" do
+          @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_1)
+          @monome.light_quadrant(1, FrameFixtures.frame128_1)
+        end
+
+
+        it "should map and rotate a frame in quadrant 2 to quadrant 2 with rotation 0" do
+          @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array128_2)
+          @monome.light_quadrant(2, FrameFixtures.frame128_2)
+        end
       end
 
-      it "should map and rotate a frame in quadrant 2 to quadrant 2 with rotation 0" do
-        @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array128_2)
-        @monome.light_quadrant(2, FrameFixtures.frame128_2)
+      describe "Receiving button presses" do
+        it "should know that a button press of 0,0 is in quadrant 1" do
+          @monome.button_quadrant(0,0).should == 1
+        end
+
+        it "should know that a button press of 5,5 is in quadrant 1" do
+          @monome.button_quadrant(5,5).should == 1
+        end
+
+        it "should know that a button press of 8,7 is in quadrant 2" do
+          @monome.button_quadrant(8,7).should == 2
+        end
+
+        it "should know that a button press of 15,7 is in quadrant 1" do
+          @monome.button_quadrant(15,7).should == 2
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(15,8)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(16,7)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(-1,2)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(2,-1)}.should raise_error(Model::InvalidButtonCoord)
+        end
       end
     end
 
@@ -228,6 +386,40 @@ describe Monome do
         @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_2_180)
         @monome.light_quadrant(2, FrameFixtures.frame128_2)
       end
+
+      describe "Receiving button presses" do
+        it "should know that a button press of 0,0 is in quadrant 2" do
+          @monome.button_quadrant(0,0).should == 2
+        end
+
+        it "should know that a button press of 5,5 is in quadrant 2" do
+          @monome.button_quadrant(5,5).should == 2
+        end
+
+        it "should know that a button press of 8,7 is in quadrant 1" do
+          @monome.button_quadrant(8,7).should == 1
+        end
+
+        it "should know that a button press of 15,7 is in quadrant 1" do
+          @monome.button_quadrant(15,7).should == 1
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(15,8)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(16,7)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(-1,2)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(2,-1)}.should raise_error(Model::InvalidButtonCoord)
+        end
+      end
     end
 
     describe "With a 128 with cable orientation left" do
@@ -244,6 +436,40 @@ describe Monome do
         @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_2_90)
         @monome.light_quadrant(2, FrameFixtures.frame128_2)
       end
+
+      describe "Receiving button presses" do
+        it "should know that a button press of 0,0 is in quadrant 2" do
+          @monome.button_quadrant(0,0).should == 2
+        end
+
+        it "should know that a button press of 5,5 is in quadrant 2" do
+          @monome.button_quadrant(5,5).should == 2
+        end
+
+        it "should know that a button press of 8,7 is in quadrant 1" do
+          @monome.button_quadrant(8,7).should == 1
+        end
+
+        it "should know that a button press of 15,7 is in quadrant 1" do
+          @monome.button_quadrant(15,7).should == 1
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(15,8)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(16,7)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(-1,2)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(2,-1)}.should raise_error(Model::InvalidButtonCoord)
+        end
+      end
     end
 
     describe "With a 128 with cable orientation right" do
@@ -259,6 +485,40 @@ describe Monome do
       it "should map and rotate a frame in quadrant 2 to quadrant 2 with rotation 270" do
         @comm.should_receive(:illuminate_frame).with(2, FrameFixtures.bit_array128_2_270)
         @monome.light_quadrant(2, FrameFixtures.frame128_2)
+      end
+
+      describe "Receiving button presses" do
+        it "should know that a button press of 0,0 is in quadrant 1" do
+          @monome.button_quadrant(0,0).should == 1
+        end
+
+        it "should know that a button press of 5,5 is in quadrant 1" do
+          @monome.button_quadrant(5,5).should == 1
+        end
+
+        it "should know that a button press of 8,7 is in quadrant 2" do
+          @monome.button_quadrant(8,7).should == 2
+        end
+
+        it "should know that a button press of 15,7 is in quadrant 1" do
+          @monome.button_quadrant(15,7).should == 2
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(15,8)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(16,7)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(-1,2)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(2,-1)}.should raise_error(Model::InvalidButtonCoord)
+        end
       end
     end
   end

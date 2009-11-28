@@ -1,6 +1,7 @@
 module Polynome
   class Model
     class InvalidOrientation < Exception ; end
+    class InvalidButtonCoord < Exception ; end
 
     VALID_CABLE_ORIENTATIONS   = [:top, :bottom, :left, :right]
     DEFAULT_VALID_ORIENTATIONS = [:landscape]
@@ -80,6 +81,10 @@ module Polynome
           "#{orientations.inspect}"
       end
     end
+
+    def button_quadrant(x,y)
+      default_map_quadrant_according_to_device_offset_and_cable_orientation(raw_button_quadrant(x,y))
+    end
   end
 
   class FourtyH < Model
@@ -94,6 +99,18 @@ module Polynome
       @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
       @device_orientation_offset = 0
     end
+
+    private
+
+    def raw_button_quadrant(x,y)
+      if    (y <= 7 && x <= 7 && x >= 0 && y >= 0)
+        1
+      else
+        raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
+        "(#{x}, #{y}) are invalid for this device. Expected x coord in the "\
+        "range (0..7) and y coord in the range (0..7)."
+      end
+    end
   end
 
   class SixtyFour < Model
@@ -107,6 +124,18 @@ module Polynome
       @num_quadrants             = 1
       @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
       @device_orientation_offset = 0
+    end
+
+    private
+
+    def raw_button_quadrant(x,y)
+      if    (y <= 7 && x <= 7 && x >= 0 && y >= 0)
+        1
+      else
+        raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
+        "(#{x}, #{y}) are invalid for this device. Expected x coord in the "\
+        "range (0..7) and y coord in the range (0..7)."
+      end
     end
   end
 
@@ -137,6 +166,19 @@ module Polynome
     end
 
     private
+
+    def raw_button_quadrant(x,y)
+      if    (y <= 7 && x <= 7 && x >= 0 && y >= 0)
+        1
+      elsif (y <= 7 && x <= 15 && x >= 8 && y >= 0)
+        2
+      else
+        raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
+        "(#{x}, #{y}) are invalid for this device. Expected x coord in the "\
+        "range (0..15) and y coord in the range (0..7)."
+      end
+    end
+
     def swap_quadrant_ids(quadrant_id, quadrants)
       unless quadrants.include? quadrant_id then
         raise ArgumentError,
