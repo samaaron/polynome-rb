@@ -10,11 +10,12 @@ class OvertoneController
   include Polynome
 
   def initialize
-    monome_io_file = "/dev/ttyUSB0"
+    #monome_io_file = "/dev/ttyUSB0"
+    monome_io_file = "/dev/tty.usbserial-m256-203"
     monome_model   = "256"
 
     @monome = MonomeSerial::MonomeCommunicator.new(monome_io_file)
-    @synth = OSCSender.new(1234)
+    @synth = OSCSender.new(1234, :host => "192.168.0.11")
   end
 
   def start
@@ -22,7 +23,12 @@ class OvertoneController
       loop do
         action, x, y = @monome.read
         puts [action, x, y].inspect
-        @synth.send("/hit", x, y) if action == :keydown
+        if action == :keydown
+          @synth.send("/hit", x, y)
+          @monome.illuminate_lamp(x,y)
+        else
+          @monome.extinguish_lamp(x,y)
+        end
       end
     end
   end
