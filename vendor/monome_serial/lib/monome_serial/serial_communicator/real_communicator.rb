@@ -7,11 +7,11 @@ module MonomeSerial
         #make sure tty_path exists (such as "/dev/tty.usbserial-m256-203")
         raise ArgumentError, "path to tty IO file does not exist" unless File.exists?(tty_path)
 
-        match = tty_path.match /m(\d+)-(\d+)/
-        @model = match[1]
+        #match = tty_path.match /m(\d+)-(\d+)/
+        #@model = match[1]
 
         #pull out this Monome's individual serial number
-        @serial = match[2]
+        #@serial = match[2]
 
         #Open up the virtual serial port
         @dev = dev_open(tty_path)

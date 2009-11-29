@@ -39,5 +39,5 @@ task :compile_termios do
   extensions_dir = File.expand_path(File.dirname(__FILE__) + "/vendor/extensions/#{RUBY_ENGINE}-#{RUBY_VERSION}-#{RUBY_PLATFORM}")
 
   `mkdir -p #{extensions_dir}`
-  `#{cd_to_termios_dir} ; #{ruby_cmd} extconf.rb ; make clean ; make ; mv *.bundle #{extensions_dir}`
+  `#{cd_to_termios_dir} ; #{ruby_cmd} extconf.rb ; make clean ; make ; mv -f *.bundle *.so #{extensions_dir}`
 end
