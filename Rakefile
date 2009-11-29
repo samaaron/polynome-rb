@@ -28,7 +28,7 @@ end
 
 desc "Run the specs under spec and mention which Ruby version is currently running"
 task :spec => [:spec_main] do
-  puts "(Interpreted with #{Gem.ruby_engine}, version #{Gem.ruby_version})\n\n"
+  puts "(Interpreted with #{RUBY_ENGINE}, version #{RUBY_VERSION})\n\n"
 end
 
 
