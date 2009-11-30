@@ -1,5 +1,6 @@
 #require standard libraries
 require 'thread'
+Thread.abort_on_exception = true
 
 #make sure vendored stuff takes priority in the loadpath
 Dir[File.dirname(__FILE__) + '/../vendor/*/lib'].each {|lib|  $:.unshift lib}
