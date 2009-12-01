@@ -10,3 +10,6 @@
 [submodule "vendor/arika-ruby-termios"]
 	path = vendor/arika-ruby-termios
 	url = git://github.com/arika/ruby-termios.git
+[submodule "vendor/monome_serial"]
+	path = vendor/monome_serial
+	url = git://github.com/samaaron/monome_serial.git
