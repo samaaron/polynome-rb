@@ -1,4 +1,3 @@
-require 'termios'
 module MonomeSerial
   module SerialCommunicator
     class RealCommunicator < Communicator
