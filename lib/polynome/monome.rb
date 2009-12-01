@@ -79,7 +79,6 @@ module Polynome
 
     def receive_button_event(action, x, y)
       quadrant = button_quadrant(x,y)
-
       if @app
         #temporarily here because it's nice to demo it working to
         #myself for kicks!

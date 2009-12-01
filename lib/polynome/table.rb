@@ -94,8 +94,6 @@ module Polynome
         end
 
       end
-
-
     end
 
     def inspect
