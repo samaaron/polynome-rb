@@ -42,8 +42,8 @@ module Polynome
       @device_orientation_offset + cable_orientation_offset
     end
 
-    def default_map_quadrant_according_to_device_offset_and_cable_orientation(quadrant_id)
-       map_quadrant(quadrant_id, default_quadrants, offset)
+    def default_map_quadrant_according_to_device_offset_and_cable_orientation(quadrant_id, debug=false)
+       map_quadrant(quadrant_id, default_quadrants, offset, debug)
     end
 
     def default_rotate_frame_according_to_device_offset_and_cable_orientation(frame)
@@ -83,7 +83,7 @@ module Polynome
     end
 
     def button_quadrant(x,y)
-      default_map_quadrant_according_to_device_offset_and_cable_orientation(raw_button_quadrant(x,y))
+      map_quadrant(raw_button_quadrant(x,y), default_quadrants, cable_orientation_offset, true)
     end
   end
 
@@ -168,10 +168,11 @@ module Polynome
     private
 
     def raw_button_quadrant(x,y)
+      #return quadrant as if cable was at top
       if    (y <= 7 && x <= 7 && x >= 0 && y >= 0)
-        1
+        1 #left
       elsif (y <= 7 && x <= 15 && x >= 8 && y >= 0)
-        2
+        2 #right
       else
         raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
         "(#{x}, #{y}) are invalid for this device. Expected x coord in the "\
@@ -210,13 +211,40 @@ module Polynome
       @device_orientation_offset = 3
     end
 
-    def map_quadrant(quadrant_id, quadrants,  positive_rotational_offset)
+    def map_quadrant(quadrant_id, quadrants,  positive_rotational_offset, clockwise_rotation = false)
       #ignore quadrants
+
+      #currently I have to handle button presses in clockwise rotation
+      #and frame displays in anticlockwise rotation
+      #this really suggests this code is due for a major
+      #refactoring ;-)
+      offset = -positive_rotational_offset if clockwise_rotation
+
       clockwise_quadrant_order = [1,2,4,3]
       index = clockwise_quadrant_order.index(quadrant_id)
       new_index = (index + positive_rotational_offset) % 4
       result = clockwise_quadrant_order[new_index]
       result
+    end
+
+    private
+
+
+    def raw_button_quadrant(x,y)
+      #return quadrant number as if cable is at top
+      if (y <= 7 && x <= 7 && x >= 0 && y >= 0)
+        2 # top left
+      elsif (y <= 7 && x <= 15 && x >= 8 && y >= 0)
+        4 #top right
+      elsif (y <= 15 && x <= 15 && x >= 8 && y >= 8)
+        3 #bottom left
+      elsif (y <= 15 && x <= 7 && x >= 0 && y >= 8)
+        1 #bottom right
+      else
+        raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
+        "(#{x}, #{y}) are invalid for this device. Expected x coord in the "\
+        "range (0..15) and y coord in the range (0..15)."
+      end
     end
   end
 end
