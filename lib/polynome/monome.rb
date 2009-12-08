@@ -84,7 +84,8 @@ module Polynome
         #myself for kicks!
         @app.update_display(FrameFixtures.frame64)   if action == :keydown
         @app.update_display(FrameFixtures.blank) if action == :keyup
-        puts "#{name}: #{action} - [x: #{x}, y:#{y}], raw: #{model.send(:raw_button_quadrant, x,y)}, mapped: #{button_quadrant(x,y)}"
+        m_x, m_y = mapped_coords(x,y)
+        puts "#{name}: #{action} - [x: #{x}, y:#{y}], mapped: [x: #{m_x}, y:#{m_y}], raw: #{model.send(:raw_button_quadrant, x,y)}, mapped: #{button_quadrant(x,y)}"
       else
         @carousel.receive_button_event(quadrant, action, x, y)
       end
@@ -92,6 +93,10 @@ module Polynome
 
     def button_quadrant(x,y)
       model.button_quadrant(x,y)
+    end
+
+    def mapped_coords(x,y)
+      mapped_x, mapped_y = model.map_coords_based_on_rotation(x,y)
     end
 
     def quadrant_projection(quadrant_id)

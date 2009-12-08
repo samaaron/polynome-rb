@@ -60,6 +60,10 @@ module Polynome
       quadrant_id
     end
 
+    def map_coords_based_on_rotation(x,y)
+      return *[x,y]
+    end
+
     def default_quadrants
       (1..@num_quadrants).to_a
     end
