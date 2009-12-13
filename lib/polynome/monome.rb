@@ -8,17 +8,20 @@ module Polynome
 
       unless opts[:io_file] then
         raise ArgumentError,
-        "Polynome::Monome#initialize requires an io_file to be specified"
+        "Polynome::Monome#initialize requires an io_file to be specified",
+        caller
       end
 
       unless opts[:model] then
         raise ArgumentError,
-        "Polynome::Monome#initialize requires a model to be specified"
+        "Polynome::Monome#initialize requires a model to be specified",
+        caller
       end
 
       unless opts[:name] then
         raise ArgumentError,
-        "Polynome::Monome#initialize requires a name to be specified"
+        "Polynome::Monome#initialize requires a name to be specified",
+        caller
       end
 
       @name = opts[:name]
@@ -31,8 +34,9 @@ module Polynome
 
       if (quadrant_id < 1) || (quadrant_id > num_quadrants) then
         raise ArgumentError,
-          "Unexpected quadrant id. Expected one of the set " +
-          "#{(1..num_quadrants).to_a.join(', ')}, got #{quadrant_id}"
+        "Unexpected quadrant id. Expected one of the set "/
+        "#{(1..num_quadrants).to_a.join(', ')}, got #{quadrant_id}",
+        caller
       end
 
       @model.default_rotate_frame_according_to_device_offset_and_cable_orientation(frame)
