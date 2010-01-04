@@ -1,4 +1,4 @@
-module Polynome
+ module Polynome
   class Model
     class InvalidOrientation < Exception ; end
     class InvalidButtonCoord < Exception ; end
@@ -14,7 +14,7 @@ module Polynome
       when "64"  then return SixtyFour.new(orientation, cable_orientation)
       when "128" then return OneTwentyEight.new(orientation, cable_orientation)
       when "256" then return TwoFiftySix.new(orientation, cable_orientation)
-      else raise ArgumentError, "Unknown monome model type: #{model}"
+      else raise ArgumentError, "Unknown monome model type: #{model}", caller
       end
     end
 
@@ -31,7 +31,8 @@ module Polynome
       unless self.class.valid_cable_orientation?(cable_orientation) then
         raise ArgumentError,
         "Unknown cable orientation: #{cable_orientation}, "\
-        "expected #{self.class.list_possible_cable_orientations}"
+        "expected #{self.class.list_possible_cable_orientations}",
+        caller
       end
 
       @cable_orientation = cable_orientation
@@ -43,7 +44,7 @@ module Polynome
     end
 
     def default_map_quadrant_according_to_device_offset_and_cable_orientation(quadrant_id, debug=false)
-       map_quadrant(quadrant_id, default_quadrants, offset, debug)
+       map_quadrant(quadrant_id, default_quadrants, offset)
     end
 
     def default_rotate_frame_according_to_device_offset_and_cable_orientation(frame)
@@ -61,7 +62,8 @@ module Polynome
     end
 
     def map_coords_based_on_rotation(x,y)
-      return *[x,y]
+      #return *[x,y]
+      raise "I'd like to be implemented please"
     end
 
     def default_quadrants
@@ -74,20 +76,21 @@ module Polynome
       when :right  then 3
       when :bottom then 2
       when :left   then 1
-      else  raise ArgumentError, "Uknown cable orientation. Expected #{CABLE_ORIENTATIONS.inspect}, got #{orientation}"
+      else  raise ArgumentError, "Uknown cable orientation. Expected #{CABLE_ORIENTATIONS.inspect}, got #{orientation}", caller
       end
     end
 
     def validate_orientation!(orientations = DEFAULT_VALID_ORIENTATIONS)
       unless orientations.include?(@orientation) then
         raise InvalidOrientation,
-        "Invalid orientation: #{@orientation}. Was expecting one of " +
-          "#{orientations.inspect}"
+        "Invalid orientation: #{@orientation}. Was expecting one of "\
+        "#{orientations.inspect}",
+        caller
       end
     end
 
     def button_quadrant(x,y)
-      map_quadrant(raw_button_quadrant(x,y), default_quadrants, cable_orientation_offset, true)
+      raise "Please implement me"
     end
   end
 
@@ -104,15 +107,14 @@ module Polynome
       @device_orientation_offset = 0
     end
 
-    private
-
-    def raw_button_quadrant(x,y)
-      if    (y <= 7 && x <= 7 && x >= 0 && y >= 0)
+    def button_quadrant(x,y)
+      if (y <= 8 && x <= 8 && x >= 1 && y >= 1)
         1
       else
         raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
-        "(#{x}, #{y}) are invalid for this device. Expected x coord in the "\
-        "range (0..7) and y coord in the range (0..7)."
+        "(#{x}, #{y}) are invalid for the 64. Expected x coord in the "\
+        "range (1..8) and y coord in the range (1..8).",
+        caller
       end
     end
   end
@@ -130,15 +132,14 @@ module Polynome
       @device_orientation_offset = 0
     end
 
-    private
-
-    def raw_button_quadrant(x,y)
-      if    (y <= 7 && x <= 7 && x >= 0 && y >= 0)
+    def button_quadrant(x,y)
+      if (y <= 8 && x <= 8 && x >= 1 && y >= 1)
         1
       else
         raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
-        "(#{x}, #{y}) are invalid for this device. Expected x coord in the "\
-        "range (0..7) and y coord in the range (0..7)."
+        "(#{x}, #{y}) are invalid for the 64. Expected x coord in the "\
+        "range (1..8) and y coord in the range (1..8).",
+        caller
       end
     end
   end
@@ -169,32 +170,47 @@ module Polynome
       end
     end
 
-    private
-
-    def raw_button_quadrant(x,y)
-      #return quadrant as if cable was at top
-      if    (y <= 7 && x <= 7 && x >= 0 && y >= 0)
-        1 #left
-      elsif (y <= 7 && x <= 15 && x >= 8 && y >= 0)
-        2 #right
-      else
-        raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
-        "(#{x}, #{y}) are invalid for this device. Expected x coord in the "\
-        "range (0..15) and y coord in the range (0..7)."
+    def button_quadrant(x,y)
+      if @orientation == :landscape
+        if (y <= 8 && x <= 8 && x >= 1 && y >= 1)
+          1 #left
+        elsif (y <= 8 && x <= 16 && x >= 9 && y >= 1)
+          2 #right
+        else
+          raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
+          "(#{x}, #{y}) are invalid for the 128 in orientation landscape. "\
+          "Expected x coord in the range (1..16) and y coord in the range (1..8).",
+          caller
+        end
+      else #in portrait orientation
+        if (y <= 8 && x <= 8 && x >= 1 && y >= 1)
+          2 #bottom
+        elsif (y <= 16 && x <= 8 && x >= 1 && y >= 9)
+          1 #top
+        else
+          raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
+          "(#{x}, #{y}) are invalid for the 128 in orientation portrait. "\
+          "Expected x coord in the range (1..8) and y coord in the range (1..16).",
+          caller
+        end
       end
     end
+
+    private
 
     def swap_quadrant_ids(quadrant_id, quadrants)
       unless quadrants.include? quadrant_id then
         raise ArgumentError,
         "Unexpected quadrant id. Expected one of "\
-        "#{quadrants.inspect}, got #{quadrant_id}"
+        "#{quadrants.inspect}, got #{quadrant_id}",
+        caller
       end
 
       unless quadrants.size == 2 then
         raise ArgumentError,
         "Expected quadrants for a 128 model to have only two elements. "\
-        "Found #{quadrants.size}"
+        "Found #{quadrants.size}",
+        caller
       end
 
       index = quadrants.index(quadrant_id)
@@ -231,23 +247,31 @@ module Polynome
       result
     end
 
-    private
+    def map_coords_based_on_rotation(x,y)
+      case @cable_orientation
+      when :top then x,y = y,x ; y = 16 - y ; x = 16 - x ; return x,y
+      when :bottom then  x += 1 ; y += 1 ; return y,x
+      when :left then y = 16 - y ; x += 1 ; return x,y
+      when :right then x = 16 - x ; y += 1 ; return x,y
+      else raise "Unknown cable orientation: #{@cable_orientation}"
+      end
+    end
 
-
-    def raw_button_quadrant(x,y)
+    def button_quadrant(x,y)
       #return quadrant number as if cable is at top
-      if (y <= 7 && x <= 7 && x >= 0 && y >= 0)
-        2 # top left
-      elsif (y <= 7 && x <= 15 && x >= 8 && y >= 0)
-        4 #top right
-      elsif (y <= 15 && x <= 15 && x >= 8 && y >= 8)
-        3 #bottom left
-      elsif (y <= 15 && x <= 7 && x >= 0 && y >= 8)
-        1 #bottom right
+      if (y <= 8 && x <= 8 && x >= 1 && y >= 1)
+        3 # bottom left
+      elsif (y <= 8 && x <= 16 && x >= 9 && y >= 1)
+        4 # bottom right
+      elsif (y <= 16 && x <= 16 && x >= 9 && y >= 9)
+        2 # top right
+      elsif (y <= 16 && x <= 8 && x >= 1 && y >= 9)
+        1 # top left
       else
         raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
         "(#{x}, #{y}) are invalid for this device. Expected x coord in the "\
-        "range (0..15) and y coord in the range (0..15)."
+        "range (0..15) and y coord in the range (0..15).",
+        caller
       end
     end
   end

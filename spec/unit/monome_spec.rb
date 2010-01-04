@@ -166,24 +166,24 @@ describe Monome do
       end
 
       describe "Receiving button presses" do
-        it "should know that a button press of 0,0 is in quadrant 1" do
-          @monome.button_quadrant(0,0).should == 1
+        it "should know that a button press of 1,1 is in quadrant 1" do
+          @monome.button_quadrant(1,1).should == 1
         end
 
-        it "should know that a button press of 5,5 is in quadrant 1" do
-          @monome.button_quadrant(5,5).should == 1
+        it "should know that a button press of 6,6 is in quadrant 1" do
+          @monome.button_quadrant(6,6).should == 1
         end
 
-        it "should know that a button press of 7,7 is in quadrant 1" do
-          @monome.button_quadrant(7,7).should == 1
-        end
-
-        it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(8,3)}.should raise_error(Model::InvalidButtonCoord)
+        it "should know that a button press of 8,8 is in quadrant 1" do
+          @monome.button_quadrant(8,8).should == 1
         end
 
         it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(3,8)}.should raise_error(Model::InvalidButtonCoord)
+          lambda{@monome.button_quadrant(9,3)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(3,9)}.should raise_error(Model::InvalidButtonCoord)
         end
 
         it "should raise an error if the coords are out of bounds" do
@@ -207,24 +207,24 @@ describe Monome do
       end
 
       describe "Receiving button presses" do
-        it "should know that a button press of 0,0 is in quadrant 1" do
-          @monome.button_quadrant(0,0).should == 1
+        it "should know that a button press of 1,1 is in quadrant 1" do
+          @monome.button_quadrant(1,1).should == 1
         end
 
-        it "should know that a button press of 5,5 is in quadrant 1" do
-          @monome.button_quadrant(5,5).should == 1
+        it "should know that a button press of 6,6 is in quadrant 1" do
+          @monome.button_quadrant(6,6).should == 1
         end
 
-        it "should know that a button press of 7,7 is in quadrant 1" do
-          @monome.button_quadrant(7,7).should == 1
-        end
-
-        it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(8,3)}.should raise_error(Model::InvalidButtonCoord)
+        it "should know that a button press of 8,8 is in quadrant 1" do
+          @monome.button_quadrant(8,8).should == 1
         end
 
         it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(3,8)}.should raise_error(Model::InvalidButtonCoord)
+          lambda{@monome.button_quadrant(9,3)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(3,9)}.should raise_error(Model::InvalidButtonCoord)
         end
 
         it "should raise an error if the coords are out of bounds" do
@@ -248,24 +248,24 @@ describe Monome do
       end
 
       describe "Receiving button presses" do
-        it "should know that a button press of 0,0 is in quadrant 1" do
-          @monome.button_quadrant(0,0).should == 1
+        it "should know that a button press of 1,1 is in quadrant 1" do
+          @monome.button_quadrant(1,1).should == 1
         end
 
-        it "should know that a button press of 5,5 is in quadrant 1" do
-          @monome.button_quadrant(5,5).should == 1
+        it "should know that a button press of 6,6 is in quadrant 1" do
+          @monome.button_quadrant(6,6).should == 1
         end
 
-        it "should know that a button press of 7,7 is in quadrant 1" do
-          @monome.button_quadrant(7,7).should == 1
-        end
-
-        it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(8,3)}.should raise_error(Model::InvalidButtonCoord)
+        it "should know that a button press of 8,8 is in quadrant 1" do
+          @monome.button_quadrant(8,8).should == 1
         end
 
         it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(3,8)}.should raise_error(Model::InvalidButtonCoord)
+          lambda{@monome.button_quadrant(9,3)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(3,9)}.should raise_error(Model::InvalidButtonCoord)
         end
 
         it "should raise an error if the coords are out of bounds" do
@@ -289,24 +289,24 @@ describe Monome do
       end
 
       describe "Receiving button presses" do
-        it "should know that a button press of 0,0 is in quadrant 1" do
-          @monome.button_quadrant(0,0).should == 1
+        it "should know that a button press of 1,1 is in quadrant 1" do
+          @monome.button_quadrant(1,1).should == 1
         end
 
-        it "should know that a button press of 5,5 is in quadrant 1" do
-          @monome.button_quadrant(5,5).should == 1
+        it "should know that a button press of 6,6 is in quadrant 1" do
+          @monome.button_quadrant(6,6).should == 1
         end
 
-        it "should know that a button press of 7,7 is in quadrant 1" do
-          @monome.button_quadrant(7,7).should == 1
-        end
-
-        it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(8,3)}.should raise_error(Model::InvalidButtonCoord)
+        it "should know that a button press of 8,8 is in quadrant 1" do
+          @monome.button_quadrant(8,8).should == 1
         end
 
         it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(3,8)}.should raise_error(Model::InvalidButtonCoord)
+          lambda{@monome.button_quadrant(9,3)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(3,9)}.should raise_error(Model::InvalidButtonCoord)
         end
 
         it "should raise an error if the coords are out of bounds" do
@@ -338,28 +338,28 @@ describe Monome do
       end
 
       describe "Receiving button presses" do
-        it "should know that a button press of 0,0 is in quadrant 1" do
-          @monome.button_quadrant(0,0).should == 1
+        it "should know that a button press of 1,1 is in quadrant 1" do
+          @monome.button_quadrant(1,1).should == 1
         end
 
-        it "should know that a button press of 5,5 is in quadrant 1" do
-          @monome.button_quadrant(5,5).should == 1
+        it "should know that a button press of 6,6 is in quadrant 1" do
+          @monome.button_quadrant(6,6).should == 1
         end
 
-        it "should know that a button press of 8,7 is in quadrant 2" do
-          @monome.button_quadrant(8,7).should == 2
+        it "should know that a button press of 9,8 is in quadrant 2" do
+          @monome.button_quadrant(9,8).should == 2
         end
 
-        it "should know that a button press of 15,7 is in quadrant 1" do
-          @monome.button_quadrant(15,7).should == 2
-        end
-
-        it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(15,8)}.should raise_error(Model::InvalidButtonCoord)
+        it "should know that a button press of 16,8 is in quadrant 1" do
+          @monome.button_quadrant(16,8).should == 2
         end
 
         it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(16,7)}.should raise_error(Model::InvalidButtonCoord)
+          lambda{@monome.button_quadrant(17,8)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(15,9)}.should raise_error(Model::InvalidButtonCoord)
         end
 
         it "should raise an error if the coords are out of bounds" do
@@ -388,28 +388,28 @@ describe Monome do
       end
 
       describe "Receiving button presses" do
-        it "should know that a button press of 0,0 is in quadrant 2" do
-          @monome.button_quadrant(0,0).should == 2
+        it "should know that a button press of 1,1 is in quadrant 2" do
+          @monome.button_quadrant(1,1).should == 2
         end
 
-        it "should know that a button press of 5,5 is in quadrant 2" do
-          @monome.button_quadrant(5,5).should == 2
+        it "should know that a button press of 6,6 is in quadrant 2" do
+          @monome.button_quadrant(6,6).should == 2
         end
 
-        it "should know that a button press of 8,7 is in quadrant 1" do
-          @monome.button_quadrant(8,7).should == 1
+        it "should know that a button press of 9,7 is in quadrant 1" do
+          @monome.button_quadrant(9,7).should == 1
         end
 
-        it "should know that a button press of 15,7 is in quadrant 1" do
-          @monome.button_quadrant(15,7).should == 1
-        end
-
-        it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(15,8)}.should raise_error(Model::InvalidButtonCoord)
+        it "should know that a button press of 16,8 is in quadrant 1" do
+          @monome.button_quadrant(16,8).should == 1
         end
 
         it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(16,7)}.should raise_error(Model::InvalidButtonCoord)
+          lambda{@monome.button_quadrant(17,8)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(15,9)}.should raise_error(Model::InvalidButtonCoord)
         end
 
         it "should raise an error if the coords are out of bounds" do
@@ -438,28 +438,28 @@ describe Monome do
       end
 
       describe "Receiving button presses" do
-        it "should know that a button press of 0,0 is in quadrant 2" do
-          @monome.button_quadrant(0,0).should == 2
+        it "should know that a button press of 1,1 is in quadrant 2" do
+          @monome.button_quadrant(1,1).should == 2
         end
 
-        it "should know that a button press of 5,5 is in quadrant 2" do
-          @monome.button_quadrant(5,5).should == 2
+        it "should know that a button press of 6,6 is in quadrant 2" do
+          @monome.button_quadrant(6,6).should == 2
         end
 
-        it "should know that a button press of 8,7 is in quadrant 1" do
-          @monome.button_quadrant(8,7).should == 1
+        it "should know that a button press of 9,8 is in quadrant 1" do
+          @monome.button_quadrant(9,8).should == 1
         end
 
-        it "should know that a button press of 15,7 is in quadrant 1" do
-          @monome.button_quadrant(15,7).should == 1
-        end
-
-        it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(15,8)}.should raise_error(Model::InvalidButtonCoord)
+        it "should know that a button press of 16,8 is in quadrant 1" do
+          @monome.button_quadrant(16,8).should == 1
         end
 
         it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(16,7)}.should raise_error(Model::InvalidButtonCoord)
+          lambda{@monome.button_quadrant(9,16)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(8,17)}.should raise_error(Model::InvalidButtonCoord)
         end
 
         it "should raise an error if the coords are out of bounds" do
@@ -488,16 +488,16 @@ describe Monome do
       end
 
       describe "Receiving button presses" do
-        it "should know that a button press of 0,0 is in quadrant 1" do
-          @monome.button_quadrant(0,0).should == 1
+        it "should know that a button press of 1,1 is in quadrant 1" do
+          @monome.button_quadrant(1,1).should == 1
         end
 
-        it "should know that a button press of 5,5 is in quadrant 1" do
-          @monome.button_quadrant(5,5).should == 1
+        it "should know that a button press of 6,6 is in quadrant 1" do
+          @monome.button_quadrant(6,6).should == 1
         end
 
-        it "should know that a button press of 8,7 is in quadrant 2" do
-          @monome.button_quadrant(8,7).should == 2
+        it "should know that a button press of 9,8 is in quadrant 2" do
+          @monome.button_quadrant(9,8).should == 2
         end
 
         it "should know that a button press of 15,7 is in quadrant 1" do
@@ -505,11 +505,11 @@ describe Monome do
         end
 
         it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(15,8)}.should raise_error(Model::InvalidButtonCoord)
+          lambda{@monome.button_quadrant(17,4)}.should raise_error(Model::InvalidButtonCoord)
         end
 
         it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(16,7)}.should raise_error(Model::InvalidButtonCoord)
+          lambda{@monome.button_quadrant(4,9)}.should raise_error(Model::InvalidButtonCoord)
         end
 
         it "should raise an error if the coords are out of bounds" do
