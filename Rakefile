@@ -6,6 +6,17 @@ rescue LoadError
   exit
 end
 
+desc "Generate documentation"
+task :docgen do
+  yardoc_present = `which yardoc` != ""
+  if yardoc_present
+    `yardoc lib/**/*.rb`
+  else
+    puts "Please install yard in order to generate the documentation: gem install yard"
+  end
+
+end
+
 desc "Run the specs under spec"
 Spec::Rake::SpecTask.new do |t|
   t.name = 'spec_main'
