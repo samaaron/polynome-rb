@@ -1,3 +1,4 @@
+
 #require standard libraries
 require 'thread'
 Thread.abort_on_exception = true
@@ -34,6 +35,12 @@ require 'polynome/projection'
 require 'polynome/surface'
 require 'polynome/carousel'
 require 'polynome/frame'
+require 'polynome/rotation'
+require 'polynome/model/generic_model'
+require 'polynome/model/fourtyh'
+require 'polynome/model/sixty_four'
+require 'polynome/model/one_twenty_eight'
+require 'polynome/model/two_fifty_six'
 require 'polynome/model'
 require 'polynome/frame_update'
 require 'polynome/monome'
@@ -41,7 +48,6 @@ require 'polynome/light_bank'
 require 'polynome/application'
 require 'polynome/rack'
 require 'polynome/table'
-
 
 
 #require config

@@ -5,4 +5,5 @@ tmp
 vendor/extensions
 .yardoc
 doc
+*.rbc
 

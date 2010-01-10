@@ -2,8 +2,16 @@ module Polynome
   class Monome
     attr_reader  :model, :communicator, :carousel, :name
 
+    # Create a new monome
+    #
+    # @param [Hash] opts the options to create a new monome with
+    # @option opts [Symbol] :cable_placement (:top) The placement of the cable. One of [:top, :bottom, :left, :right].
+    # @option opts [Symbol] :name (opts[:io_file]) A name for the monome.
+    # @option opts [Symbol] :io_file The io file representing this monome.
+    # @option opts [Symbol] :model The monome device type. One of ['64', '40h', '128', '256'].
+    #
     def initialize(opts={})
-      opts.reverse_merge! :cable_orientation => :top
+      opts.reverse_merge! :cable_placement => :top
       opts.reverse_merge! :name => opts[:io_file]
 
       unless opts[:io_file] then
@@ -25,7 +33,7 @@ module Polynome
       end
 
       @name = opts[:name]
-      @model = Model.get_model(opts[:model].to_s, :landscape,  opts[:cable_orientation])
+      @model = Model.get_model(opts[:model].to_s, :landscape,  opts[:cable_placement])
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
       @carousel = Carousel.new(self)
     end
@@ -39,13 +47,13 @@ module Polynome
         caller
       end
 
-      @model.default_rotate_frame_according_to_device_offset_and_cable_orientation(frame)
-      mapped_quadrant_id = @model.default_map_quadrant_according_to_device_offset_and_cable_orientation(quadrant_id)
+      @model.rotate_frame!(frame)
+      mapped_quadrant_id = @model.map_quadrant_id(quadrant_id)
       @communicator.illuminate_frame(mapped_quadrant_id, frame.read)
     end
 
-    def cable_orientation
-      @model.cable_orientation
+    def cable_placement
+      @model.cable_placement
     end
 
     def num_quadrants
@@ -53,7 +61,7 @@ module Polynome
     end
 
     def cable_orientation_offset
-      @model.cable_orientation_offset(@cable_orientation)
+      @model.cable_orientation_offset(@cable_placement)
     end
 
     def process_frame_update(frame_update)
@@ -61,7 +69,7 @@ module Polynome
     end
 
     def inspect
-      "Monome, model: #{@model.name}, cable_orientation: #{@model.cable_orientation}, carousel: #{@carousel.inspect}".color(:blue)
+      "Monome, model: #{@model.name}, cable_placement: #{@model.cable_placement}, carousel: #{@carousel.inspect}".color(:blue)
     end
 
     def has_real_communicator?

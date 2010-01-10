@@ -6,11 +6,17 @@ rescue LoadError
   exit
 end
 
+desc "Remove unwanted files"
+task :clean do
+  puts `pwd`
+  #`rm **/*.rbc`
+end
+
 desc "Generate documentation"
-task :docgen do
+task :doc do
   yardoc_present = `which yardoc` != ""
   if yardoc_present
-    `yardoc lib/**/*.rb`
+    `yardoc -e lib/**/*.rb`
   else
     puts "Please install yard in order to generate the documentation: gem install yard"
   end

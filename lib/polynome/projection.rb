@@ -41,11 +41,12 @@ module Polynome
         "of the following: #{(VALID_ROTATIONS - INVALID_128_APP_ROTATIONS).inspect}.",
         caller
       end
+
       @surface     = surface
       @application = application
       @quadrants   = quadrants
-      @model       = application.model
       @rotation    = opts[:rotation]
+      @model       = Model.get_model(application.model, application.orientation, @rotation)
       @options     = opts
     end
 

@@ -2,9 +2,9 @@ module Polynome
   #represents the interface for a monome application
   class Interface
     def initialize(model)
-      unless model.kind_of?(Model) then
+      unless model.kind_of?(Model::GenericModel) then
         raise ArgumentError,
-        "Expecting a Model, got a #{model.class}",
+        "Expecting a subclass of Model::GenericModel, got a #{model.class}",
         caller
       end
 

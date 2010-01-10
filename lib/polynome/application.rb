@@ -20,7 +20,7 @@ module Polynome
         caller
       end
 
-      @model       = Model.get_model(opts[:model].to_s, opts[:orientation])
+      @model       = Model.get_model(opts[:model])
       @orientation = opts[:orientation]
       @interface   = Interface.new(model)
       @name        = opts[:name].to_s

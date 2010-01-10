@@ -1,4 +1,5 @@
 --colour
 --format nested
+--backtrace
 --reverse
 --loadby mtime
