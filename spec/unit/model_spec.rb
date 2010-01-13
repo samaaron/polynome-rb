@@ -2,9 +2,9 @@ require File.dirname(__FILE__) + '/../spec_helper.rb'
 include Polynome
 
 describe Model do
-  describe "get model 40h (with orientation landscape)" do
+  describe "get model 40h" do
     before(:each) do
-      @model = Model.get_model("40h", :landscape)
+      @model = Model.get_model("40h")
     end
 
     it "should have a width of 8" do
@@ -36,15 +36,9 @@ describe Model do
     end
   end
 
-  describe "get model 40h (with orientation portrait)" do
-    it "should raise an InvalidOrientation error" do
-      lambda{Model.get_model("40h", :portrait)}.should raise_error(Model::InvalidOrientation)
-    end
-  end
-
-  describe "get model 64 (with orientation landscape)" do
+  describe "get model 64" do
     before(:each) do
-      @model = Model.get_model("64", :landscape)
+      @model = Model.get_model("64")
     end
 
     it "should have a width of 8" do
@@ -94,15 +88,13 @@ describe Model do
     end
   end
 
-  describe "get model 64 (with orientation portrait)" do
-    it "should raise an InvalidOrientation error" do
-      lambda{Model.get_model("64", :portrait)}.should raise_error(Model::InvalidOrientation)
-    end
-  end
-
-  describe "get model 128 (with orientation landscape)" do
+  describe "get model 128 (with no rotation)" do
     before(:each) do
       @model = Model.get_model("128")
+    end
+
+    it "should have an orientation of landscape" do
+      @model.orientation.should == :landscape
     end
 
     it "should have a width of 16" do
@@ -152,9 +144,13 @@ describe Model do
     end
   end
 
-  describe "get model 128 (with orientation portrait)" do
+  describe "get model 128 (with 90 degrees rotation)" do
     before(:each) do
-      @model = Model.get_model("128", :portrait)
+      @model = Model.get_model("128", :rotation => 90)
+    end
+
+    it "should have an orientation of portrait" do
+      @model.orientation.should == :portrait
     end
 
     it "should have a width of 8" do
@@ -204,9 +200,9 @@ describe Model do
     end
   end
 
-  describe "get model 256 (with orientation landscape)" do
+  describe "get model 256" do
     before(:each) do
-      @model = Model.get_model("256", :landscape)
+      @model = Model.get_model("256")
     end
 
     it "should have a width of 16" do
@@ -257,11 +253,6 @@ describe Model do
     end
   end
 
-  describe "get model 256 (with orientation portrait" do
-    it "should raise an InvalidOrientation error" do
-      lambda{Model.get_model("256", :portrait)}.should raise_error(Model::InvalidOrientation)
-    end
-  end
 
   describe "get unknown model" do
     it "should raise an ArgumentError" do
@@ -269,9 +260,9 @@ describe Model do
     end
   end
 
-  describe "a 256 with cable orientation top" do
+  describe "a 256 with cable placement top" do
     before(:each) do
-      @model = Model.get_model("256", :landscape, :top)
+      @model = Model.get_model("256", :top)
     end
 
     describe "coord mapping" do
@@ -293,9 +284,9 @@ describe Model do
 
   end
 
-  describe "a 256 with cable orientation right" do
+  describe "a 256 with cable placement right" do
     before(:each) do
-      @model = Model.get_model("256", :landscape, :right)
+      @model = Model.get_model("256", :right)
     end
 
     describe "coord mapping" do
@@ -316,9 +307,9 @@ describe Model do
     end
   end
 
-  describe "a 256 with cable orientation bottom" do
+  describe "a 256 with cable placement bottom" do
     before(:each) do
-      @model = Model.get_model("256", :landscape, :bottom)
+      @model = Model.get_model("256", :bottom)
     end
 
     describe "coord mapping" do
@@ -339,9 +330,9 @@ describe Model do
     end
   end
 
-  describe "a 256 with cable orientation left" do
+  describe "a 256 with cable placement left" do
     before(:each) do
-      @model = Model.get_model("256", :landscape, :left)
+      @model = Model.get_model("256", :left)
     end
 
     describe "coord mapping" do

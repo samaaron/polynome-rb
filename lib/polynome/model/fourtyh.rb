@@ -2,11 +2,9 @@ module Polynome
   module Model
     # Model to represent the 40h monome
     class FourtyH < GenericModel
-      def initialize(orientation, cable_placement, rotation)
+      def initialize(cable_placement, rotation)
         set_rotation_and_cable_placement(rotation, cable_placement)
-        validate_orientation(orientation)
 
-        @orientation               = orientation
         @name                      = "40h"
         @width                     = 8
         @height                    = 8

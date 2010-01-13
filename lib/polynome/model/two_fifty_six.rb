@@ -1,18 +1,16 @@
 module Polynome
   module Model
     class TwoFiftySix < GenericModel
-      def initialize(orientation, cable_placement, rotation)
+      def initialize(cable_placement, rotation)
         set_rotation_and_cable_placement(rotation, cable_placement)
-        validate_orientation(orientation)
 
-        @orientation               = orientation
         @name                      = "256"
         @width                     = 16
         @height                    = 16
         @protocol                  = "series"
         @num_quadrants             = 4
         @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
-        @device_orientation_offset = 3
+        @device_rotation_offset = 3
       end
 
       def map_quadrant_id(quadrant_id)
@@ -38,7 +36,7 @@ module Polynome
         when :bottom then  x += 1 ; y += 1 ; return y,x
         when :left then y = 16 - y ; x += 1 ; return x,y
         when :right then x = 16 - x ; y += 1 ; return x,y
-        else raise "Unknown cable orientation: #{@cable_orientation}"
+        else raise "Unknown cable placement: #{@cable_placement}"
         end
       end
 

@@ -5,7 +5,7 @@ module Polynome
     class GenericModel
       DEFAULT_VALID_ORIENTATIONS = [:landscape]
 
-      attr_reader   :width, :height, :protocol, :num_quadrants, :name, :orientation, :cable_placement
+      attr_reader   :width, :height, :protocol, :num_quadrants, :name, :cable_placement
       attr_accessor :rotation
 
       def initialize
@@ -35,6 +35,10 @@ module Polynome
         raise "I'd like to be implemented please"
       end
 
+      def orientation
+        :landscape
+      end
+
 
       private
 
@@ -50,18 +54,6 @@ module Polynome
         @device_rotation_offset || 0
       end
 
-      def valid_orientations
-        DEFAULT_VALID_ORIENTATIONS
-      end
-
-      def validate_orientation(orientation)
-        unless valid_orientations.include?(orientation) then
-          raise InvalidOrientation,
-          "Invalid orientation: #{orientation}. Was expecting one of "\
-          "#{valid_orientations.inspect}",
-          caller
-        end
-      end
 
       # Sets +@rotation+ and +@cable_placement+ with the correct values for this device given the current orientation, cable placement and device defaults.
       #

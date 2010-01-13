@@ -9,14 +9,14 @@ end
 
 describe Projection do
   before(:each) do
-    @monome = Monome.new(:io_file => "blah", :model => "256", :cable_orientation => :top)
+    @monome = Monome.new(:io_file => "blah", :device => "256", :cable_placement => :top)
     @surface = @monome.carousel.fetch(:base)
     @second_surface = @monome.carousel.add(:second_surface)
   end
 
   describe "#on_current_surface?" do
     before(:each) do
-      @app = Application.new(:model => "64", :name => "test")
+      @app = Application.new(:device=> "64", :name => "test")
       @quadrants = Quadrants.new([1])
     end
 
@@ -40,7 +40,7 @@ describe Projection do
   describe "with a 64 app" do
     describe "#initialize" do
       before(:each) do
-        @app = Application.new(:model => "64", :name => "test")
+        @app = Application.new(:device => "64", :name => "test")
         @quadrants = Quadrants.new([1])
       end
 
@@ -86,7 +86,7 @@ describe Projection do
 
   describe "with a 128 landscape app" do
     before(:each) do
-      @app = Application.new(:model => "128", :orientation => :landscape, :name => "test")
+      @app = Application.new(:device => "128", :name => "test")
       @quadrants = Quadrants.new([1,2])
     end
 
@@ -117,7 +117,7 @@ describe Projection do
 
   describe "with a 128 portrait app" do
     before(:each) do
-      @app = Application.new(:model => "128", :orientation => :portrait, :name => "test")
+      @app = Application.new(:device=> "128", :name => "test")
       @quadrants = Quadrants.new([1,3])
     end
 

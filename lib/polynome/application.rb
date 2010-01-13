@@ -1,23 +1,21 @@
 module Polynome
   # The representation of an application. An application is a representation of an external app which is communicated to via OSC messages.
-  # Each application has a given type - which maps onto one of the available monome models (64, 128, 256). 128 apps can also optionally specify
-  # an orientation (landscape or portrait) which will affect the available coordinates. Each application also has a unique name which is used to
-  # identify it.
+  # Each application has a given type - which maps onto one of the available monome models (64, 128, 256).
+  # Each application also has a unique name which is used to identify it.
   #
   # Applications communicate with Polynome through a frame buffer onto which it pushes frames to be displayed.
 
 
   class Application
-    attr_reader :name, :model, :device
+    attr_reader   :name, :model, :device
     attr_accessor :frame_buffer
 
     def initialize(opts = {})
-      opts.reverse_merge! :orientation => :landscape
 
-      unless opts[:model] then
+      unless opts[:device] then
         raise ArgumentError,
         "Polynome::Application#initialize requires a "\
-        "model to be specified",
+        "device to be specified",
         caller
       end
 
@@ -28,10 +26,9 @@ module Polynome
         caller
       end
 
-
-      @device      = opts[:model]
-      @model       = Model.get_model(opts[:model], opts[:orientation])
-      @name        = opts[:name].to_s
+      @device = opts[:device]
+      @model  = Model.get_model(opts[:device])
+      @name   = opts[:name].to_s
     end
 
     def num_quadrants
@@ -55,7 +52,7 @@ module Polynome
     end
 
     def inspect
-      "Application, name: #{@name}, model: #{@model.name}, orientation: #{@orientation}".color(:yellow)
+      "Application, name: #{@name}, model: #{@model.name}".color(:yellow)
     end
   end
 end

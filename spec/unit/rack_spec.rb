@@ -18,13 +18,13 @@ describe Rack do
 
   describe "#<<" do
     it "should return self" do
-      app256 = Application.new(:model => "256", :name => "beans")
+      app256 = Application.new(:device => "256", :name => "beans")
       rack = Rack.new(@frame_buffer)
       (rack << app256).should == rack
     end
 
     it "should raise an error if the name specified is already in use" do
-      adoo = Application.new(:model => "256", :name => "adoo")
+      adoo = Application.new(:device => "256", :name => "adoo")
 
       lambda{Rack.new(@frame_buffer) << adoo << adoo}.should raise_error(Rack::ApplicationNameInUseError)
     end
@@ -32,7 +32,7 @@ describe Rack do
 
   describe "#[]" do
     it "should be possible to fetch application instances using the class [] method" do
-      adoo = Application.new(:model => '256', :name => "adoo_adoo")
+      adoo = Application.new(:device => '256', :name => "adoo_adoo")
       rack = Rack.new(@frame_buffer)
       rack << adoo
       rack["adoo_adoo"].should == adoo

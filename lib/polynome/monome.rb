@@ -8,7 +8,7 @@ module Polynome
     # @option opts [Symbol] :cable_placement (:top) The placement of the cable. One of [:top, :bottom, :left, :right].
     # @option opts [Symbol] :name (opts[:io_file]) A name for the monome.
     # @option opts [Symbol] :io_file The io file representing this monome.
-    # @option opts [Symbol] :model The monome device type. One of ['64', '40h', '128', '256'].
+    # @option opts [Symbol] :device The monome device type. One of ['64', '40h', '128', '256'].
     #
     def initialize(opts={})
       opts.reverse_merge! :cable_placement => :top
@@ -20,9 +20,9 @@ module Polynome
         caller
       end
 
-      unless opts[:model] then
+      unless opts[:device] then
         raise ArgumentError,
-        "Polynome::Monome#initialize requires a model to be specified",
+        "Polynome::Monome#initialize requires a device to be specified",
         caller
       end
 
@@ -33,7 +33,7 @@ module Polynome
       end
 
       @name = opts[:name]
-      @model = Model.get_model(opts[:model].to_s, :landscape,  opts[:cable_placement])
+      @model = Model.get_model(opts[:device].to_s, opts[:cable_placement])
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
       @carousel = Carousel.new(self)
     end
@@ -60,8 +60,8 @@ module Polynome
       @model.num_quadrants
     end
 
-    def cable_orientation_offset
-      @model.cable_orientation_offset(@cable_placement)
+    def cable_placement_offset
+      @model.cable_placement_offset(@cable_placement)
     end
 
     def process_frame_update(frame_update)

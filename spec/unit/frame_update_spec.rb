@@ -3,7 +3,7 @@ include Polynome
 
 describe FrameUpdate do
   before(:each) do
-    @app64 = Application.new(:model => 64, :name => "app64")
+    @app64 = Application.new(:device => 64, :name => "app64")
   end
 
   it "should resolve to the correct constant from this context" do

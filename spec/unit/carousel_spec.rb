@@ -8,7 +8,7 @@ describe Carousel do
 
   describe "with a newly initialised carousel" do
     before(:each) do
-      @carousel = Carousel.new(Monome.new(:io_file => 'foo/bar', :model => "256"))
+      @carousel = Carousel.new(Monome.new(:io_file => 'foo/bar', :device => "256"))
     end
 
     describe "#add" do

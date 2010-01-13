@@ -16,8 +16,8 @@ describe LightBank, ", initialised with defaults" do
     @bank.power_down
   end
 
-  it "should have a cable orientation of :top" do
-    @bank.cable_orientation.should  == :top
+  it "should have a cable placement of :top" do
+    @bank.cable_placement.should  == :top
   end
 
   it "should be of model :sixty_four" do
@@ -25,9 +25,9 @@ describe LightBank, ", initialised with defaults" do
   end
 end
 
-describe LightBank, ", with bespoke initialisation of cable_orientation bottom and model one_twenty_eight" do
+describe LightBank, ", with bespoke initialisation of cable_placement bottom and model one_twenty_eight" do
   before(:each) do
-    @bank = LightBank.new(:cable_orientation => :bottom,
+    @bank = LightBank.new(:cable_placement => :bottom,
                           :model             => :one_twenty_eight)
   end
 
@@ -35,8 +35,8 @@ describe LightBank, ", with bespoke initialisation of cable_orientation bottom a
     @bank.power_down
   end
 
-  it "should have a cable orientation of :bottom" do
-    @bank.cable_orientation.should == :bottom
+  it "should have a cable placement of :bottom" do
+    @bank.cable_placement.should == :bottom
   end
 
   it "should be of model :one_twenty_eight" do
@@ -60,9 +60,9 @@ describe LightBank, ", with bespoke initialisation of cable_orientation bottom a
   end
 end
 
-describe LightBank, ", with bespoke initialisation of cable_orientation left and model one_twenty_eight" do
+describe LightBank, ", with bespoke initialisation of cable_placement left and model one_twenty_eight" do
   before(:each) do
-    @bank = LightBank.new(:cable_orientation => :left,
+    @bank = LightBank.new(:cable_placement => :left,
                           :model             => :one_twenty_eight)
   end
 
@@ -70,8 +70,8 @@ describe LightBank, ", with bespoke initialisation of cable_orientation left and
     @bank.power_down
   end
 
-  it "should have a cable orientation of :bottom" do
-    @bank.cable_orientation.should == :left
+  it "should have a cable placement of :bottom" do
+    @bank.cable_placement.should == :left
   end
 
   it "should be of model :one_twenty_eight" do
@@ -95,9 +95,9 @@ describe LightBank, ", with bespoke initialisation of cable_orientation left and
   end
 end
 
-describe LightBank, ", with bespoke initialisation of cable_orientation left and model sixty_four" do
+describe LightBank, ", with bespoke initialisation of cable_placement left and model sixty_four" do
   before(:each) do
-    @bank = LightBank.new(:cable_orientation => :left,
+    @bank = LightBank.new(:cable_placement => :left,
                           :model             => :sixty_four)
   end
 
@@ -105,8 +105,8 @@ describe LightBank, ", with bespoke initialisation of cable_orientation left and
     @bank.power_down
   end
 
-  it "should have a cable orientation of :bottom" do
-    @bank.cable_orientation.should == :left
+  it "should have a cable placement of :bottom" do
+    @bank.cable_placement.should == :left
   end
 
   it "should be of model :one_twenty_eight" do
@@ -130,9 +130,9 @@ describe LightBank, ", with bespoke initialisation of cable_orientation left and
   end
 end
 
-describe LightBank, ", with bespoke initialisation of cable_orientation left and model two_fifty_six" do
+describe LightBank, ", with bespoke initialisation of cable_placement left and model two_fifty_six" do
   before(:each) do
-    @bank = LightBank.new(:cable_orientation => :left,
+    @bank = LightBank.new(:cable_placement => :left,
                           :model             => :two_fifty_six)
   end
 
@@ -140,8 +140,8 @@ describe LightBank, ", with bespoke initialisation of cable_orientation left and
     @bank.power_down
   end
 
-  it "should have a cable orientation of :bottom" do
-    @bank.cable_orientation.should == :left
+  it "should have a cable placement of :bottom" do
+    @bank.cable_placement.should == :left
   end
 
   it "should be of model :one_twenty_eight" do

@@ -8,25 +8,25 @@ describe Monome do
   end
 
   describe "#initialize" do
-    it "should raise an ArgumentError if an unknown cable orientation is specified" do
-      lambda{Monome.new(:io_file => 'foo/bar', :model => "256", :cable_placement => "wireless (dream on)")}.should raise_error(ArgumentError)
+    it "should raise an ArgumentError if an unknown cable placement is specified" do
+      lambda{Monome.new(:io_file => 'foo/bar', :device => "256", :cable_placement => "wireless (dream on)")}.should raise_error(ArgumentError)
     end
 
     it "should raise an ArgumentError if no io_file is specified" do
-      lambda{Monome.new(:model => "256")}.should raise_error(ArgumentError)
+      lambda{Monome.new(:device => "256")}.should raise_error(ArgumentError)
     end
 
-    it "should raise an ArgumentError if no model is specified" do
+    it "should raise an ArgumentError if no device is specified" do
       lambda{Monome.new(:io_file => 'foo/bar')}.should raise_error(ArgumentError)
     end
   end
 
   describe "with a default Monome of model 256" do
     before(:each) do
-      @monome = Monome.new(:io_file => 'foo/bar', :model => "256")
+      @monome = Monome.new(:io_file => 'foo/bar', :device => "256")
     end
 
-    it "should have a cable orientation of top" do
+    it "should have a cable placement of top" do
       @monome.cable_placement.should == :top
     end
 
@@ -49,9 +49,9 @@ describe Monome do
       MonomeSerial::MonomeCommunicator.should_receive(:new).and_return(@comm)
     end
 
-    describe "With a 256 with cable orientation top" do
+    describe "With a 256 with cable placment top" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "256", :cable_placement => :top)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "256", :cable_placement => :top)
       end
 
       describe "Lighting the device" do
@@ -77,9 +77,9 @@ describe Monome do
       end
     end
 
-    describe "With a 256 with cable orientation right" do
+    describe "With a 256 with cable placement right" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "256", :cable_placement => :right)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "256", :cable_placement => :right)
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 4 with rotation 180" do
@@ -103,9 +103,9 @@ describe Monome do
       end
     end
 
-    describe "With a 256 with cable orientation bottom" do
+    describe "With a 256 with cable placement bottom" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "256", :cable_placement => :bottom)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "256", :cable_placement => :bottom)
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 2 with rotation 90" do
@@ -129,9 +129,9 @@ describe Monome do
       end
     end
 
-    describe "With a 256 with cable orientation left" do
+    describe "With a 256 with cable placement left" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "256", :cable_placement => :left)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "256", :cable_placement => :left)
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 0" do
@@ -155,9 +155,9 @@ describe Monome do
       end
     end
 
-    describe "With a 64 with cable orientation top" do
+    describe "With a 64 with cable placment top" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "64", :cable_placement => :top)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "64", :cable_placement => :top)
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 0" do
@@ -196,9 +196,9 @@ describe Monome do
       end
     end
 
-    describe "With a 64 with cable orientation right" do
+    describe "With a 64 with cable placement right" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "64", :cable_placement => :right)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "64", :cable_placement => :right)
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 270" do
@@ -237,9 +237,9 @@ describe Monome do
       end
     end
 
-    describe "With a 64 with cable orientation bottom" do
+    describe "With a 64 with cable placement bottom" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "64", :cable_placement => :bottom)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "64", :cable_placement => :bottom)
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 180" do
@@ -278,9 +278,9 @@ describe Monome do
       end
     end
 
-    describe "With a 64 with cable orientation left" do
+    describe "With a 64 with cable placement left" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "64", :cable_placement => :left)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "64", :cable_placement => :left)
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 90" do
@@ -319,9 +319,9 @@ describe Monome do
       end
     end
 
-    describe "With a 128 with cable orientation top" do
+    describe "With a 128 with cable placment top" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_placement => :top)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "128", :cable_placement => :top)
       end
 
       describe "Illumniation" do
@@ -372,9 +372,9 @@ describe Monome do
       end
     end
 
-    describe "With a 128 with cable orientation bottom" do
+    describe "With a 128 with cable placement bottom" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_placement => :bottom)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "128", :cable_placement => :bottom)
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 2 with rotation 180" do
@@ -422,9 +422,9 @@ describe Monome do
       end
     end
 
-    describe "With a 128 with cable orientation left" do
+    describe "With a 128 with cable placement left" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_placement => :left)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "128", :cable_placement => :left)
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 2 with rotation 90" do
@@ -472,9 +472,9 @@ describe Monome do
       end
     end
 
-    describe "With a 128 with cable orientation right" do
+    describe "With a 128 with cable placment right" do
       before(:each) do
-        @monome = Monome.new(:io_file => 'foo/bar', :model => "128", :cable_placement => :right)
+        @monome = Monome.new(:io_file => 'foo/bar', :device => "128", :cable_placement => :right)
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 270" do

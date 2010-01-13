@@ -14,7 +14,7 @@ monome_model   = "256"
 
 #create table and add monome
 table   = Table.new
-table.add_monome(:io_file => monome_io_file, :model => monome_model, :cable_orientation => :right)
+table.add_monome(:io_file => monome_io_file, :model => monome_model, :cable_placement => :right)
 
 #add flashing app
 table.add_app(:model => 64, :name => "app64")

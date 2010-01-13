@@ -1,10 +1,10 @@
 module Polynome
   class LightBank
-    attr_reader :cable_orientation, :model, :min_x, :max_x, :min_y, :max_y, :input_port, :output_port, :log_history
+    attr_reader :cable_placement, :model, :min_x, :max_x, :min_y, :max_y, :input_port, :output_port, :log_history
 
     def initialize(opts={})
       opts.reverse_merge!(
-                          :cable_orientation => :top,
+                          :cable_placement => :top,
                           :model             => :sixty_four,
                           :input_port        => 9988,
                           :output_port       => 8899,
@@ -13,7 +13,7 @@ module Polynome
                           :debug_message     => ""
                           )
 
-      @cable_orientation = opts[:cable_orientation]
+      @cable_placement = opts[:cable_placement]
       @model             = opts[:model]
       @input_port        = opts[:input_port]
       @output_port       = opts[:output_port]
@@ -45,7 +45,7 @@ module Polynome
                  when :sixty_four
                    [8,8]
                  when :one_twenty_eight
-                   case @cable_orientation
+                   case @cable_placement
                    when :top
                      [16,8]
                    when :bottom

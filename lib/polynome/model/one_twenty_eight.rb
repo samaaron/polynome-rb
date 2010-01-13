@@ -1,22 +1,23 @@
 module Polynome
   module Model
-    #Model to represent the 128 monome
+    # Model to represent the 128 monome
+    #
+    # The 128 is rectangular, and therefore it's orientation matters. It can either be placed
+    # horizontally or vertically. Horizontal placement is landscape orientation, vertical placement
+    # is portrait placement. This means that there is interesting interplay between the rotation requested
+    # and the orientation.
+    #
+    # T
     class OneTwentyEight < GenericModel
-      def initialize(orientation, cable_placement, rotation)
+      def initialize(cable_placement, rotation)
         set_rotation_and_cable_placement(rotation, cable_placement)
-        validate_orientation(orientation)
 
-        @orientation               = orientation
         @name                      = "128"
         @protocol                  = "series"
         @num_quadrants             = 2
         @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
-        @width  = @orientation == :landscape ? 16 : 8
-        @height = @orientation == :landscape ? 8  : 16
-      end
-
-      def valid_orientations
-        DEFAULT_VALID_ORIENTATIONS + [:portrait]
+        @width  = orientation == :landscape ? 16 : 8
+        @height = orientation == :landscape ? 8  : 16
       end
 
       def rotate_frame!(frame)
@@ -33,7 +34,7 @@ module Polynome
       end
 
       def button_quadrant(x,y)
-        if @orientation == :landscape
+        if orientation == :landscape
           if (y <= 8 && x <= 8 && x >= 1 && y >= 1)
             1 #left
           elsif (y <= 8 && x <= 16 && x >= 9 && y >= 1)

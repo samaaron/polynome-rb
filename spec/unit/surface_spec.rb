@@ -5,12 +5,12 @@ describe Surface do
   describe "given 3 applications, one 64, one 128 and one 256, 3 surfaces (1,2, 4 quadrants)" do
 
     before(:each) do
-      @app64  = Application.new(:model => 64,  :name => "app64")
-      @app128 = Application.new(:model => 128, :name => "app128")
-      @app256 = Application.new(:model => 256, :name => "app256")
-      @monome64  = Monome.new(:io_file => "blah", :model => "64",  :cable_orientation => :top)
-      @monome128 = Monome.new(:io_file => "blah", :model => "128", :cable_orientation => :top)
-      @monome256 = Monome.new(:io_file => "blah", :model => "256", :cable_orientation => :top)
+      @app64  = Application.new(:device => 64,  :name => "app64")
+      @app128 = Application.new(:device => 128, :name => "app128")
+      @app256 = Application.new(:device => 256, :name => "app256")
+      @monome64  = Monome.new(:io_file => "blah", :device => "64",  :cable_placement => :top)
+      @monome128 = Monome.new(:io_file => "blah", :device => "128", :cable_placement => :top)
+      @monome256 = Monome.new(:io_file => "blah", :device => "256", :cable_placement => :top)
       @surface1 = @monome64.carousel.add("surface1")
       @surface2 = @monome128.carousel.add("surface2")
       @surface4 = @monome256.carousel.add("surface4")
@@ -106,7 +106,7 @@ describe Surface do
         @surface4.register_application(@app128, :quadrants => [3,4])
         @surface4.registered_applications.should =~ [@app64, @app128]
         @surface4.remove_application(@app64.name)
-        new_app = Application.new(:model => 128, :name => "new_app128")
+        new_app = Application.new(:device => 128, :name => "new_app128")
         @surface4.register_application(new_app, :quadrants => [1,2])
         @surface4.registered_applications.should =~ [@app128, new_app]
       end
@@ -188,7 +188,7 @@ describe Surface do
         end
 
         it "should be possible to place two similar 64 apps on both of the available quadrants" do
-          app2 = Application.new(:model => "64", :name => "app2_64")
+          app2 = Application.new(:device => "64", :name => "app2_64")
           lambda do
             @surface2.register_application(@app64, :quadrant => 1)
             @surface2.register_application(app2, :quadrant => 2)
@@ -234,9 +234,9 @@ describe Surface do
         end
 
         it "should be possible to place four similar 64 apps on all of the available quadrants" do
-          app2 = Application.new(:model => 64, :name => "test2")
-          app3 = Application.new(:model => 64, :name => "test3")
-          app4 = Application.new(:model => 64, :name => "test4")
+          app2 = Application.new(:device => 64, :name => "test2")
+          app3 = Application.new(:device => 64, :name => "test3")
+          app4 = Application.new(:device => 64, :name => "test4")
           lambda do
             @surface4.register_application(@app64, :quadrant => 1)
             @surface4.register_application(app2, :quadrant => 2)
@@ -249,7 +249,7 @@ describe Surface do
       describe "when there is insufficient space" do
         it "should raise a QuadrantInUseError if the quadrant requested is already in use" do
           @surface1.register_application(@app64, :quadrants => [1])
-          app2 = Application.new(:model => "64", :name => "app2_64")
+          app2 = Application.new(:device => "64", :name => "app2_64")
           lambda{@surface1.register_application(app2, :quadrants => [1])}.should raise_error(Surface::QuadrantInUseError)
         end
 
@@ -260,7 +260,7 @@ describe Surface do
 
         it "should raise an error if, after placing a 64 app on the surface, a 256 was attempted to be placed" do
           @surface4.register_application(@app64, :quadrant => 1)
-          app2 = Application.new(:model => 256, :name => "app2_256")
+          app2 = Application.new(:device => 256, :name => "app2_256")
           lambda{@surface4.register_application(app2, :quadrants => [1,2,3,4])}.should raise_error(Surface::QuadrantInUseError)
         end
 

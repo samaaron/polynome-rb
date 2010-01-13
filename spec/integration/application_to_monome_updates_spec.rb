@@ -4,8 +4,8 @@ describe "Application to Monome updates" do
   describe "Given a 64 monome with a 64 app" do
     before(:each) do
       @table   = Table.new(:ignore_connection_validity => true)
-      @table.add_monome(:io_file => 'foo/bar', :model => "64")
-      @table.add_app(:model => 64, :name => "app64")
+      @table.add_monome(:io_file => 'foo/bar', :device => "64")
+      @table.add_app(:device => 64, :name => "app64")
       @monome = @table.send(:monome, "main")
       @app64  = @table.send(:app, "app64")
     end
@@ -49,14 +49,14 @@ describe "Application to Monome updates" do
   describe "Given a 128 monome" do
     before(:each) do
       @table   = Table.new(:ignore_connection_validity => true)
-      @table.add_monome(:io_file => 'foo/bar', :model => "128")
+      @table.add_monome(:io_file => 'foo/bar', :device => "128")
       @monome = @table.send(:monome)
     end
 
     describe "With two 64 apps" do
       before(:each) do
-        @table.add_app(:model => 64, :name => "app64_1")
-        @table.add_app(:model => 64, :name => "app64_2")
+        @table.add_app(:device => 64, :name => "app64_1")
+        @table.add_app(:device => 64, :name => "app64_2")
         @app64_1 = @table.send(:app, "app64_1")
         @app64_2 = @table.send(:app, "app64_2")
       end
@@ -103,7 +103,7 @@ describe "Application to Monome updates" do
 end
 #    describe "With one 128 app" do
 #      before(:each) do
-#        @app128 = Application.new(:model => 128, :name => "app128")
+#        @app128 = Application.new(:device => 128, :name => "app128")
 #      end
 #
 #      describe "When registerest with the surface with no rotation in the projection" do
@@ -137,16 +137,16 @@ end
 #
 #  describe "Given a 256 monome with four 64 apps, two 128 apps and a 256 app" do
 #    before(:each) do
-#      @monome    = Monome.new(:io_file => 'foo/bar', :model => "256")
+#      @monome    = Monome.new(:io_file => 'foo/bar', :device => "256")
 #      @surface   = @monome.fetch_surface(:base)
 #
-#      @app64_1  = Application.new(:model => 64,  :name => "app64_1")
-#      @app64_2  = Application.new(:model => 64,  :name => "app64_2")
-#      @app64_3  = Application.new(:model => 64,  :name => "app64_3")
-#      @app64_4  = Application.new(:model => 64,  :name => "app64_4")
-#      @app128_1 = Application.new(:model => 128, :name => "app128_1")
-#      @app128_2 = Application.new(:model => 128, :name => "app128_2")
-#      @app256   = Application.new(:model => 256, :name => "app256")
+#      @app64_1  = Application.new(:device => 64,  :name => "app64_1")
+#      @app64_2  = Application.new(:device => 64,  :name => "app64_2")
+#      @app64_3  = Application.new(:device => 64,  :name => "app64_3")
+#      @app64_4  = Application.new(:device => 64,  :name => "app64_4")
+#      @app128_1 = Application.new(:device => 128, :name => "app128_1")
+#      @app128_2 = Application.new(:device => 128, :name => "app128_2")
+#      @app256   = Application.new(:device => 256, :name => "app256")
 #    end
 #
 #    describe "when registering all four 64 apps onto different quadrants with no rotation applied" do
