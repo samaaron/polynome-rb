@@ -5,7 +5,8 @@ module Polynome
     class GenericModel
       DEFAULT_VALID_ORIENTATIONS = [:landscape]
 
-      attr_reader :width, :height, :protocol, :num_quadrants, :name, :orientation, :cable_placement, :rotation
+      attr_reader   :width, :height, :protocol, :num_quadrants, :name, :orientation, :cable_placement
+      attr_accessor :rotation
 
       def initialize
         raise "Please call me from a subclass"

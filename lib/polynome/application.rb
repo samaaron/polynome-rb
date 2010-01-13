@@ -1,6 +1,6 @@
 module Polynome
   class Application
-    attr_reader :orientation, :name, :model
+    attr_reader :name, :model
     attr_accessor :frame_buffer
 
     def initialize(opts = {})
@@ -20,8 +20,7 @@ module Polynome
         caller
       end
 
-      @model       = Model.get_model(opts[:model])
-      @orientation = opts[:orientation]
+      @model       = Model.get_model(opts[:model], opts[:orientation])
       @interface   = Interface.new(model)
       @name        = opts[:name].to_s
     end
@@ -32,6 +31,10 @@ module Polynome
 
     def interface_type
       @interface.model_type
+    end
+
+    def orientation
+      @model.orientation
     end
 
     def update_display(*frames)

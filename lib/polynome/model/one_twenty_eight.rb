@@ -19,9 +19,9 @@ module Polynome
         DEFAULT_VALID_ORIENTATIONS + [:portrait]
       end
 
-      def rotate_frame(frame, quadrants, rotation)
+      def rotate_frame!(frame)
         super
-        frame.rotate!(90) if [[1,3], [2,4]].include?(quadrants.to_a)
+        frame.rotate!(90) if [[1,3], [2,4]].include?(default_quadrants)
       end
 
       def map_quadrant_id(quadrant_id)

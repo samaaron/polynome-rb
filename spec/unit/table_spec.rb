@@ -33,7 +33,7 @@ describe Table do
       before(:each) do
         @table = Table.new(:ignore_connection_validity => true)
         @table.add_app(:model => 64,  :name => "app64")
-        @table.add_monome(:io_file => 'foo/bar', :model => "64", :cable_orientation => :bottom, :name => "test64")
+        @table.add_monome(:io_file => 'foo/bar', :model => "64", :cable_placement => :bottom, :name => "test64")
         @table.send(:connections).size.should == 0
         @table.connect(:app => "app64", :monome => "test64")
         @table.send(:connections).size.should == 1
@@ -62,7 +62,7 @@ describe Table do
       before(:each) do
         @table = Table.new(:ignore_connection_validity => true)
         @table.add_app(:model => 64,  :name => "app64")
-        @table.add_monome(:io_file => 'foo/bar', :model => "64", :cable_orientation => :bottom, :name => "test64")
+        @table.add_monome(:io_file => 'foo/bar', :model => "64", :cable_placement => :bottom, :name => "test64")
         @table.send(:connections).size.should == 0
         @table.connect(:app => "app64", :monome => "test64", :rotation => 90)
         @table.send(:connections).size.should == 1
@@ -126,8 +126,8 @@ end
 describe "successfully adding a 64 and 128 monome" do
   before(:each) do
     @table = Table.new(:ignore_connection_validity => true)
-    @table.add_monome(:io_file => 'foo/bar', :model => "64", :cable_orientation => :bottom, :name => "test64")
-    @table.add_monome(:io_file => 'baz/quux', :model => "128", :cable_orientation => :top, :name => "test128")
+    @table.add_monome(:io_file => 'foo/bar', :model => "64", :cable_placement => :bottom, :name => "test64")
+    @table.add_monome(:io_file => 'baz/quux', :model => "128", :cable_placement => :top, :name => "test128")
   end
 
   it "increment the number of monomes by 2" do
@@ -138,14 +138,14 @@ describe "successfully adding a 64 and 128 monome" do
     monome = @table.send(:monome, :test64)
     monome.should_not be_nil
     monome.num_quadrants.should == 1
-    monome.cable_orientation.should == :bottom
+    monome.cable_placement.should == :bottom
   end
 
   it "should have created the correct 128 monome" do
     monome = @table.send(:monome, :test128)
     monome.should_not be_nil
     monome.num_quadrants.should == 2
-    monome.cable_orientation.should == :top
+    monome.cable_placement.should == :top
   end
 end
 

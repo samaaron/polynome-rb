@@ -42,12 +42,13 @@ module Polynome
         caller
       end
 
-      @surface     = surface
-      @application = application
-      @quadrants   = quadrants
-      @rotation    = opts[:rotation]
-      @model       = Model.get_model(application.model, application.orientation, @rotation)
-      @options     = opts
+      @surface        = surface
+      @application    = application
+      @quadrants      = quadrants
+      @rotation       = opts[:rotation]
+      @model          = application.model
+      @model.rotation = @rotation
+      @options        = opts
     end
 
     def on_current_surface?
@@ -57,8 +58,8 @@ module Polynome
     def update_display(*frames)
       frames.each_with_index do |frame, index|
         apply_options!(frame)
-        @model.rotate_frame(frame, @quadrants, @rotation)
-        mapped_quadrant_id = @model.map_quadrant(@quadrants[index], @quadrants, rotation_offset)
+        @model.rotate_frame!(frame)
+        mapped_quadrant_id = @model.map_quadrant_id(@quadrants[index])
         @surface.light_quadrant(mapped_quadrant_id, frame)
       end
     end
