@@ -34,7 +34,7 @@ module Polynome
       end
 
 
-      if application.interface_type == "128" && INVALID_128_APP_ROTATIONS.include?(opts[:rotation]) then
+      if application.device == "128" && INVALID_128_APP_ROTATIONS.include?(opts[:rotation]) then
         raise RotationOrientationMismatchError,
         "The rotation you have specified (#{opts[:rotation]}) is invalid for the 128 "\
         "as it is not square like the 64 or 256 monomes. You should specify one "\

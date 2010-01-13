@@ -1,6 +1,14 @@
 module Polynome
+  # The representation of an application. An application is a representation of an external app which is communicated to via OSC messages.
+  # Each application has a given type - which maps onto one of the available monome models (64, 128, 256). 128 apps can also optionally specify
+  # an orientation (landscape or portrait) which will affect the available coordinates. Each application also has a unique name which is used to
+  # identify it.
+  #
+  # Applications communicate with Polynome through a frame buffer onto which it pushes frames to be displayed.
+
+
   class Application
-    attr_reader :name, :model
+    attr_reader :name, :model, :device
     attr_accessor :frame_buffer
 
     def initialize(opts = {})
@@ -20,17 +28,14 @@ module Polynome
         caller
       end
 
+
+      @device      = opts[:model]
       @model       = Model.get_model(opts[:model], opts[:orientation])
-      @interface   = Interface.new(model)
       @name        = opts[:name].to_s
     end
 
     def num_quadrants
-      @interface.num_quadrants
-    end
-
-    def interface_type
-      @interface.model_type
+      @model.num_quadrants
     end
 
     def orientation
@@ -44,6 +49,7 @@ module Polynome
         "Expected #{num_quadrants}, got #{frames.size}.",
         caller
       end
+
       frame_update = FrameUpdate.new(self, frames)
       @frame_buffer.push(frame_update) if @frame_buffer
     end
