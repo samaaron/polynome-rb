@@ -17,7 +17,6 @@ module Polynome
         @protocol                  = "series"
         @num_quadrants             = 2
         @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
-
         @rotation                  = rotation
         set_width_and_height!
       end
