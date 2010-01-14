@@ -5,8 +5,8 @@ module Polynome
     class GenericModel
       DEFAULT_VALID_ORIENTATIONS = [:landscape]
 
-      attr_reader   :width, :height, :protocol, :num_quadrants, :name, :cable_placement
-      attr_accessor :rotation
+      attr_reader   :width, :height, :protocol, :num_quadrants, :name, :cable_placement, :rotation
+
 
       def initialize
         raise "Please call me from a subclass"
@@ -39,8 +39,21 @@ module Polynome
         :landscape
       end
 
+      def rotation=(rotation)
+        validate_rotation!(rotation)
+        @rotation = rotation
+      end
+
 
       private
+
+      def validate_rotation!(rotation)
+        unless [0,90,180,270].include?(rotation) then
+          raise ArgumentError,
+          "Incorrect rotation: #{rotation}. Expected one of 0,90,180 or 270",
+          caller
+        end
+      end
 
       def default_quadrants
         (1..@num_quadrants).to_a

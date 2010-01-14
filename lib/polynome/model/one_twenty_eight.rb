@@ -11,13 +11,15 @@ module Polynome
     class OneTwentyEight < GenericModel
       def initialize(rotation, cable_placement)
         set_rotation_and_cable_placement(rotation, cable_placement)
+        validate_rotation!(rotation)
 
         @name                      = "128"
         @protocol                  = "series"
         @num_quadrants             = 2
         @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
-        @width  = orientation == :landscape ? 16 : 8
-        @height = orientation == :landscape ? 8  : 16
+
+        @rotation                  = rotation
+        set_width_and_height!
       end
 
       def rotate_frame!(frame)
@@ -59,7 +61,22 @@ module Polynome
         end
       end
 
+      def rotation=(rotation)
+        super
+        set_width_and_height!
+      end
+
+      def orientation
+        orientation = @rotation % 180 == 0 ? :landscape : :portrait
+        return orientation
+      end
+
       private
+
+      def set_width_and_height!
+        @width  = orientation == :landscape ? 16 : 8
+        @height = orientation == :landscape ? 8  : 16
+      end
 
       def swap_quadrant_ids(quadrant_id)
         unless default_quadrants.include? quadrant_id then

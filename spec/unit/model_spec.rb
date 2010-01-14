@@ -34,11 +34,19 @@ describe Model do
     it "should have a height of 8" do
       @model.height.should == 8
     end
+
+    it "should have an orientation of landscape" do
+      @model.orientation.should == :landscape
+    end
   end
 
   describe "get model 64" do
     before(:each) do
       @model = Model.get_model("64")
+    end
+
+    it "should have an orientation of landscape" do
+      @model.orientation.should == :landscape
     end
 
     it "should have a width of 8" do
@@ -203,6 +211,10 @@ describe Model do
   describe "get model 256" do
     before(:each) do
       @model = Model.get_model("256")
+    end
+
+    it "should have an orientation of landscape" do
+      @model.orientation.should == :landscape
     end
 
     it "should have a width of 16" do
