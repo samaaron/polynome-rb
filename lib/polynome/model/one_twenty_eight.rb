@@ -10,14 +10,12 @@ module Polynome
     # T
     class OneTwentyEight < GenericModel
       def initialize(rotation, cable_placement)
-        set_rotation_and_cable_placement(rotation, cable_placement)
-        validate_rotation!(rotation)
+        set_rotation_and_cable_placement!(rotation, cable_placement)
 
         @name                      = "128"
         @protocol                  = "series"
         @num_quadrants             = 2
         @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
-        @rotation                  = rotation
         set_width_and_height!
       end
 
