@@ -2,7 +2,7 @@ module Polynome
   module Model
     #Model to represent the 64 monome
     class SixtyFour < GenericModel
-      def initialize(cable_placement, rotation)
+      def initialize(rotation, cable_placement)
         set_rotation_and_cable_placement(rotation, cable_placement)
 
         @name                      = "64"

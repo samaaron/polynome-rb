@@ -9,7 +9,7 @@ module Polynome
     #
     # T
     class OneTwentyEight < GenericModel
-      def initialize(cable_placement, rotation)
+      def initialize(rotation, cable_placement)
         set_rotation_and_cable_placement(rotation, cable_placement)
 
         @name                      = "128"

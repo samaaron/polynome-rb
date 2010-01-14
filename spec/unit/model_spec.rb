@@ -81,7 +81,7 @@ describe Model do
       }
 
       quadrant_mappings.each do |mapped_coords, quadrant_id|
-        it "should map the mapped coords #{mapped_coords.inspect} to the quadrant {#quadrant_id.inspect}" do
+        it "should map the mapped coords #{mapped_coords.inspect} to the quadrant #{quadrant_id}" do
           @model.button_quadrant(mapped_coords[0], mapped_coords[1]).should == quadrant_id
         end
       end
@@ -137,7 +137,7 @@ describe Model do
       }
 
       quadrant_mappings.each do |mapped_coords, quadrant_id|
-        it "should map the mapped coords #{mapped_coords.inspect} to the quadrant {#quadrant_id.inspect}" do
+        it "should map the mapped coords #{mapped_coords.inspect} to the quadrant #{quadrant_id}" do
           @model.button_quadrant(mapped_coords[0], mapped_coords[1]).should == quadrant_id
         end
       end
@@ -193,7 +193,7 @@ describe Model do
       }
 
       quadrant_mappings.each do |mapped_coords, quadrant_id|
-        it "should map the mapped coords #{mapped_coords.inspect} to the quadrant {#quadrant_id.inspect}" do
+        it "should map the mapped coords #{mapped_coords.inspect} to the quadrant #{quadrant_id}" do
           @model.button_quadrant(mapped_coords[0], mapped_coords[1]).should == quadrant_id
         end
       end
@@ -246,7 +246,7 @@ describe Model do
       }
 
       quadrant_mappings.each do |mapped_coords, quadrant_id|
-        it "should map the mapped coords #{mapped_coords.inspect} to the quadrant {#quadrant_id.inspect}" do
+        it "should map the mapped coords #{mapped_coords.inspect} to the quadrant #{quadrant_id}" do
           @model.button_quadrant(mapped_coords[0], mapped_coords[1]).should == quadrant_id
         end
       end
@@ -262,7 +262,7 @@ describe Model do
 
   describe "a 256 with cable placement top" do
     before(:each) do
-      @model = Model.get_model("256", :top)
+      @model = Model.get_model("256", :cable_placement => :top)
     end
 
     describe "coord mapping" do
@@ -286,7 +286,7 @@ describe Model do
 
   describe "a 256 with cable placement right" do
     before(:each) do
-      @model = Model.get_model("256", :right)
+      @model = Model.get_model("256", :cable_placement => :right)
     end
 
     describe "coord mapping" do
@@ -309,7 +309,7 @@ describe Model do
 
   describe "a 256 with cable placement bottom" do
     before(:each) do
-      @model = Model.get_model("256", :bottom)
+      @model = Model.get_model("256", :cable_placemement => :bottom)
     end
 
     describe "coord mapping" do
@@ -332,7 +332,7 @@ describe Model do
 
   describe "a 256 with cable placement left" do
     before(:each) do
-      @model = Model.get_model("256", :left)
+      @model = Model.get_model("256", :cable_placement => :left)
     end
 
     describe "coord mapping" do

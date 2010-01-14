@@ -33,7 +33,7 @@ module Polynome
       end
 
       @name = opts[:name]
-      @model = Model.get_model(opts[:device].to_s, opts[:cable_placement])
+      @model = Model.get_model(opts[:device].to_s, :cable_placement => opts[:cable_placement])
       @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
       @carousel = Carousel.new(self)
     end

@@ -1,7 +1,7 @@
 module Polynome
   module Model
     class TwoFiftySix < GenericModel
-      def initialize(cable_placement, rotation)
+      def initialize(rotation, cable_placement)
         set_rotation_and_cable_placement(rotation, cable_placement)
 
         @name                      = "256"
