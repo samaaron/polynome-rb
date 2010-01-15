@@ -25,7 +25,7 @@ module Polynome
       end
 
       def map_quadrant_id(quadrant_id)
-        if [1,2].include?(rotation)
+        if [1,2].include?(rotation_offset)
           swap_quadrant_ids(quadrant_id)
         else
           quadrant_id
@@ -47,9 +47,9 @@ module Polynome
           end
         when 1 then
           if (y <= 8 && x <= 8 && x >= 1 && y >= 1)
-            2 #bottom
+            2 #left
           elsif (y <= 16 && x <= 8 && x >= 1 && y >= 9)
-            1 #top
+            1 #right
           else
             raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
             "(#{x}, #{y}) are invalid for the 128 in orientation portrait. "\

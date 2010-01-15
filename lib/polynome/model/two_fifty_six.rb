@@ -14,18 +14,9 @@ module Polynome
       end
 
       def map_quadrant_id(quadrant_id)
-        #ignore quadrants
-
-        #currently I have to handle button presses in clockwise rotation
-        #and frame displays in anticlockwise rotation
-        #this really suggests this code is due for a major
-        #refactoring ;-)
-        #TODO fix me please!x
-        offset = -rotation
-
         clockwise_quadrant_order = [1,2,4,3]
         index = clockwise_quadrant_order.index(quadrant_id)
-        new_index = (index + rotation) % 4
+        new_index = (index + rotation_offset) % 4
         result = clockwise_quadrant_order[new_index]
         result
       end

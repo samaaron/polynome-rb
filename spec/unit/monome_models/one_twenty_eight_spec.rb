@@ -140,12 +140,12 @@ describe Monome do
           @monome.button_quadrant(6,6).should == 2
         end
 
-        it "should know that a button press of 9,8 is in quadrant 1" do
-          @monome.button_quadrant(9,8).should == 1
+        it "should know that a button press of 8,9 is in quadrant 1" do
+          @monome.button_quadrant(8,9).should == 1
         end
 
-        it "should know that a button press of 16,8 is in quadrant 1" do
-          @monome.button_quadrant(16,8).should == 1
+        it "should know that a button press of 8,16 is in quadrant 1" do
+          @monome.button_quadrant(8,16).should == 1
         end
 
         it "should raise an error if the coords are out of bounds" do
@@ -190,20 +190,20 @@ describe Monome do
           @monome.button_quadrant(6,6).should == 1
         end
 
-        it "should know that a button press of 9,8 is in quadrant 2" do
-          @monome.button_quadrant(9,8).should == 2
+        it "should know that a button press of 8,8 is in quadrant 2" do
+          @monome.button_quadrant(8,9).should == 2
         end
 
-        it "should know that a button press of 15,7 is in quadrant 1" do
-          @monome.button_quadrant(15,7).should == 2
-        end
-
-        it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(17,4)}.should raise_error(Model::InvalidButtonCoord)
+        it "should know that a button press of 7,15 is in quadrant 1" do
+          @monome.button_quadrant(7,15).should == 2
         end
 
         it "should raise an error if the coords are out of bounds" do
-          lambda{@monome.button_quadrant(4,9)}.should raise_error(Model::InvalidButtonCoord)
+          lambda{@monome.button_quadrant(9,4)}.should raise_error(Model::InvalidButtonCoord)
+        end
+
+        it "should raise an error if the coords are out of bounds" do
+          lambda{@monome.button_quadrant(4,19)}.should raise_error(Model::InvalidButtonCoord)
         end
 
         it "should raise an error if the coords are out of bounds" do
