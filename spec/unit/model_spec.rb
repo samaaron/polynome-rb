@@ -321,7 +321,7 @@ describe Model do
 
   describe "a 256 with cable placement bottom" do
     before(:each) do
-      @model = Model.get_model("256", :cable_placemement => :bottom)
+      @model = Model.get_model("256", :cable_placement => :bottom)
     end
 
     describe "coord mapping" do

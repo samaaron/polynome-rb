@@ -11,7 +11,7 @@ module Polynome
     #
     # @return [Model] One of +FourtyH+, +SixtyFour+, +OneTwentyEight+ or +TwoFiftySix+
     def self.get_model(device, opts={})
-      opts.reverse_merge!  :rotation => 0, :cable_placement => :top
+      opts.reverse_merge!  :rotation => 0, :cable_placement => :none
 
       case device.to_s
       when "40h" then return FourtyH.new(opts[:rotation],        opts[:cable_placement])

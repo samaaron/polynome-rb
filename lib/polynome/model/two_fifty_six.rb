@@ -10,7 +10,7 @@ module Polynome
         @protocol                  = "series"
         @num_quadrants             = 4
         @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
-        @device_rotation_offset = 3
+        @device_rotation_offset    = 3
       end
 
       def map_quadrant_id(quadrant_id)
@@ -31,12 +31,11 @@ module Polynome
       end
 
       def map_coords_based_on_rotation(x,y)
-        case @cable_placement
-        when :top then x,y = y,x ; y = 16 - y ; x = 16 - x ; return x,y
-        when :bottom then  x += 1 ; y += 1 ; return y,x
-        when :left then y = 16 - y ; x += 1 ; return x,y
-        when :right then x = 16 - x ; y += 1 ; return x,y
-        else raise "Unknown cable placement: #{@cable_placement}"
+        case rotation_offset
+        when 3 then x,y = y,x ; y = 16 - y ; x = 16 - x ; return x,y
+        when 1 then  x += 1 ; y += 1 ; return y,x
+        when 0 then y = 16 - y ; x += 1 ; return x,y
+        when 2 then x = 16 - x ; y += 1 ; return x,y
         end
       end
 

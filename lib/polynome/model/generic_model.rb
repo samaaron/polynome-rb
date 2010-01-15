@@ -3,7 +3,7 @@ module Polynome
 
     # Abstract representation of a particular monome device
     class GenericModel
-      VALID_CABLE_PLACEMENTS = [:top, :bottom, :left, :right]
+      VALID_CABLE_PLACEMENTS = [:top, :bottom, :left, :right, :none]
       VALID_ROTATIONS        = [0, 90, 180, 270]
 
       attr_reader   :width, :height, :protocol, :num_quadrants, :name, :cable_placement, :rotation
@@ -48,9 +48,6 @@ module Polynome
         @rotation = rotation
       end
 
-
-      private
-
       def rotation_offset
         num_turns = case @rotation
                     when 0 then 0
@@ -59,9 +56,10 @@ module Polynome
                     when 270 then 3
                     else raise "Unexpected rotation. Got #{rotation} expected one of 0, 90, 180, 270"
                     end
-
-        (cable_placement_rotation + num_turns + device_rotation_offset) % 4
+        (cable_placement_rotation + num_turns) % 4
       end
+
+#            private
 
       def default_quadrants
         (1..@num_quadrants).to_a
@@ -88,10 +86,11 @@ module Polynome
 
       def cable_placement_rotation
         case @cable_placement
-        when :top    then 0
-        when :right  then 3
-        when :bottom then 2
-        when :left   then 1
+        when :none   then 0
+        when :top    then (0 + device_rotation_offset) % 4
+        when :right  then (3 + device_rotation_offset) % 4
+        when :bottom then (2 + device_rotation_offset) % 4
+        when :left   then (1 + device_rotation_offset) % 4
         else  raise ArgumentError, "Unknown cable placement. Expected #{VALID_CABLE_PLACEMENTS.to_sentence(:last_word_connector => ' or ')}, got #{cable_placement}", caller
         end
       end
