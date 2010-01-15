@@ -33,7 +33,8 @@ module Polynome
       end
 
       def button_quadrant(x,y)
-        if orientation == :landscape
+        case rotation_offset
+        when 0 then
           if (y <= 8 && x <= 8 && x >= 1 && y >= 1)
             1 #left
           elsif (y <= 8 && x <= 16 && x >= 9 && y >= 1)
@@ -44,11 +45,33 @@ module Polynome
             "Expected x coord in the range (1..16) and y coord in the range (1..8).",
             caller
           end
-        else #in portrait orientation
+        when 1 then
           if (y <= 8 && x <= 8 && x >= 1 && y >= 1)
             2 #bottom
           elsif (y <= 16 && x <= 8 && x >= 1 && y >= 9)
             1 #top
+          else
+            raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
+            "(#{x}, #{y}) are invalid for the 128 in orientation portrait. "\
+            "Expected x coord in the range (1..8) and y coord in the range (1..16).",
+            caller
+          end
+        when 2 then
+          if (y <= 8 && x <= 8 && x >= 1 && y >= 1)
+            2 #left
+          elsif (y <= 8 && x <= 16 && x >= 9 && y >= 1)
+            1 #right
+          else
+            raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
+            "(#{x}, #{y}) are invalid for the 128 in orientation landscape. "\
+            "Expected x coord in the range (1..16) and y coord in the range (1..8).",
+            caller
+          end
+        when 3 then
+          if (y <= 8 && x <= 8 && x >= 1 && y >= 1)
+            1 #bottom
+          elsif (y <= 16 && x <= 8 && x >= 1 && y >= 9)
+            2 #top
           else
             raise InvalidButtonCoord, "Sorry, the coordinates you specified: "\
             "(#{x}, #{y}) are invalid for the 128 in orientation portrait. "\

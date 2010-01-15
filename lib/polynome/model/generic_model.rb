@@ -52,7 +52,15 @@ module Polynome
       private
 
       def rotation_offset
-        (cable_placement_rotation + @rotation + device_rotation_offset) % 4
+        num_turns = case @rotation
+                    when 0 then 0
+                    when 90 then 1
+                    when 180 then 2
+                    when 270 then 3
+                    else raise "Unexpected rotation. Got #{rotation} expected one of 0, 90, 180, 270"
+                    end
+
+        (cable_placement_rotation + num_turns + device_rotation_offset) % 4
       end
 
       def default_quadrants
