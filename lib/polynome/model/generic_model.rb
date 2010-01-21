@@ -16,10 +16,10 @@ module Polynome
       # Take a quadrant id and map it to a new position based on the model's rotation and cable placement
       # The behaviour of this method is generally specific to the model type as defined in +map_quadrant+.
       #
-      # @param [Integer] quadrant_id The ID of the quadrant to map: one of (0|1|2|3) depending on device type.
+      # @param [Integer] quadrant_id The ID of the quadrant to map: one of (1|2|3|4) depending on device type.
       #
-      # @return [Integer] The mapped quadrant id. One of (0|1|2|3) depending on device type.
-      def map_quadrant_id(quadrant_id)
+      # @return [Integer] The mapped quadrant id. One of (1|2|3|4) depending on device type.
+      def map_quadrant_id(quadrant_id, log=false)
         #overidden in subclasses where necessary
         quadrant_id
       end
@@ -32,7 +32,8 @@ module Polynome
       end
 
       def map_coords_based_on_rotation(x,y)
-        raise "I'd like to be implemented please"
+        return x,y
+#        raise "I'd like to be implemented please"
       end
 
       def orientation
@@ -60,10 +61,6 @@ module Polynome
       end
 
 #            private
-
-      def default_quadrants
-        (1..@num_quadrants).to_a
-      end
 
       def button_quadrant(x,y)
         raise "Please implement me"

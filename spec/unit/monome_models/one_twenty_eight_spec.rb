@@ -18,7 +18,7 @@ describe Monome do
         @monome = Monome.new(:io_file => 'foo/bar', :device => "128", :cable_placement => :top)
       end
 
-      describe "Illumniation" do
+      describe "Illumination" do
         it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 0" do
           @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array128_1)
           @monome.light_quadrant(1, FrameFixtures.frame128_1)

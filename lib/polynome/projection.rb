@@ -1,10 +1,13 @@
 module Polynome
   class Projection
     class QuadrantCountMismatchError       < StandardError ; end
-    class RotationOrientationMismatchError < StandardError ; end
+    class QuadrantOrientationMismatchError < StandardError ; end
 
-    VALID_ROTATIONS           = [0, 90, 180, 270]
-    INVALID_128_APP_ROTATIONS = [90, 270]
+    VALID_ROTATIONS      = [0, 90, 180, 270]
+    VALID_128_QUADRANTS  = {
+      :portrait  => [[1,3],[2,4]],
+      :landscape => [[1,2],[3,4]]
+    }
 
     attr_reader :application, :rotation, :quadrants, :surface
 
@@ -24,7 +27,6 @@ module Polynome
         caller
       end
 
-
       if application.num_quadrants != quadrants.count then
         raise QuadrantCountMismatchError,
         "The number of quadrants you specified does not match "\
@@ -33,22 +35,19 @@ module Polynome
         caller
       end
 
-
-      if application.device == "128" && INVALID_128_APP_ROTATIONS.include?(opts[:rotation]) then
-        raise RotationOrientationMismatchError,
-        "The rotation you have specified (#{opts[:rotation]}) is invalid for the 128 "\
-        "as it is not square like the 64 or 256 monomes. You should specify one "\
-        "of the following: #{(VALID_ROTATIONS - INVALID_128_APP_ROTATIONS).inspect}.",
-        caller
-      end
-
-      @surface        = surface
-      @application    = application
-      @quadrants      = quadrants
       @rotation       = opts[:rotation]
       @model          = application.model
       @model.rotation = @rotation
+      @surface        = surface
+      @application    = application
+      @quadrants      = quadrants
       @options        = opts
+
+      if application.device == "128" && !VALID_128_QUADRANTS[@model.orientation].include?(quadrants) then
+        raise QuadrantOrientationMismatchError,
+        "The quadrants you specified don't match the orientation of the device at the rotation you specified."
+        caller
+      end
     end
 
     def on_current_surface?
@@ -59,7 +58,7 @@ module Polynome
       frames.each_with_index do |frame, index|
         apply_options!(frame)
         @model.rotate_frame!(frame)
-        mapped_quadrant_id = @model.map_quadrant_id(@quadrants[index])
+        mapped_quadrant_id = @model.map_quadrant_id(@quadrants[index], true)
         @surface.light_quadrant(mapped_quadrant_id, frame)
       end
     end

@@ -13,7 +13,7 @@ module Polynome
         @device_rotation_offset    = 3
       end
 
-      def map_quadrant_id(quadrant_id)
+      def map_quadrant_id(quadrant_id, log=false)
         clockwise_quadrant_order = [1,2,4,3]
         index = clockwise_quadrant_order.index(quadrant_id)
         new_index = (index + rotation_offset) % 4
