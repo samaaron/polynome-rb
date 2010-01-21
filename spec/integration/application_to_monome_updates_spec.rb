@@ -12,35 +12,52 @@ describe "Application to Monome updates" do
 
     it "should rotate the frame 90 with a projection rotation of 90" do
       @table.connect(:app => "app64", :monome => "main", :surface => "base", :rotation => 90)
-      @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_90)
+      @monome.should_receive(:send_frame_to_communicator).with(1, FrameFixtures.frame64_90)
       @app64.update_display(FrameFixtures.frame64)
       @table.send(:update_frame)
     end
 
     it "should rotate the frame 90 with a projection rotation of 180" do
       @table.connect(:app => "app64", :rotation => 180)
-      @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_180)
+      @monome.should_receive(:send_frame_to_communicator).with(1, FrameFixtures.frame64_180)
       @app64.update_display(FrameFixtures.frame64)
       @table.send(:update_frame)
     end
 
     it "should rotate the frame 90 with a projection rotation of 270" do
       @table.connect(:app => "app64", :rotation => 270)
-      @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_270)
+      @monome.should_receive(:send_frame_to_communicator).with(1, FrameFixtures.frame64_270)
       @app64.update_display(FrameFixtures.frame64)
       @table.send(:update_frame)
     end
 
     it "should invert the frame if the invert option is set to true" do
       @table.connect(:app => "app64", :invert => true)
-      @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_i)
+      @monome.should_receive(:send_frame_to_communicator).with(1, FrameFixtures.frame64_i)
       @app64.update_display(FrameFixtures.frame64)
       @table.send(:update_frame)
     end
 
     it "should both invert the frame and rotate it by 180 if both options are set" do
       @table.connect(:app => "app64", :rotation => 180, :invert => true)
-      @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_180_i)
+      @monome.should_receive(:send_frame_to_communicator).with(1, FrameFixtures.frame64_180_i)
+      @app64.update_display(FrameFixtures.frame64)
+      @table.send(:update_frame)
+    end
+  end
+
+  describe "Given a 64 monome with cable placement left with a 64 app" do
+    before(:each) do
+      @table   = Table.new(:ignore_connection_validity => true)
+      @table.add_monome(:io_file => 'foo/bar', :device => "64", :cable_placement => "right")
+      @table.add_app(:device => 64, :name => "app64")
+      @monome = @table.send(:monome, "main")
+      @app64  = @table.send(:app, "app64")
+    end
+
+    it "should rotate the frame with a projection rotation of 270" do
+      @table.connect(:app => "app64", :monome => "main", :surface => "base", :rotation => 0)
+      @monome.should_receive(:send_frame_to_communicator).with(1, FrameFixtures.frame64_270)
       @app64.update_display(FrameFixtures.frame64)
       @table.send(:update_frame)
     end
@@ -68,13 +85,13 @@ describe "Application to Monome updates" do
         end
 
         it "on updating the display of the first app, should only illuminate the first frame with no rotation applied" do
-          @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64)
+          @monome.should_receive(:send_frame_to_communicator).with(1, FrameFixtures.frame64)
           @app64_1.update_display(FrameFixtures.frame64)
           @table.send(:update_frame)
         end
 
         it "on updating the display of the second app, should only illuminate the second frame with no rotation applied" do
-          @monome.should_receive(:light_quadrant).with(2, FrameFixtures.frame64)
+          @monome.should_receive(:send_frame_to_communicator).with(2, FrameFixtures.frame64)
           @app64_2.update_display(FrameFixtures.frame64)
           @table.send(:update_frame)
         end
@@ -87,13 +104,13 @@ describe "Application to Monome updates" do
         end
 
         it "on updating the display of the first app, should only illuminate the first frame with no rotation applied" do
-          @monome.should_receive(:light_quadrant).with(1, FrameFixtures.frame64_90)
+          @monome.should_receive(:send_frame_to_communicator).with(1, FrameFixtures.frame64_90)
           @app64_1.update_display(FrameFixtures.frame64)
           @table.send(:update_frame)
         end
 
         it "on updating the display of the second app, should only illuminate the second frame with no rotation applied" do
-          @monome.should_receive(:light_quadrant).with(2, FrameFixtures.frame64_270)
+          @monome.should_receive(:send_frame_to_communicator).with(2, FrameFixtures.frame64_270)
           @app64_2.update_display(FrameFixtures.frame64)
           @table.send(:update_frame)
         end

@@ -49,7 +49,7 @@ module Polynome
 
       @model.rotate_frame!(frame)
       mapped_quadrant_id = @model.map_quadrant_id(quadrant_id)
-      @communicator.illuminate_frame(mapped_quadrant_id, frame.read)
+      send_frame_to_communicator(mapped_quadrant_id, frame)
     end
 
     def cable_placement
@@ -114,6 +114,10 @@ module Polynome
 
     def quadrant_projection(quadrant_id)
 
+    end
+
+    def send_frame_to_communicator(quadrant_id, frame)
+      @communicator.illuminate_frame(quadrant_id, frame.read)
     end
   end
 end

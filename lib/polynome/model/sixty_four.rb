@@ -11,6 +11,7 @@ module Polynome
         @protocol                  = "series"
         @num_quadrants             = 1
         @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
+        @device_rotation_offset    = 3
       end
 
       def button_quadrant(x,y)

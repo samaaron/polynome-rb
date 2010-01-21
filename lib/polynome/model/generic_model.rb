@@ -57,6 +57,7 @@ module Polynome
                     when 270 then 3
                     else raise "Unexpected rotation. Got #{rotation} expected one of 0, 90, 180, 270"
                     end
+
         (cable_placement_rotation + num_turns) % 4
       end
 
@@ -71,6 +72,7 @@ module Polynome
       end
 
       def cable_placement=(cable_placement)
+        cable_placement = cable_placement.to_sym
         unless VALID_CABLE_PLACEMENTS.include?(cable_placement) then
           raise ArgumentError,
           "Unknown cable placement: #{cable_placement}, "\
