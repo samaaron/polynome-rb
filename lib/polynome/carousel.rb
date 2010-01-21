@@ -64,6 +64,11 @@ module Polynome
       current_surface
     end
 
+    def receive_button_event(quadrant, action, x, y)
+      current_surface.receive_button_event(quadrant, action, x, y)
+    end
+
+
     private
 
     def current_surface
@@ -91,10 +96,6 @@ module Polynome
 
     def find_surface_index_by_name(name)
       @surfaces.find_index{|surface| surface.name == name.to_s}
-    end
-
-    def receive_button_event(quadrant, action, x, y)
-      current_surface.receive_button_event(quadrant, action, x, y)
     end
   end
 end

@@ -14,30 +14,35 @@ monome_model   = "256"
 
 #create table and add monome
 table   = Table.new
-table.add_monome(:io_file => monome_io_file, :device => monome_model, :cable_placement => :right)
+table.add_monome(:io_file => monome_io_file, :model => monome_model, :cable_placement => :right, :name => "bigboy")
+
+#update these to match your monome's settings
+monome_io_file = "/dev/tty.usbserial-m128-115"
+monome_model   = "128"
+table.add_monome(:io_file => monome_io_file, :model => monome_model, :cable_placement => :right, :name => "titch")
 
 #add flashing app
-table.add_app(:device => 64, :name => "app64")
-table.connect(:app => "app64", :quadrant => 1, :rotation => 0)
+table.add_app(:model => 64, :name => "app64")
+table.connect(:app => "app64", :quadrant => 1, :rotation => 180, :monome => "bigboy")
 app64  = table.send(:app, "app64")
 
 #add spinning app
-table.add_app(:device => 64, :name => "rotator")
-table.connect(:app => "rotator", :quadrant => 2)
+table.add_app(:model => 64, :name => "rotator")
+table.connect(:app => "rotator", :quadrant => 2, :monome => "bigboy")
 rotator = table.send(:app, "rotator")
 
 #add inverter app
-table.add_app(:device => "128l", :name => "inverter")
-table.connect(:app => "inverter", :quadrants => [3,4], :rotation => 180)
-inverter = table.send(:app, "inverter")
+table.add_app(:model => 128, :name => "inverter")
+table.connect(:app => "inverter", :quadrants => [3,5], :rotation => 180, :monome => 'titch')
+
 
 #logic for flashing app
 t1 = Thread.new do
   loop do
     app64.update_display(FrameFixtures.frame64)
-    sleep 0.05
+    sleep 0.25
     app64.update_display(FrameFixtures.blank)
-    sleep 0.05
+    sleep 0.5
   end
 end
 
@@ -73,7 +78,7 @@ end
 #output status of queue
 t4 = Thread.new do
   loop do
-    puts "Num frames queued up to be viewed: #{table.send(:frame_buffer_size)}"
+    #puts "Num frames queued up to be viewed: #{table.send(:frame_buffer_size)}"
     sleep 3
   end
 end
