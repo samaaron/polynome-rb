@@ -5,7 +5,7 @@ describe Monome do
 
   describe "Given a mocked out monome communicator" do
     before(:each) do
-      @comm   = MonomeSerial::MonomeCommunicator.new('foo/bar', "series")
+      @comm   = MonomeSerial::MonomeCommunicator.new('foo/bar')
       MonomeSerial::MonomeCommunicator.should_receive(:new).and_return(@comm)
     end
 

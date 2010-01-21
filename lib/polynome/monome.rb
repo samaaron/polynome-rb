@@ -34,7 +34,7 @@ module Polynome
 
       @name = opts[:name]
       @model = Model.get_model(opts[:device].to_s, :cable_placement => opts[:cable_placement])
-      @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], @model.protocol)
+      @communicator = MonomeSerial::MonomeCommunicator.new(opts[:io_file], :protocol => @model.protocol)
       @carousel = Carousel.new(self)
     end
 
@@ -90,14 +90,15 @@ module Polynome
     end
 
     def receive_button_event(action, x, y)
-      quadrant = button_quadrant(x,y)
+#      quadrant = button_quadrant(x,y)
       if @app
         #temporarily here because it's nice to demo it working to
         #myself for kicks!
         @app.update_display(FrameFixtures.frame64)   if action == :keydown
         @app.update_display(FrameFixtures.blank) if action == :keyup
         m_x, m_y = mapped_coords(x,y)
-        puts "#{name}: #{action} - [x: #{x}, y:#{y}], mapped: [x: #{m_x}, y:#{m_y}], raw: #{model.send(:raw_button_quadrant, x,y)}, mapped: #{button_quadrant(x,y)}"
+        puts "#{name}: #{action} - [x: #{x}, y:#{y}], mapped: [x: #{m_x}, y:#{m_y}]"
+#        puts "#{name}: #{action} - [x: #{x}, y:#{y}], mapped: [x: #{m_x}, y:#{m_y}], raw: #{model.send(:raw_button_quadrant, x,y)}, mapped: #{button_quadrant(x,y)}"
       else
         @carousel.receive_button_event(quadrant, action, x, y)
       end
