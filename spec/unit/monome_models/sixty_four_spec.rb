@@ -3,7 +3,7 @@ include Polynome
 
 describe Monome do
 
-  describe "Given a mocked out monome communicator" do
+  describe "Given a mocked out monome communicator and the knowledge that the 64 has an offset of 3" do
     before(:each) do
       @comm   = MonomeSerial::MonomeCommunicator.new('foo/bar')
       MonomeSerial::MonomeCommunicator.should_receive(:new).and_return(@comm)
@@ -16,7 +16,7 @@ describe Monome do
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 0" do
-        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64)
+        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64_270)
         @monome.light_quadrant(1, FrameFixtures.frame64)
       end
 
@@ -57,7 +57,7 @@ describe Monome do
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 270" do
-        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64_270)
+        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64_180)
         @monome.light_quadrant(1, FrameFixtures.frame64)
       end
 
@@ -98,7 +98,7 @@ describe Monome do
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 180" do
-        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64_180)
+        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64_90)
         @monome.light_quadrant(1, FrameFixtures.frame64)
       end
 
@@ -139,7 +139,7 @@ describe Monome do
       end
 
       it "should map and rotate a frame in quadrant 1 to quadrant 1 with rotation 90" do
-        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64_90)
+        @comm.should_receive(:illuminate_frame).with(1, FrameFixtures.bit_array64)
         @monome.light_quadrant(1, FrameFixtures.frame64)
       end
 

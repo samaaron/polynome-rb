@@ -105,14 +105,6 @@ describe Model do
       @model.orientation.should == :landscape
     end
 
-    it "should have a width of 16" do
-      @model.width.should == 16
-    end
-
-    it "should have a height of 8" do
-      @model.height.should == 8
-    end
-
     it "should use the series protocol" do
       @model.protocol.should == "series"
     end
@@ -122,7 +114,7 @@ describe Model do
     end
 
     it "should have a name of 128" do
-      @model.name.should == "128"
+      @model.name.should == "128-landscape"
     end
 
     it "should have a width of 16" do
@@ -161,13 +153,6 @@ describe Model do
       @model.orientation.should == :portrait
     end
 
-    it "should have a width of 8" do
-      @model.width.should == 8
-    end
-
-    it "should have a height of 16" do
-      @model.height.should == 16
-    end
 
     it "should use the series protocol" do
       @model.protocol.should == "series"
@@ -178,26 +163,25 @@ describe Model do
     end
 
     it "should have a name of 128" do
-      @model.name.should == "128"
+      @model.name.should == "128-landscape"
     end
 
-    it "should have a width of 8" do
-      @model.width.should == 8
+    it "should have a width of 16" do
+      @model.width.should == 16
     end
 
-    it "should have a height of 16" do
-      @model.height.should == 16
+    it "should have a height of 8" do
+      @model.height.should == 8
     end
 
     describe "quadrant mapping" do
       quadrant_mappings = {
-        [1,1]  => 2,
-        [1,8]  => 2,
-        [1,9]  => 1,
-        [8,1]  => 2,
-        [8,9]  => 1,
-        [8,16] => 1,
-        [4,10] => 1
+        [1,1]  => 1,
+        [1,8]  => 1,
+        [9,1]  => 2,
+        [9,8]  => 2,
+        [16,8] => 2,
+        [4,6]  => 1
       }
 
       quadrant_mappings.each do |mapped_coords, quadrant_id|
@@ -235,14 +219,6 @@ describe Model do
 
     it "should have a name of 256" do
       @model.name.should == "256"
-    end
-
-    it "should have a width of 16" do
-      @model.width.should == 16
-    end
-
-    it "should have a height of 16" do
-      @model.height.should == 16
     end
 
     describe "quadrant mapping" do
