@@ -79,7 +79,8 @@ module Polynome
     def listen
       @listen_thread = Thread.new do
         loop do
-          receive_button_event(*@communicator.read)
+          action, x, y = *@communicator.read
+          receive_button_event(action, x, y, true)
         end
       end
     end
@@ -89,27 +90,23 @@ module Polynome
       @app = app
     end
 
-    def receive_button_event(action, x, y)
-#      quadrant = button_quadrant(x,y)
-      if @app
-        #temporarily here because it's nice to demo it working to
-        #myself for kicks!
-        @app.update_display(FrameFixtures.frame64)   if action == :keydown
-        @app.update_display(FrameFixtures.blank) if action == :keyup
-        m_x, m_y = mapped_coords(x,y)
-        puts "#{name}: #{action} - [x: #{x}, y:#{y}], mapped: [x: #{m_x}, y:#{m_y}]"
-#        puts "#{name}: #{action} - [x: #{x}, y:#{y}], mapped: [x: #{m_x}, y:#{m_y}], raw: #{model.send(:raw_button_quadrant, x,y)}, mapped: #{button_quadrant(x,y)}"
-      else
-        @carousel.receive_button_event(quadrant, action, x, y)
-      end
+    def receive_button_event(action, x, y, log=false)
+      puts "[MONOME]      receiving #{action} x:#{x}, y:#{y}" if log
+
+      x += 1
+      y += 1
+
+      quadrant_id = button_quadrant(x,y)
+      m_x, m_y = mapped_coords(x,y, quadrant_id)
+      @carousel.receive_button_event(quadrant_id, action, m_x, m_y, log)
     end
 
     def button_quadrant(x,y)
       model.button_quadrant(x,y)
     end
 
-    def mapped_coords(x,y)
-      mapped_x, mapped_y = model.map_coords_based_on_rotation(x,y)
+    def mapped_coords(x,y, quadrant_id)
+      mapped_x, mapped_y = model.map_coords_based_on_rotation(x,y, quadrant_id)
     end
 
     def quadrant_projection(quadrant_id)

@@ -31,9 +31,8 @@ module Polynome
         rotation_offset.times{frame.rotate!(90)}
       end
 
-      def map_coords_based_on_rotation(x,y)
-        return x,y
-#        raise "I'd like to be implemented please"
+      def map_coords_based_on_rotation(x,y, quadrant_id)
+        raise "I'd like to be implemented please"
       end
 
       def orientation

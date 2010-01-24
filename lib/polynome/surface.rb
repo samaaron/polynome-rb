@@ -89,10 +89,19 @@ module Polynome
       end
     end
 
+    def receive_button_event(quadrant_id, action, x, y, log=false)
+      puts "[SURFACE]     receiving #{action} x:#{x}, y:#{y}" if log
+      find_projection_by_quadrant(quadrant_id).receive_button_event(quadrant_id, action, x, y, log)
+    end
+
     private
 
     def find_projection_by_application_name(name)
       @projections.values.find{|projection| projection.application.name == name}
+    end
+
+    def find_projection_by_quadrant(quadrant_id)
+      @projections.find{|quadrants, projection| quadrants.include?(quadrant_id)}.last
     end
 
     def deregister_quadrants(quadrants)

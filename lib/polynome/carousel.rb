@@ -64,8 +64,9 @@ module Polynome
       current_surface
     end
 
-    def receive_button_event(quadrant, action, x, y)
-      current_surface.receive_button_event(quadrant, action, x, y)
+    def receive_button_event(quadrant_id, action, x, y, log=false)
+      puts "[CAROUSEL]    receiving #{action} x:#{x}, y:#{y}" if log
+      current_surface.receive_button_event(quadrant_id, action, x, y, log)
     end
 
 

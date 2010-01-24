@@ -11,7 +11,7 @@ module Polynome
         @protocol                  = "series"
         @num_quadrants             = 1
         @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
-        @device_rotation_offset    = 3
+        @device_rotation_offset    = 2
       end
 
       def button_quadrant(x,y)
@@ -22,6 +22,15 @@ module Polynome
           "(#{x}, #{y}) are invalid for the 64. Expected x coord in the "\
           "range (1..8) and y coord in the range (1..8).",
           caller
+        end
+      end
+
+      def map_coords_based_on_rotation(x,y, quadrant_id)
+        case rotation_offset
+        when 0 then return x, y
+        when 1 then return y, 9-x
+        when 2 then return 9-x, 9-y
+        when 3 then return 9-y, x
         end
       end
     end

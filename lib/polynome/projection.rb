@@ -71,6 +71,12 @@ module Polynome
       update_display(*frame_update.frames)
     end
 
+    def receive_button_event(quadrant_id, action, x, y, log=true)
+      puts "[PROJECTION]  receiving #{action} x:#{x}, y:#{y} (#{@model.rotation_offset})" if log
+      m_x, m_y = @model.map_coords_based_on_rotation(x,y,quadrant_id)
+      @application.receive_button_event(action, m_x, m_y, log)
+    end
+
     private
 
     def apply_options!(frame)

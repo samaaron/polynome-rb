@@ -16,7 +16,7 @@ monome_device   = "64"
 
 #create table and add monome
 table   = Table.new
-table.add_monome(:io_file => monome_io_file, :device => monome_device, :cable_placement => :right)
+table.add_monome(:io_file => monome_io_file, :device => monome_device, :cable_placement => :left)
 
 #add flashing app
 table.add_app(:device => 64, :name => "app64")

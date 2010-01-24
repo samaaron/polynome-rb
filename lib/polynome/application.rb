@@ -39,6 +39,15 @@ module Polynome
       @model.orientation
     end
 
+    def receive_button_event(action, x, y, log=false)
+      if log
+        puts "[APPLICATION] receiving #{action} x:#{x}, y:#{y}"
+        puts ""
+        puts "---"
+        puts ""
+      end
+    end
+
     def update_display(*frames)
       if frames.size != num_quadrants then
         raise ArgumentError,
