@@ -35,7 +35,6 @@ module Polynome
         "Rotation amount not supported. Expected one of [-270, -180, -90, 0, 90, 180, 270]. "\
         "Got #{amount}."
       end
-
       @rotation += amount
       @rotation = @rotation % 360
       self

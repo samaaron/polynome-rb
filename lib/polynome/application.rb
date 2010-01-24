@@ -29,6 +29,13 @@ module Polynome
       @device = opts[:device]
       @model  = Model.get_model(opts[:device])
       @name   = opts[:name].to_s
+      init
+    end
+
+    def init
+    end
+
+    def racked
     end
 
     def num_quadrants
@@ -68,6 +75,7 @@ module Polynome
         caller
       end
 
+      frames = frames.map{|frame| frame.clone}
       frame_update = FrameUpdate.new(self, frames)
       @frame_buffer.push(frame_update) if @frame_buffer
     end

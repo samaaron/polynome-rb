@@ -10,13 +10,22 @@ require 'fixtures/frame_fixtures'
 
 include Polynome
 
-class FlashApp < Application
+class App < Application
+  def init
+    puts 'initializing'
+    @frame = FrameFixtures.frame64
+  end
+
+  def racked
+    update_display(@frame)
+  end
+
   def button_pressed(x,y)
-    update_display(FrameFixtures.frame64)
   end
 
   def button_released(x,y)
-    update_display(FrameFixtures.blank)
+    @frame.rotate!(90)
+    update_display(@frame)
   end
 end
 
@@ -32,8 +41,8 @@ table   = Table.new
 table.add_monome(:io_file => monome_io_file, :device => monome_device, :cable_placement => :top)
 
 #add flashing app
-table.add_app(FlashApp, :device => 64, :name => "app64")
-table.connect(:app => "app64", :quadrant => 1, :rotation => 180)
+table.add_app(App, :device => 64, :name => "app64")
+table.connect(:app => "app64", :quadrant => 1, :rotation => 0)
 app64  = table.send(:app, "app64")
 
 monome = table.send(:monome)

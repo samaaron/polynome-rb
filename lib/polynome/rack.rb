@@ -23,6 +23,7 @@ module Polynome
       end
 
       application.frame_buffer = @frame_buffer
+      application.racked
 
       @applications << application
       self
