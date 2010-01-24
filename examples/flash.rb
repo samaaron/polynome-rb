@@ -6,7 +6,20 @@ $: << File.dirname(__FILE__) +  "/../spec"
 require 'polynome'
 require 'fixtures/frame_fixtures'
 
+
+
 include Polynome
+
+class FlashApp < Application
+  def button_pressed(x,y)
+    update_display(FrameFixtures.frame64)
+  end
+
+  def button_released(x,y)
+    update_display(FrameFixtures.blank)
+  end
+end
+
 
 #update these to match your monome's settings
 #monome_io_file = "/dev/tty.usbserial-m128-115"
@@ -16,11 +29,11 @@ monome_device   = "64"
 
 #create table and add monome
 table   = Table.new
-table.add_monome(:io_file => monome_io_file, :device => monome_device, :cable_placement => :left)
+table.add_monome(:io_file => monome_io_file, :device => monome_device, :cable_placement => :top)
 
 #add flashing app
-table.add_app(:device => 64, :name => "app64")
-table.connect(:app => "app64", :quadrant => 1)
+table.add_app(FlashApp, :device => 64, :name => "app64")
+table.connect(:app => "app64", :quadrant => 1, :rotation => 180)
 app64  = table.send(:app, "app64")
 
 monome = table.send(:monome)

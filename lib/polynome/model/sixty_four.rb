@@ -11,7 +11,8 @@ module Polynome
         @protocol                  = "series"
         @num_quadrants             = 1
         @valid_quadrants           = Quadrants.get_valid_quadrants(@num_quadrants)
-        @device_rotation_offset    = 2
+        @device_frame_rotation_offset    = 3
+        @device_coord_rotation_offset    = 2
       end
 
       def button_quadrant(x,y)
@@ -26,8 +27,8 @@ module Polynome
       end
 
       def map_coords_based_on_rotation(x,y, quadrant_id)
-        case rotation_offset
-        when 0 then return x, y
+        case coord_rotation_offset
+        when 0 then return y, x
         when 1 then return y, 9-x
         when 2 then return 9-x, 9-y
         when 3 then return 9-y, x

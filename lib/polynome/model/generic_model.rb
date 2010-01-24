@@ -28,7 +28,7 @@ module Polynome
       #
       # @param [Frame] frame The frame to rotate. Modifies this frame to rotate it appropriately
       def rotate_frame!(frame)
-        rotation_offset.times{frame.rotate!(90)}
+        frame_rotation_offset.times{frame.rotate!(90)}
       end
 
       def map_coords_based_on_rotation(x,y, quadrant_id)
@@ -36,7 +36,7 @@ module Polynome
       end
 
       def orientation
-        :landscape
+        :horizontal
       end
 
       def rotation=(rotation)
@@ -48,26 +48,36 @@ module Polynome
         @rotation = rotation
       end
 
-      def rotation_offset
-        num_turns = case @rotation
-                    when 0 then 0
-                    when 90 then 1
-                    when 180 then 2
-                    when 270 then 3
-                    else raise "Unexpected rotation. Got #{rotation} expected one of 0, 90, 180, 270"
-                    end
-
-        (cable_placement_rotation + num_turns) % 4
+      def coord_rotation_offset
+        (cable_placement_coord_rotation + num_rotation_turns) % 4
       end
 
-#            private
+      def frame_rotation_offset
+        (cable_placement_frame_rotation + num_rotation_turns) % 4
+      end
+
+      def device_frame_rotation_offset
+        @device_frame_rotation_offset || 0
+      end
+
+      def device_coord_rotation_offset
+        @device_coord_rotation_offset || 0
+      end
+
+      def num_rotation_turns
+        case @rotation
+        when 0   then 0
+        when 90  then 1
+        when 180 then 2
+        when 270 then 3
+        else raise "Unexpected rotation. Got #{rotation} expected one of 0, 90, 180, 270"
+        end
+      end
+
+      #            private
 
       def button_quadrant(x,y)
         raise "Please implement me"
-      end
-
-      def device_rotation_offset
-        @device_rotation_offset || 0
       end
 
       def cable_placement=(cable_placement)
@@ -81,14 +91,21 @@ module Polynome
         @cable_placement = cable_placement
       end
 
+      def cable_placement_frame_rotation
+        cable_placement_rotation(device_frame_rotation_offset)
+      end
 
-      def cable_placement_rotation
+      def cable_placement_coord_rotation
+        cable_placement_rotation(device_coord_rotation_offset)
+      end
+
+      def cable_placement_rotation(offset)
         case @cable_placement
         when :none   then 0
-        when :top    then (0 + device_rotation_offset) % 4
-        when :right  then (3 + device_rotation_offset) % 4
-        when :bottom then (2 + device_rotation_offset) % 4
-        when :left   then (1 + device_rotation_offset) % 4
+        when :top    then (0 + offset) % 4
+        when :right  then (3 + offset) % 4
+        when :bottom then (2 + offset) % 4
+        when :left   then (1 + offset) % 4
         else  raise ArgumentError, "Unknown cable placement. Expected #{VALID_CABLE_PLACEMENTS.to_sentence(:last_word_connector => ' or ')}, got #{cable_placement}", caller
         end
       end

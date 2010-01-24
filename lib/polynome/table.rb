@@ -42,8 +42,18 @@ module Polynome
       self
     end
 
-    def add_app(opts={})
-      new_app = Application.new(opts)
+    def add_app(app, opts={})
+      if app.kind_of?(Class)
+        #app is the specific Application class to use
+        new_app = app.new(opts)
+      elsif app.kind_of?(Hash)
+        #app is actually the first part of the opts hash
+        new_app = Application.new(opts.merge(app))
+      else
+        #assume app is the instance to use (ignore opts)
+        new_app = app
+      end
+
       @rack << new_app
       self
     end

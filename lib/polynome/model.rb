@@ -17,9 +17,9 @@ module Polynome
       when "40h"  then return FourtyH.new(opts[:rotation],                 opts[:cable_placement])
       when "64"   then return SixtyFour.new(opts[:rotation],               opts[:cable_placement])
       when "256"  then return TwoFiftySix.new(opts[:rotation],             opts[:cable_placement])
-      when "128"  then return ([:left, :right].include?(opts[:cable_placement]) ? OneTwentyEightPortrait.new(opts[:rotation], opts[:cable_placement]) : OneTwentyEightLandscape.new(opts[:rotation], opts[:cable_placement]) )
       when "128l" then return OneTwentyEightLandscape.new(opts[:rotation], opts[:cable_placement])
       when "128p" then return OneTwentyEightPortrait.new(opts[:rotation],  opts[:cable_placement])
+      when "128"  then return ([:left, :right].include?(opts[:cable_placement]) ? OneTwentyEightPortrait.new(opts[:rotation], opts[:cable_placement]) : OneTwentyEightLandscape.new(opts[:rotation], opts[:cable_placement]) )
 
       else raise ArgumentError, "Unknown monome device type: #{device}", caller
       end

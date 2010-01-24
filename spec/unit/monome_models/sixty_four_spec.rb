@@ -3,7 +3,7 @@ include Polynome
 
 describe Monome do
 
-  describe "Given a mocked out monome communicator and the knowledge that the 64 has an offset of 3" do
+  describe "Given a mocked out monome communicator" do
     before(:each) do
       @comm   = MonomeSerial::MonomeCommunicator.new('foo/bar')
       MonomeSerial::MonomeCommunicator.should_receive(:new).and_return(@comm)

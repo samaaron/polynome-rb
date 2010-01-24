@@ -20,7 +20,7 @@ it "should be possible to initialise an application with a device" do
     end
 
     it "should default to an orientation of landscape if one isn't supplied" do
-      Application.new(:device => "256", :name => "test").orientation.should == :landscape
+      Application.new(:device => "256", :name => "test").orientation.should == :horizontal
     end
   end
 
@@ -33,7 +33,7 @@ it "should be possible to initialise an application with a device" do
 
   describe "#orientation" do
     it "should be able to return its orientation" do
-      Application.new(:device =>"128", :name => "barbaz").orientation.should == :landscape
+      Application.new(:device =>"128", :name => "barbaz").orientation.should == :horizontal
     end
   end
 

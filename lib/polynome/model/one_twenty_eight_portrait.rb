@@ -4,6 +4,7 @@ module Polynome
     #
     class OneTwentyEightPortrait < OneTwentyEightGeneric
       def initialize(rotation, cable_placement)
+        set_rotation_and_cable_placement!(rotation, cable_placement)
         if [:top, :bottom].include?(cable_placement) then
           raise ArgumentError,
           "Invalid cable placement for a 128 monome in portrait orientation. Was"\
@@ -30,9 +31,9 @@ module Polynome
       end
 
       def orientation
-        case rotation_offset
-        when 0,2 then :portrait
-        when 1,3 then :landscape
+        case num_rotation_turns
+        when 0,2 then :vertical
+        when 1,3 then :horizontal
         end
       end
 

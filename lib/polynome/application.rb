@@ -46,6 +46,18 @@ module Polynome
         puts "---"
         puts ""
       end
+
+      case action
+      when :keydown then button_pressed(x,y)
+      when :keyup   then button_released(x,y)
+      else raise "Unknown button event: #{action}"
+      end
+    end
+
+    def button_pressed(x,y)
+    end
+
+    def button_released(x,y)
     end
 
     def update_display(*frames)

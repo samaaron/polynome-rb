@@ -72,7 +72,7 @@ module Polynome
     end
 
     def receive_button_event(quadrant_id, action, x, y, log=true)
-      puts "[PROJECTION]  receiving #{action} x:#{x}, y:#{y} (#{@model.rotation_offset})" if log
+      puts "[PROJECTION]  receiving #{action} x:#{x}, y:#{y} (#{@model.coord_rotation_offset})" if log
       m_x, m_y = @model.map_coords_based_on_rotation(x,y,quadrant_id)
       @application.receive_button_event(action, m_x, m_y, log)
     end
@@ -81,15 +81,6 @@ module Polynome
 
     def apply_options!(frame)
       frame.invert! if @options[:invert]
-    end
-
-    def rotation_offset
-      case @rotation
-      when 0   then 0
-      when 90  then 1
-      when 180 then 2
-      when 270 then 3
-      end
     end
   end
 end

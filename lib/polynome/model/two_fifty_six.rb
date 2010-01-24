@@ -16,13 +16,13 @@ module Polynome
       def map_quadrant_id(quadrant_id, log=false)
         clockwise_quadrant_order = [1,2,4,3]
         index = clockwise_quadrant_order.index(quadrant_id)
-        new_index = (index + rotation_offset) % 4
+        new_index = (index + frame_rotation_offset) % 4
         result = clockwise_quadrant_order[new_index]
         result
       end
 
       def map_coords_based_on_rotation(x,y)
-        case rotation_offset
+        case coord_rotation_offset
         when 3 then x,y = y,x ; y = 16 - y ; x = 16 - x ; return x,y
         when 1 then  x += 1 ; y += 1 ; return y,x
         when 0 then y = 16 - y ; x += 1 ; return x,y
