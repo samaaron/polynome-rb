@@ -29,6 +29,7 @@ module Polynome
       @device = opts[:device]
       @model  = Model.get_model(opts[:device])
       @name   = opts[:name].to_s
+      @bank   = LightBank.new(@model.width, @model.height)
       init
     end
 
@@ -44,6 +45,22 @@ module Polynome
 
     def orientation
       @model.orientation
+    end
+
+    def on(x,y)
+      @bank.on(x,y)
+    end
+
+    def off(x,y)
+      @bank.off(x,y)
+    end
+
+    def toggle(x,y)
+      @bank.toggle(x,y)
+    end
+
+    def refresh
+      update_display(@bank.to_frame)
     end
 
     def receive_button_event(action, x, y, log=false)
@@ -85,4 +102,5 @@ module Polynome
     end
   end
 end
+
 

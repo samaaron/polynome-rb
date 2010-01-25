@@ -13,19 +13,19 @@ include Polynome
 class App < Application
   def init
     puts 'initializing'
-    @frame = FrameFixtures.frame64
   end
 
   def racked
-    update_display(@frame)
   end
 
   def button_pressed(x,y)
+    toggle(x,y)
+    refresh
   end
 
   def button_released(x,y)
-    @frame.rotate!(90)
-    update_display(@frame)
+#    off(x,y)
+ #   refresh
   end
 end
 

@@ -71,5 +71,59 @@ describe "Monome to Application updates" do
       end
     end
   end
+
+  describe "Given a 64 monome with cable placement right and a 64 app" do
+    before(:each) do
+      @table  = Table.new(:ignore_connection_validity => true)
+      @table.add_monome(:io_file => 'foo/bar', :device => "64", :cable_placement => :right)
+      @table.add_app(:device => 64, :name => "app64")
+      @monome = @table.send(:monome, "main")
+      @app64  = @table.send(:app, "app64")
+    end
+
+    describe "mapping button presses" do
+      maps = {
+        [7,7] => [8,1],
+        [0,0] => [1,8],
+        [7,1] => [2,1],
+        [1,7] => [8,7],
+        [1,6] => [7,7]
+      }
+
+      maps.each do |raw, mapped|
+        it "should map #{raw.inspect} to #{mapped.inspect}" do
+          @monome.carousel.should_receive(:receive_button_event).with(1, :keydown, mapped.first, mapped.last, false)
+          @monome.receive_button_event(:keydown, raw.first, raw.last, false)
+        end
+      end
+    end
+  end
+
+  describe "Given a 64 monome with cable placement bottom and a 64 app" do
+    before(:each) do
+      @table  = Table.new(:ignore_connection_validity => true)
+      @table.add_monome(:io_file => 'foo/bar', :device => "64", :cable_placement => :bottom)
+      @table.add_app(:device => 64, :name => "app64")
+      @monome = @table.send(:monome, "main")
+      @app64  = @table.send(:app, "app64")
+    end
+
+    describe "mapping button presses" do
+      maps = {
+        [7,7] => [8,8],
+        [0,0] => [1,1],
+        [7,1] => [2,8],
+        [1,7] => [8,2],
+        [1,6] => [7,2]
+      }
+
+      maps.each do |raw, mapped|
+        it "should map #{raw.inspect} to #{mapped.inspect}" do
+          @monome.carousel.should_receive(:receive_button_event).with(1, :keydown, mapped.first, mapped.last, false)
+          @monome.receive_button_event(:keydown, raw.first, raw.last, false)
+        end
+      end
+    end
+  end
 end
 

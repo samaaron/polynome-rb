@@ -27,12 +27,15 @@ module Polynome
       end
 
       def map_coords_based_on_rotation(x,y, quadrant_id)
-        case coord_rotation_offset
-        when 0 then return y, x
-        when 1 then return y, 9-x
-        when 2 then return 9-x, 9-y
-        when 3 then return 9-y, x
-        end
+
+        mapped_coords = case coord_rotation_offset
+                        when 0 then [y, x]
+                        when 1 then [y, 9-x]
+                        when 2 then [9-x, 9-y]
+                        when 3 then [9-y, x]
+                        end
+        mapped_coords.reverse! if @cable_placement == :none unless coord_rotation_offset == 0
+        return *mapped_coords
       end
     end
   end
