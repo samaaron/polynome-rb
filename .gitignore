@@ -6,4 +6,4 @@ vendor/extensions
 .yardoc
 doc
 *.rbc
-
+log
