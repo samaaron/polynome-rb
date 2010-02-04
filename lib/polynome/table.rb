@@ -66,7 +66,6 @@ module Polynome
     end
 
     def add_app(params = {})
-      log "gaylord"
       application = Application.new(params)
       log "Adding application with name #{params[:name]}"
       @rack << application

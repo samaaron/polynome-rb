@@ -12,9 +12,6 @@ module Polynome
     attr_accessor :frame_buffer
 
     def initialize(params = {})
-      log "twattynobhead"
-
-
       params.reverse_merge! :debug => Defaults.debug?
 
       unless params[:device] then
