@@ -3,11 +3,15 @@ include Polynome
 describe "Application to Monome updates" do
   describe "Given a 64 monome with a 64 app" do
     before(:each) do
-      @table   = Table.new(:ignore_connection_validity => true)
+      @table   = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
       @table.add_monome(:io_file => 'foo/bar', :device => "64")
       @table.add_app(:device => 64, :name => "app64")
       @monome = @table.send(:monome, "main")
       @app64  = @table.send(:app, "app64")
+    end
+
+    after(:each) do
+      @table.shutdown
     end
 
     describe "before applying physical mappings" do
@@ -50,11 +54,15 @@ describe "Application to Monome updates" do
 
   describe "Given a 64 monome with cable placement left with a 64 app" do
     before(:each) do
-      @table   = Table.new(:ignore_connection_validity => true)
+      @table   = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
       @table.add_monome(:io_file => 'foo/bar', :device => "64", :cable_placement => "right")
       @table.add_app(:device => 64, :name => "app64")
       @monome = @table.send(:monome, "main")
       @app64  = @table.send(:app, "app64")
+    end
+
+    after(:each) do
+      @table.shutdown
     end
 
     it "should rotate the frame with a projection rotation of 270" do

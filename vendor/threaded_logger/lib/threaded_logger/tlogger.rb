@@ -4,7 +4,13 @@ module ThreadedLogger
 
     def initialize(name, outstream)
       @name = name.to_s
-      @outstream = outstream
+
+      if IO === outstream
+        @outstream = outstream
+      else
+        @outstream = File.open(outstream, 'a')
+      end
+
       @messages = Queue.new
       @semaphore = Mutex.new
       @num_messages_received = 0
@@ -13,16 +19,16 @@ module ThreadedLogger
       start
     end
 
+    def time_stamp
+      time = Time.now
+      "#{time.hour}:#{time.min}:#{time.sec}:#{time.usec}"
+    end
+
     def log(message)
       @semaphore.synchronize do
         @messages << message
         @num_messages_received += 1
       end
-    end
-
-    def time_stamp
-      time = Time.now
-      "#{time.hour}.#{time.min} #{time.sec}s"
     end
 
     def <<(message)
@@ -56,7 +62,7 @@ module ThreadedLogger
       @thread = Thread.new do
         loop do
           message = @messages.pop
-          stamped_message = "[#{@name}, #{time_stamp}]\t#{message}\n"
+          stamped_message = "[#{time_stamp}]".ljust(20) + " #{@name} #{message}\n"
 
           if((@outstream == STDOUT || @outstream == STDERR) && "".respond_to?(:color))
             #we're printing out to STDOUT or STDERR and we have the
@@ -66,6 +72,7 @@ module ThreadedLogger
             @outstream << stamped_message
           end
 
+          @outstream.flush
           @num_messages_logged += 1
         end
       end

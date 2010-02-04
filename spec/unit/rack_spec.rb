@@ -3,7 +3,7 @@ include Polynome
 
 describe Rack do
   before(:each) do
-    @frame_buffer = SizedQueue.new(Defaults::FRAME_BUFFER_SIZE)
+    @frame_buffer = SizedQueue.new(Defaults.frame_buffer_size)
   end
 
   it "should resolve to the correct constant from this context" do

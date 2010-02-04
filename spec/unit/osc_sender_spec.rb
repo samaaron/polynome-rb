@@ -7,11 +7,13 @@ describe OSCSender do
   end
 
   it "should be possible to send messages with it" do
-    receiver = Tosca::Receiver.new(5544)
-    sender = OSCSender.new(5544, :host => 'localhost')
-    messages = receiver.wait_for(1) do
+    listener = OSCListener.new(5544)
+    listener.start
+    sender = OSCSender.new(5544)
+    messages = listener.wait_for(1) do
       sender.send('/hey/there', 1, 2, "three")
     end
     messages.should == [['/hey/there', [1,2,"three"]]]
+    listener.stop
   end
 end

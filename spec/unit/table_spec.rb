@@ -8,20 +8,28 @@ describe Table do
 
   describe "#monomes" do
     it "should return an empty array before any monomes have been added" do
-      Table.new.send(:monomes).should == []
+      table = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport)
+      table.send(:monomes).should == []
+      table.shutdown
     end
   end
 
   describe "apps" do
     it "should return an empty array before any applications have been added" do
-      Table.new.send(:apps).should == []
+      table = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport)
+      table.send(:apps).should == []
+      table.shutdown
     end
   end
 
   describe "#connect" do
     describe "erroneously" do
       before(:each) do
-        @table = Table.new(:ignore_connection_validity => true)
+        @table = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
+      end
+
+      after(:each) do
+        @table.shutdown
       end
 
       it "should complain if the application name isn't registered" do
@@ -31,13 +39,17 @@ describe Table do
 
     describe "successfully (with default opts)" do
       before(:each) do
-        @table = Table.new(:ignore_connection_validity => true)
+        @table = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
         @table.add_app(:device => 64,  :name => "app64")
         @table.add_monome(:io_file => 'foo/bar', :device => "64", :cable_placement => :bottom, :name => "test64")
         @table.send(:connections).size.should == 0
         @table.connect(:app => "app64", :monome => "test64")
         @table.send(:connections).size.should == 1
         @connection = @table.send(:connections).first
+      end
+
+      after(:each) do
+        @table.shutdown
       end
 
       it "should register the application on the base surface by default" do
@@ -60,13 +72,17 @@ describe Table do
 
     describe "successfully (with a rotation of 90)" do
       before(:each) do
-        @table = Table.new(:ignore_connection_validity => true)
+        @table = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
         @table.add_app(:device => 64,  :name => "app64")
         @table.add_monome(:io_file => 'foo/bar', :device=> "64", :cable_placement => :bottom, :name => "test64")
         @table.send(:connections).size.should == 0
         @table.connect(:app => "app64", :monome => "test64", :rotation => 90)
         @table.send(:connections).size.should == 1
         @connection = @table.send(:connections).first
+      end
+
+      after(:each) do
+        @table.shutdown
       end
 
       it "should be possible to specify a rotation of 90" do
@@ -80,9 +96,13 @@ end
 describe "#add_app" do
   describe "successfully adding a 64 and 128 app" do
     before(:each) do
-      @table = Table.new(:ignore_connection_validity => true)
+      @table = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
       @table.add_app(:device => 64,  :name => "app64")
       @table.add_app(:device => 128, :name => :app128)
+    end
+
+    after(:each) do
+      @table.shutdown
     end
 
     it "should have incremented the number of apps by 2" do
@@ -106,9 +126,10 @@ describe "#add_app" do
 
   describe "when adding two apps with the same name" do
     it "should raise a duplicate app name error" do
-      @table = Table.new(:ignore_connection_validity => true)
+      @table = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
       lambda{@table.add_app(:device => 64,  :name => "app64")}.should_not raise_error
       lambda{@table.add_app(:device => 128, :name => :app64)}.should raise_error(Rack::ApplicationNameInUseError)
+      @table.shutdown
     end
   end
 
@@ -116,18 +137,23 @@ describe "#add_app" do
 
   describe "#add_monome" do
     it "should raise an error if the name already exists" do
-      table = Table.new(:ignore_connection_validity => true)
+      table = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
       lambda{table.add_monome(:io_file => 'baz/quux', :device => "64",  :name => "fred")}.should_not raise_error
       lambda{table.add_monome(:io_file => 'foo/bar',  :device => "64",  :name => "fred")}.should raise_error(Table::MonomeNameNotAvailableError)
+      table.shutdown
     end
   end
 end
 
 describe "successfully adding a 64 and 128 monome" do
   before(:each) do
-    @table = Table.new(:ignore_connection_validity => true)
+    @table = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
     @table.add_monome(:io_file => 'foo/bar', :device => "64", :cable_placement => :bottom, :name => "test64")
     @table.add_monome(:io_file => 'baz/quux', :device => "128", :cable_placement => :top, :name => "test128")
+  end
+
+  after(:each) do
+    @table.shutdown
   end
 
   it "increment the number of monomes by 2" do

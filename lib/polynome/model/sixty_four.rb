@@ -34,8 +34,10 @@ module Polynome
                         when 2 then [9-x, 9-y]
                         when 3 then [9-y, x]
                         end
+
         mapped_coords.reverse! if @cable_placement == :none unless coord_rotation_offset == 0
-        return *mapped_coords
+
+        return mapped_coords
       end
     end
   end

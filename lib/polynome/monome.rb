@@ -91,6 +91,7 @@ module Polynome
     end
 
     def receive_button_event(action, x, y, log=false)
+
       puts "[MONOME]      receiving #{action} x:#{x}, y:#{y}" if log
 
       x += 1
@@ -98,6 +99,7 @@ module Polynome
 
       quadrant_id = button_quadrant(x,y)
       m_x, m_y = mapped_coords(x,y, quadrant_id)
+      puts "calling carousel with action: #{action}, x: #{m_x}, y: #{m_y}"
       @carousel.receive_button_event(quadrant_id, action, m_x, m_y, log)
     end
 
@@ -106,7 +108,7 @@ module Polynome
     end
 
     def mapped_coords(x,y, quadrant_id)
-      mapped_x, mapped_y = model.map_coords_based_on_rotation(x,y, quadrant_id)
+      model.map_coords_based_on_rotation(x,y, quadrant_id)
     end
 
     def quadrant_projection(quadrant_id)

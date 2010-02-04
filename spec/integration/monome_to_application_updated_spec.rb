@@ -3,13 +3,17 @@ include Polynome
 describe "Monome to Application updates" do
   describe "Given a 64 monome with cable placement top and a 64 app at 90 degree rotation" do
     before(:each) do
-      @table  = Table.new(:ignore_connection_validity => true)
+      @table  = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
       @table.add_monome(:io_file => 'foo/bar', :device => "64")
       @table.add_app(:device => 64, :name => "app64")
       @monome = @table.send(:monome, "main")
       @app64  = @table.send(:app, "app64")
       @table.connect(:app => "app64", :monome => "main", :surface => "base", :rotation => 90)
       @projection = @monome.carousel.send(:current_surface).send(:find_projection_by_quadrant, 1)
+    end
+
+    after(:each) do
+      @table.shutdown
     end
 
     describe "mapping button presses" do
@@ -47,11 +51,15 @@ describe "Monome to Application updates" do
 
   describe "Given a 64 monome with cable placement left and a 64 app" do
     before(:each) do
-      @table  = Table.new(:ignore_connection_validity => true)
+      @table  = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
       @table.add_monome(:io_file => 'foo/bar', :device => "64", :cable_placement => :left)
       @table.add_app(:device => 64, :name => "app64")
       @monome = @table.send(:monome, "main")
       @app64  = @table.send(:app, "app64")
+    end
+
+    after(:each) do
+      @table.shutdown
     end
 
     describe "mapping button presses" do
@@ -74,11 +82,15 @@ describe "Monome to Application updates" do
 
   describe "Given a 64 monome with cable placement right and a 64 app" do
     before(:each) do
-      @table  = Table.new(:ignore_connection_validity => true)
+      @table  = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
       @table.add_monome(:io_file => 'foo/bar', :device => "64", :cable_placement => :right)
       @table.add_app(:device => 64, :name => "app64")
       @monome = @table.send(:monome, "main")
       @app64  = @table.send(:app, "app64")
+    end
+
+    after(:each) do
+      @table.shutdown
     end
 
     describe "mapping button presses" do
@@ -101,11 +113,15 @@ describe "Monome to Application updates" do
 
   describe "Given a 64 monome with cable placement bottom and a 64 app" do
     before(:each) do
-      @table  = Table.new(:ignore_connection_validity => true)
+      @table  = Table.new(:inport => Defaults.test_table_inport, :outport => Defaults.test_table_outport, :ignore_connection_validity => true)
       @table.add_monome(:io_file => 'foo/bar', :device => "64", :cable_placement => :bottom)
       @table.add_app(:device => 64, :name => "app64")
       @monome = @table.send(:monome, "main")
       @app64  = @table.send(:app, "app64")
+    end
+
+    after(:each) do
+      @table.shutdown
     end
 
     describe "mapping button presses" do

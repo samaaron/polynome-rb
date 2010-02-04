@@ -3,31 +3,36 @@ module Polynome
     include Loggable
 
     attr_reader :log_history
+
     def initialize(port, opts={})
       opts.reverse_merge!(
                           :host          => "localhost",
-                          :logger        => nil,
-                          :debug         => false,
-                          :debug_message => ""
+                          :debug         => Defaults.debug?,
+                          :owner         => "Unknown Owner"
                          )
 
-      @host        = opts[:host]
-      @logger      = opts[:logger]
       @port        = port
-      @log_history = ""
+      @name        = "#{opts[:owner]}-Sender"
+      @logger      = opts[:logger] || Defaults.logger
+      @host        = opts[:host]
+      @owner       = opts[:owner]
       @debug       = opts[:debug]
-      @name = "#{opts[:debug_message]} OSCSender"
-      log "debug mode on, set to send on port #{@port}"
-
+      @prefix      = OSCPrefix.new(opts[:prefix])
+      @logger_char = 'S'
+      log 'READY', "Set to send on port #{@port} with prefix: #{@prefix.inspect}"
     end
 
     def send(message_path, *args)
+      complete_path = OSCPrefix.new(@prefix, message_path)
       socket  = OSC::UDPSocket.new
-      message = OSC::Message.new(message_path, nil, *args)
+      message = OSC::Message.new(complete_path, nil, *args)
       socket.send message, 0, @host, @port
 
-      log "sent: #{message_path}, #{args.inspect} to port #{@port} on #{@host}"
+      log 'MSG OUT', "#{complete_path}, #{args.inspect}, #{@host}:#{@port}"
     end
 
+    def inspect
+      "OSCSender, #{@host}:#{@port}, #{@prefix}, owner: #{@owner}"
+    end
   end
 end

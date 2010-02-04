@@ -10,24 +10,10 @@ require 'fixtures/frame_fixtures'
 
 include Polynome
 
-class App < Application
-  def init
-    puts 'initializing'
-  end
 
-  def racked
-  end
 
-  def button_pressed(x,y)
-    toggle(x,y)
-    refresh
-  end
-
-  def button_released(x,y)
-#    off(x,y)
- #   refresh
-  end
-end
+my_app = App.new(:device => 64, :name => "my_app")
+my_app.connect
 
 
 #update these to match your monome's settings
@@ -41,16 +27,36 @@ table   = Table.new
 table.add_monome(:io_file => monome_io_file, :device => monome_device, :cable_placement => :top)
 
 #add flashing app
-table.add_app(App, :device => 64, :name => "app64")
-table.connect(:app => "app64", :quadrant => 1, :rotation => 0)
-app64  = table.send(:app, "app64")
+#table.add_app(:device => 64, :name => "app64")
+#table.connect(:app => "app64", :quadrant => 1, :rotation => 0)
+#app64  = table.send(:app, "app64")
 
-monome = table.send(:monome)
-monome.add_app(app64)
+#monome = table.send(:monome)
+#monome.add_app(app64)
 
 #Go! Go! Go!
 table.start
 puts "All systems go!\n"
+
+
+class App < Polynome::Client::App
+  def init
+    puts 'initializing'
+  end
+
+  def racked
+  end
+
+  def button_pressed(x,y)
+    toggle(x,y)
+    refresh
+  end
+
+  def button_released(x,y)
+  #   off(x,y)
+  #   refresh
+  end
+end
 
 #don't exit process prematurely...
 

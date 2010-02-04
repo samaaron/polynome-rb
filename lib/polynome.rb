@@ -14,7 +14,7 @@ raise "Ruby 1.8.6 is not supported. Please use 1.8.7 or higher" if RUBY_VERSION 
 
 #require vendored stuff
 require 'samaaron-rosc'
-require 'activesupport'
+require 'active_support'
 require 'threaded_logger'
 require 'rainbow'
 require 'monome_serial'
@@ -26,6 +26,7 @@ $:.unshift File.dirname(__FILE__)
 
 #require polynome stuff
 require 'polynome/loggable'
+require 'polynome/osc_prefix'
 require 'polynome/osc_listener'
 require 'polynome/osc_sender'
 require 'polynome/quadrants'
@@ -48,6 +49,7 @@ require 'polynome/light_bank'
 require 'polynome/application'
 require 'polynome/rack'
 require 'polynome/table'
+require 'polynome/client'
 
 
 #require config

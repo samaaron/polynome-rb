@@ -91,7 +91,8 @@ module Polynome
 
     def receive_button_event(quadrant_id, action, x, y, log=false)
       puts "[SURFACE]     receiving #{action} x:#{x}, y:#{y}" if log
-      find_projection_by_quadrant(quadrant_id).receive_button_event(quadrant_id, action, x, y, log)
+      projection = find_projection_by_quadrant(quadrant_id)
+      projection.receive_button_event(quadrant_id, action, x, y, log) if projection
     end
 
     private
@@ -101,7 +102,8 @@ module Polynome
     end
 
     def find_projection_by_quadrant(quadrant_id)
-      @projections.find{|quadrants, projection| quadrants.include?(quadrant_id)}.last
+      matching_projections = @projections.find{|quadrants, projection| quadrants.include?(quadrant_id)}
+      matching_projections.last if matching_projections
     end
 
     def deregister_quadrants(quadrants)

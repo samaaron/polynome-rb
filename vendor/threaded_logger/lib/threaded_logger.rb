@@ -25,11 +25,15 @@ module ThreadedLogger
   #(the stream must must respond to #to_s)
   #
   #This method is useful in tests
-  def self.strip_messages(stream, name = nil)
-    unstripped = stream.to_s
-    log_name  = name ? name.to_s : ".*?"
+  def self.strip_messages_from_file(filename, name = nil)
+    lines = File.new(filename, 'r').readlines
+    lines.map{|line|strip_message(line, name)}.join("\n") + "\n"
+  end
 
-    stream.split("\n").map{|msg| msg.match(/\[#{log_name}.*?\]\s*(.*)/)}.map{|match| match[1] if match}.compact.join("\n") + "\n"
+  def self.strip_message(line, name = nil)
+    log_name  = name ? name.to_s : ".*?"
+    match = line.match(/\A\[[\d:]+\]\s+#{log_name}\s+(.*)/)
+    match[1] if match
   end
 
   #TODO: remove all these class methods if they're not being used

@@ -9,24 +9,26 @@ module Polynome
 
     def initialize(port, opts={})
       opts.reverse_merge!(
-                          :prefix        => "",
-                          :logger        => nil,
-                          :debug         => false,
-                          :debug_message => ""
-                         )
+                          :prefix        => "/",
+                          :debug         => Defaults.debug?,
+                          :owner         => "Unknown",
+                          :host          => Defaults.outhost
+                          )
+
+      @logger_char = 'L'
+      @name = "#{opts[:owner]}-Listener"
+      @logger   = opts[:logger] || Defaults.logger
       @port = port
-      @logger = opts[:logger]
+      @host = opts[:host]
       @log_history = ""
-      @name = "#{opts[:debug_message]} OSCListener"
+      @owner = opts[:owner]
       @debug = opts[:debug]
-      @prefix = (opts[:prefix].start_with?('/') || opts[:prefix] == "") ? opts[:prefix] : "/#{opts[:prefix]}"
+      @prefix = OSCPrefix.new(opts[:prefix])
       @num_messages_received = 0
       @running = false
       open_port
 
       add_debug_logging_method if @debug
-      log "#{@name} debug mode on, listening to port #{@port}"
-
     end
 
     ## takes an OSC message pattern and block. The block will be
@@ -55,17 +57,17 @@ module Polynome
     ## them match ALL incoming OSC messages.
     def add_method(path, type_spec, &block)
       #allow more descriptive * and :any as well as nil
-      #to indicate that it will listen to any port or typespec
-      p  = (path      == '*' || path      == :any) ? nil : path
+      #to indicate that it will listen to any path or typespec
       ts = (type_spec == '*' || type_spec == :any) ? nil : type_spec
+      full_path = OSCPrefix.new(@prefix, path)
 
-      #prepend / if necessary
-      p = "/#{p}" if (p && !p.start_with?('/'))
+      log 'REGISTER', "#{full_path}, #{ts.inspect}"
+      @listener.add_method("#{full_path}", ts, &block)
+    end
 
-      #apply prefix if necessary
-      p = @prefix     if (@prefix && path.nil?)
-      p = @prefix + p if (@prefix && p)
-      @listener.add_method(p, ts, &block)
+    #executes the block on *all* messages received
+    def add_global_method(&block)
+      @listener.add_method(nil, nil, &block)
     end
 
     def wait_for(num_messages_to_wait_for)
@@ -74,6 +76,9 @@ module Polynome
         "You are attempting to wait for messages when the server isn't running",
         caller
       end
+
+      messages = []
+      add_global_method { |mesg|  messages << [mesg.address, mesg.args] }
 
       current_num_messages = num_messages_received
       yield if block_given?
@@ -84,9 +89,11 @@ module Polynome
           raise TimeOut, "Stopped waiting for messages that don't appear to be arriving...'"
         end
       end
+      messages
     end
 
     def start
+      log 'READY', "Listening to #{@host}:#{@port} with prefix #{@prefix.inspect}"
       @thread = Thread.new do
         @listener.serve
       end
@@ -95,6 +102,7 @@ module Polynome
     end
 
     def stop
+      log 'SHUTDOWN', "Closing port"
       close_port
       @running = false
       return !@running
@@ -104,11 +112,15 @@ module Polynome
       @running
     end
 
+    def inspect
+      "OSCListener, #{@host}:#{@port}, prefix: #{@prefix}, owner: #{@owner}"
+    end
+
     private
 
     def add_debug_logging_method
-      add_method(:any, :any) do |message|
-        log "received: #{message.address}, #{message.args.inspect}"
+      add_global_method do |message|
+        log 'MSG IN', "#{message.address}, #{message.args.inspect}"
       end
     end
 
@@ -118,21 +130,21 @@ module Polynome
 
     def open_port
       unless @port_open
-        log "trying to open port #{@port}"
         @listener = OSC::UDPServerWithCount.new
-        @listener.bind("localhost", @port)
+        @listener.bind(@host, @port)
         @port_open = true
-        log "opened port #{@port}"
+        log 'INIT', "Opened port #{@port}"
       end
     end
 
     def close_port
       if @port_open
-        log "trying to close port #{@port}"
         @listener.close
         @port_open = false
-        log "closed port #{@port}"
+        log 'SHUTDOWN', "Closed port #{@port}"
       end
     end
+
+
   end
 end

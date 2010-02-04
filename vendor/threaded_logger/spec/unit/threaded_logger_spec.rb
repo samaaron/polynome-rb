@@ -15,28 +15,13 @@ describe ThreadedLogger do
 
   describe ".strip_messages" do
     it "should return one message if there's one matching message" do
-      messages = "[john, 10.27 27s] hey"
-      ThreadedLogger.strip_messages(messages).should == "hey\n"
+      messages = "[23:35:18:228864]    bill hey"
+      ThreadedLogger.strip_message(messages).should == "hey"
     end
 
-    it "should return one message if there's one matching message with a trailing newline" do
-      messages = "[john, 10.27 27s] hey\n"
-      ThreadedLogger.strip_messages(messages).should == "hey\n"
-    end
-
-    it "should return multiple messages if there are multiple matching messages" do
-      messages = "[john, 1.27 28s] hey\n[john, 1.27 29s] there"
-      ThreadedLogger.strip_messages(messages).should == "hey\nthere\n"
-    end
-
-    it "should filter the messages correctly based on the second param" do
-      messages = "[john, 1.27 28s] hey\n[ted, 1.27 29s] there\n[boris, 1.27 30s] how\n[ted, 1.30, 1s] are the cats\n"
-      ThreadedLogger.strip_messages(messages, :ted).should == "there\nare the cats\n"
-    end
-
-    it "shouldn't filter any messages if no filter is passed" do
-      messages = "[john, 1.27 28s] hey\n[ted, 1.27 29s] there\n[boris, 1.27 30s] how\n[ted, 1.30, 1s] are the cats\n"
-      ThreadedLogger.strip_messages(messages).should == "hey\nthere\nhow\nare the cats\n"
+    it "should return nothing if the name doesn't match" do
+      messages = "[23:35:18:228864] toddy hey\n"
+      ThreadedLogger.strip_message(messages, :terrence).should == nil
     end
   end
 
@@ -125,7 +110,7 @@ describe ThreadedLogger do
 
   describe "with a new log with a given outstream" do
     before(:each) do
-      @outstream = ""
+      @outstream = Dir.tmpdir + '/test_stream_' + "#{Time.now.to_i}" + "#{Time.now.usec}"
       @logger = ThreadedLogger.create_log(:bill, @outstream)
     end
 
@@ -137,12 +122,8 @@ describe ThreadedLogger do
       @logger.should be_running
     end
 
-    it "should start with the outstream being an empty string" do
-      @outstream.should == ""
-    end
-
     it "should have the correct outstream" do
-      @logger.outstream.should == @outstream
+      @logger.outstream.path.should == File.open(@outstream).path
     end
 
     it "should be possible to send it a message" do
@@ -172,7 +153,7 @@ describe ThreadedLogger do
         end
       end
 
-      messages = ThreadedLogger.strip_messages(@outstream, :bill)
+      messages = ThreadedLogger.strip_messages_from_file(@outstream, :bill)
       @logger.num_messages_logged.should == 5
       messages.should == "hi\nthere\nhow\nare\nyou?\n"
     end
@@ -192,7 +173,7 @@ describe ThreadedLogger do
         end
       end
 
-      messages = ThreadedLogger.strip_messages(@outstream, :bill)
+      messages = ThreadedLogger.strip_messages_from_file(@outstream, :bill)
       @logger.num_messages_logged.should == 5
       messages.should == "hi\nthere\nhow\nare\nyou?\n"
     end
@@ -217,7 +198,7 @@ describe ThreadedLogger do
         end
       end
 
-      @outstream.split("\n").size.should == 100
+      File.open(@outstream).readlines.size.should == 100
     end
   end
 end

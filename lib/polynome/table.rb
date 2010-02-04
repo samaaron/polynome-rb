@@ -7,13 +7,76 @@ module Polynome
     class ConnectionNameAlreadyExistsError  < StandardError ; end
     class ApplicationNameUnknownError       < StandardError ; end
 
-    def initialize(opts={})
-      @ignore_connection_validity = opts[:ignore_connection_validity]
-      @frame_buffer = SizedQueue.new(Defaults::FRAME_BUFFER_SIZE)
-      @rack = Rack.new(@frame_buffer)
-      @monomes = {}
-      @connection_names = []
-      @connections = []
+    include Loggable
+
+    attr_reader :listener, :sender
+
+    def initialize(params={})
+      params.reverse_merge!(
+                            :inport  => Defaults.table_inport,
+                            :outport => Defaults.table_outport,
+                            :host    => Defaults.outhost,
+                            :logger  => Defaults.logger,
+                            :debug   => Defaults.debug?,
+                            :name    => 'Table'
+                            )
+
+      @host                       = params[:host]
+      @debug                      = params[:debug]
+      @logger                     = params[:logger]
+      @name                       = params[:name]
+      @ignore_connection_validity = params[:ignore_connection_validity]
+      @frame_buffer               = SizedQueue.new(Defaults.frame_buffer_size)
+      @rack                       = Rack.new(@frame_buffer)
+      @inport                     = params[:inport]
+      @monomes                    = {}
+      @connection_names           = []
+      @connections                = []
+      @logger_char                = 'T'
+
+
+      log "INIT", "Table initialized. Waiting for monomes to be added and to be started..."
+    end
+
+    def boot
+      log "\n\n\n\n   ************************\n   *   Table is Booting   *\n   ************************\n\n"
+
+      @listener = OSCListener.new(@inport, :host => @host, :prefix => '/polynome/table/', :owner => @name)
+      @listener.add_method('register', 'ssiss') {|mesg| log "foo" ; receive_register_client(mesg)}
+
+      start_comms
+      start
+    end
+
+    def receive_register_client(mesg=nil)
+      app_name, device, port, host, prefix = *mesg.args
+      log "Registering client with name: #{app_name} and device #{device} on #{host}:#{port} with prefix #{prefix}"
+      add_app(
+              :name          => app_name,
+              :device        => device,
+              :outport       => port,
+              :inport        => fetch_new_app_port,
+              :client_host   => host,
+              :host          => @host,
+              :client_prefix => prefix
+              )
+
+
+      connect(:app => app_name, :quadrant => 1, :rotation => 0)
+    end
+
+    def add_app(params = {})
+      log "gaylord"
+      application = Application.new(params)
+      log "Adding application with name #{params[:name]}"
+      @rack << application
+
+      log "Connecting application with name #{params[:name]} to quadrant #{1} at rotation #{0}"
+      self
+    end
+
+    def fetch_new_app_port
+      3334
     end
 
     def connect(opts={})
@@ -23,6 +86,7 @@ module Polynome
       app     = app(opts[:app])
       monome  = monome(opts[:monome])
 
+      log "Connecting app: #{app}"
       if @connection_names.include?(opts[:name]) then
         raise ConnectionNameAlreadyExistsError,
         "Connection name already taken, please select another"
@@ -42,43 +106,30 @@ module Polynome
       self
     end
 
-    def add_app(app, opts={})
-      if app.kind_of?(Class)
-        #app is the specific Application class to use
-        new_app = app.new(opts)
-      elsif app.kind_of?(Hash)
-        #app is actually the first part of the opts hash
-        new_app = Application.new(opts.merge(app))
-      else
-        #assume app is the instance to use (ignore opts)
-        new_app = app
-      end
+    def add_monome(params={})
 
-      @rack << new_app
-      self
-    end
-
-    def add_monome(opts={})
-      opts.reverse_merge! :name => "main"
-      unless opts[:name] then
+      params.reverse_merge! :name => "main"
+      unless params[:name] then
         raise MonomeNameNotSpecifiedError,
         "You need to specify a name for the monome"
       end
 
-      if @monomes[opts[:name]] then
+      log "Adding monome with name '#{params[:name]}'"
+
+      if @monomes[params[:name]] then
         raise MonomeNameNotAvailableError,
         "This name has already been taken. Please choose another for your monome"
       end
 
-      new_monome = Monome.new(opts)
+      new_monome = Monome.new(params)
 
       unless new_monome.has_real_communicator? || @ignore_connection_validity then
         raise MonomeCreationError,
         "Unable to connect to the monome. Perhaps the following io_file is incorrect: "\
-        "#{opts[:io_file]}."
+        "#{params[:io_file]}."
       end
 
-      @monomes[opts[:name].to_s] = new_monome
+      @monomes[params[:name].to_s] = new_monome
       self
     end
 
@@ -94,9 +145,34 @@ module Polynome
       monome(monome_name).carousel.switch_to(surface_name)
     end
 
+    def inspect
+      connection_list = @connections.map{|conn| "name: #{conn[:name]}, app: #{conn[:app].name}, monome: #{conn[:monome].name}, surface: #{conn[:surface].name}, projection: #{conn[:projection].inspect}"}.inspect.color(:cyan)
+      "Table, \n  monomes: #{@monomes.inspect}\n  rack: #{@rack.inspect}\n  connections: #{connection_list}\n"
+    end
+
+    def start_comms
+      log "Starting Comms"
+      @listener.start
+    end
+
+    def stop_comms
+      log "Stopping Comms"
+      @listener.stop if @listener
+      # @sender.stop if @sender
+    end
+
+    def shutdown
+      log "Shutdown"
+      stop_comms
+    end
+
+    private
+
     def start
+
       @thread = Thread.new do
         @monomes.values.each{|monome| monome.listen}
+        log "READY", "The table is laid. Now listening for button events..."
 
         loop do
           update_frame
@@ -105,13 +181,6 @@ module Polynome
 
       end
     end
-
-    def inspect
-      connection_list = @connections.map{|conn| "name: #{conn[:name]}, app: #{conn[:app].name}, monome: #{conn[:monome].name}, surface: #{conn[:surface].name}, projection: #{conn[:projection].inspect}"}.inspect.color(:cyan)
-      "Table, \n  monomes: #{@monomes.inspect}\n  rack: #{@rack.inspect}\n  connections: #{connection_list}\n"
-    end
-
-    private
 
     def app(name)
       app = @rack.find_application_by_name(name)
@@ -130,8 +199,8 @@ module Polynome
 
       unless monome then
         raise MonomeNameUnknownError,
-        "Monome with name #{opts[:monome]} unknown. Please specify"\
-        "a name of a monme that has already been registered."
+        "Monome with name '#{name}' unknown. Please specify "\
+        "a name of a monome that has already been registered."
       end
 
       return monome

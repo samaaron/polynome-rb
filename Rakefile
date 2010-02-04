@@ -36,9 +36,10 @@ Spec::Rake::SpecTask.new do |t|
   t.fail_on_error = false
   t.libs << 'vendor/threaded_logger/lib/'
   t.libs << 'lib'
-  t.libs << 'vendor/tosca/lib'
   t.libs << 'vendor/monome_serial/lib/'
   t.libs << 'vendor/activesupport/lib'
+  t.libs << 'vendor/samaaron-rosc/lib'
+
   RUBY_ENGINE = 'MRI' unless Object.const_defined?("RUBY_ENGINE")
   t.libs << "vendor/extensions/#{RUBY_ENGINE}-#{RUBY_VERSION}-#{RUBY_PLATFORM}"
 end
