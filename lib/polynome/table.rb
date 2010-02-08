@@ -175,7 +175,7 @@ module Polynome
 
         loop do
           update_frame
-          sleep 0.01 # don't update the device faster than it can handle!
+          sleep 0.001 # don't update the device faster than it can handle!
         end
 
       end

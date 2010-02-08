@@ -54,8 +54,6 @@ module Polynome
         @sender   = OSCSender.new(outport, :host => @client_host, :owner => @name, :prefix => @client_prefix)
         @sender.send('registration/successful', inport, @prefix)
       end
-      #callback hook
-      init
 
       log "READY", "Application ready"
     end

@@ -68,7 +68,7 @@ module Polynome
       carousel.process_frame_update(frame_update)
     end
 
-    def inspect
+   def inspect
       "Monome, model: #{@model.name}, cable_placement: #{@model.cable_placement}, carousel: #{@carousel.inspect}".color(:blue)
     end
 
@@ -91,7 +91,6 @@ module Polynome
     end
 
     def receive_button_event(action, x, y, log=false)
-
       puts "[MONOME]      receiving #{action} x:#{x}, y:#{y}" if log
 
       x += 1
@@ -99,7 +98,6 @@ module Polynome
 
       quadrant_id = button_quadrant(x,y)
       m_x, m_y = mapped_coords(x,y, quadrant_id)
-      puts "calling carousel with action: #{action}, x: #{m_x}, y: #{m_y}"
       @carousel.receive_button_event(quadrant_id, action, m_x, m_y, log)
     end
 

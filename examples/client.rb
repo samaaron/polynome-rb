@@ -22,7 +22,17 @@ class Toggler < Client
   end
 end
 
-Toggler.new
+class SCFlasher < Client
+  def init
+    puts 'hiya'
+    log "***", "fooo"
+    @listener = OSCListener.new(5706)
+    @listener.add_method("/flash", nil) {toggle(1,1)}
+    @listener.start
+  end
+end
+
+SCFlasher.new
 
 
 

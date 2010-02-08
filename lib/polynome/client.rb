@@ -39,6 +39,10 @@ module Polynome
         sleep 0.1
       end
 
+      #callback hook
+      log "INIT", "Initialising Application"
+      init
+
       log "READY", "Finished initializing"
     end
 
@@ -46,6 +50,25 @@ module Polynome
       "Client::App, device: #{@device}, host: #{@host}, inport: #{@inport}, name: #{@name}"
     end
 
+    def light_on(x,y)
+      @app_sender.send('action/light/on', x, y)
+    end
+
+    def light_off(x,y)
+      @app_sender.send('action/light/off', x, y)
+    end
+
+    def toggle(x,y)
+      @app_sender.send('action/light/toggle', x, y)
+    end
+
+    def button_pressed(x,y)
+    end
+
+    def button_released(x,y)
+    end
+
+    private
     def _client_receive_registration_successful(mesg)
       port, prefix = *mesg.args
 
@@ -71,24 +94,6 @@ module Polynome
       x,y = *mesg.args
       button_released(x,y)
       log "RELEASE", "Button released: #{x}, #{y}"
-    end
-
-    def light_on(x,y)
-      @app_sender.send('action/light/on', x, y)
-    end
-
-    def light_off(x,y)
-      @app_sender.send('action/light/off', x, y)
-    end
-
-    def toggle(x,y)
-      @app_sender.send('action/light/toggle', x, y)
-    end
-
-    def button_pressed(x,y)
-    end
-
-    def button_released(x,y)
     end
   end
 end

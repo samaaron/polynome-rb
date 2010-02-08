@@ -15,17 +15,20 @@ module Polynome
                           :host          => Defaults.outhost
                           )
 
-      @logger_char = 'L'
-      @name = "#{opts[:owner]}-Listener"
-      @logger   = opts[:logger] || Defaults.logger
+
       @port = port
-      @host = opts[:host]
-      @log_history = ""
-      @owner = opts[:owner]
-      @debug = opts[:debug]
+
+      @host   = opts[:host]
+      @owner  = opts[:owner]
+      @logger = opts[:logger] || Defaults.logger
+      @debug  = opts[:debug]
       @prefix = OSCPrefix.new(opts[:prefix])
+      @name   = "#{opts[:owner]}-Listener"
+
+      @logger_char           = 'L'
+      @log_history           = ""
       @num_messages_received = 0
-      @running = false
+      @running               = false
       open_port
 
       add_debug_logging_method if @debug
