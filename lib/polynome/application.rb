@@ -47,9 +47,12 @@ module Polynome
       if @comms
         log "Setting up comms"
         @listener = OSCListener.new(inport, :host => @host, :owner => @name, :prefix => @prefix)
-        @listener.add_method('action/light/on',     'ii') {|mesg| receive_light_on(mesg)}
-        @listener.add_method('action/light/off',    'ii') {|mesg| receive_light_off(mesg)}
-        @listener.add_method('action/light/toggle', 'ii') {|mesg| receive_light_toggle(mesg)}
+        @listener.add_method('action/light/on',         'ii') {|mesg| receive_light_on(mesg)}
+        @listener.add_method('action/light/off',        'ii') {|mesg| receive_light_off(mesg)}
+        @listener.add_method('action/light/toggle',     'ii') {|mesg| receive_light_toggle(mesg)}
+        @listener.add_method('action/light/toggle_all', nil)  {|_| receive_light_toggle_all}
+        @listener.add_method('action/light/all_on',     nil)  {|_| receive_light_all_on}
+        @listener.add_method('action/light/all_off',    nil)  {|_| receive_light_all_off}
         @listener.start
         @sender   = OSCSender.new(outport, :host => @client_host, :owner => @name, :prefix => @client_prefix)
         @sender.send('registration/successful', inport, @prefix)
@@ -79,7 +82,19 @@ module Polynome
       refresh
     end
 
-    def init
+    def receive_light_all_on
+      all_on
+      refresh
+    end
+
+    def receive_light_all_off
+      all_off
+      refresh
+    end
+
+    def receive_light_toggle_all
+      toggle_all
+      refresh
     end
 
     def racked
@@ -103,6 +118,18 @@ module Polynome
 
     def toggle(x,y)
       @bank.toggle(x,y)
+    end
+
+    def toggle_all
+      @bank.toggle_all
+    end
+
+    def all_on
+      @bank.all_on
+    end
+
+    def all_off
+      @bank.all_off
     end
 
     def refresh

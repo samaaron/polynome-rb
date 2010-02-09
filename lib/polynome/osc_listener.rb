@@ -96,19 +96,23 @@ module Polynome
     end
 
     def start
-      log 'READY', "Listening to #{@host}:#{@port} with prefix #{@prefix.inspect}"
-      @thread = Thread.new do
-        @listener.serve
+      unless @running
+        log 'READY', "Listening to #{@host}:#{@port} with prefix #{@prefix.inspect}"
+        @thread = Thread.new do
+          @listener.serve
+        end
+        @running = true
       end
-      @running = true
       return @running
     end
 
     def stop
-      log 'SHUTDOWN', "Closing port"
-      close_port
-      @running = false
-      return !@running
+      if @running
+        log 'SHUTDOWN', "Closing port"
+        close_port
+        @running = false
+      end
+      return @running
     end
 
     def running?

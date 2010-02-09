@@ -31,6 +31,8 @@ module Polynome
       @listener.add_method("action/button/pressed", 'ii')   {|mesg| _client_receive_button_pressed(mesg)}
       @listener.add_method("action/button/released", 'ii')  {|mesg| _client_receive_button_released(mesg)}
       @listener.start
+      @extra_listeners = {}
+      @extra_senders   = {}
 
       log 'Sending registration details'
       @table_sender.send('register/', @name, @device, @inport, @host, @prefix)
@@ -42,8 +44,21 @@ module Polynome
       #callback hook
       log "INIT", "Initialising Application"
       init
-
       log "READY", "Finished initializing"
+    end
+
+    def init
+    end
+
+    def listen(port, path, spec=nil, &block)
+      l = (@extra_listeners[port] ||= OSCListener.new(port, :owner => "#{@name}-extra-#{port}"))
+      l.add_method(path, spec, &block)
+      l.start
+    end
+
+    def send_to(port, path, *args)
+      s = (@extra_senders[port] ||= OSCSender.new(port,  :owner => "#{@name}-extra-#{port}"))
+      s.send(path, *args)
     end
 
     def inspect
@@ -60,6 +75,18 @@ module Polynome
 
     def toggle(x,y)
       @app_sender.send('action/light/toggle', x, y)
+    end
+
+    def toggle_all
+      @app_sender.send('action/light/toggle_all')
+    end
+
+    def all_lights_on
+      @app_sender.send('action/light/all_on')
+    end
+
+    def all_lights_off
+      @app_sender.send('action/light/all_off')
     end
 
     def button_pressed(x,y)

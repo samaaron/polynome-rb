@@ -21,12 +21,27 @@ module Polynome
     end
 
     def toggle(x,y)
-      puts "toggle: #{x}, #{y}"
+      @lights[[x,y]] = opposite(@lights[[x,y]])
+    end
 
-      case @lights[[x,y]]
-      when :on then @lights[[x,y]] = :off
-      when :off then @lights[[x,y]] = :on
-      end
+    def toggle_all
+      current_default = @lights[-1] #a value never used
+
+      inverted_lights = Hash.new(opposite(current_default))
+      @lights.each{|coords, state| inverted_lights[coords] = opposite(state)}
+      @lights = inverted_lights
+    end
+
+    def all_on
+      @lights = Hash.new(:on)
+    end
+
+    def all_off
+      @lights = Hash.new(:off)
+    end
+
+    def all_glass
+      @lights = Hash.new(:glass)
     end
 
     def to_frame_string
@@ -49,6 +64,15 @@ module Polynome
       end
 
       string.gsub(/\s*/, '')
+    end
+
+    private
+
+    def opposite(state)
+      case state
+      when :on  then :off
+      when :off then :on
+      end
     end
   end
 end

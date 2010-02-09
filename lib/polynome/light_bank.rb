@@ -38,6 +38,22 @@ module Polynome
       fetch_layer(opts[:layer]).toggle(x,y)
     end
 
+    def toggle_all(opts={})
+      fetch_layer(opts[:layer]).toggle_all
+    end
+
+    def all_on(opts={})
+      fetch_layer(opts[:layer]).all_on
+    end
+
+    def all_off(opts={})
+      fetch_layer(opts[:layer]).all_off
+    end
+
+    def all_glass(opts={})
+      fetch_layer(opts[:layer]).all_glass
+    end
+
     def glass(x, y, opts={})
       fetch_layer(opts[:layer]).glass(x,y)
     end

@@ -6,13 +6,13 @@ $: << File.dirname(__FILE__) +  "/../spec"
 require 'polynome'
 include Polynome
 
-class Lighter < Client
+class AllLighter < Client
   def button_pressed(x,y)
-    light_on(x,y)
+    all_lights_on
   end
 
   def button_released(x,y)
-    light_off(x,y)
+    all_lights_off
   end
 end
 
@@ -24,11 +24,11 @@ end
 
 class SCFlasher < Client
   def init
-    puts 'hiya'
-    log "***", "fooo"
-    @listener = OSCListener.new(5706)
-    @listener.add_method("/flash", nil) {toggle(1,1)}
-    @listener.start
+    listen(5706, "/tick") {toggle_all}
+  end
+
+  def button_pressed(x,y)
+    send_to(5707, "/press")
   end
 end
 
