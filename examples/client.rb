@@ -6,15 +6,15 @@ $: << File.dirname(__FILE__) +  "/../spec"
 require 'polynome'
 include Polynome
 
-class AllLighter < Client
-  def button_pressed(x,y)
-    all_lights_on
-  end
-
-  def button_released(x,y)
-    all_lights_off
-  end
-end
+#class AllLighter < Client
+# def button_pressed(x,y)
+#   all_lights_on
+# end
+#
+# def button_released(x,y)
+#   all_lights_off
+# end
+#end
 
 class Toggler < Client
   def button_pressed(x,y)
@@ -22,17 +22,17 @@ class Toggler < Client
   end
 end
 
-class SCFlasher < Client
-  def init
-    listen(5706, "/tick") {toggle_all}
-  end
+#class SCFlasher < Client
+#  def init
+#    listen(5706, "/tick") {toggle_all}
+#  end
+#
+#  def button_pressed(x,y)
+#    send_to(57120, "/press", (x * 8) + y)
+#  end
+#end
 
-  def button_pressed(x,y)
-    send_to(5707, "/press")
-  end
-end
-
-SCFlasher.new
+Toggler.new
 
 
 

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+(ruby19 table.rb) & (ruby19 client.rb)

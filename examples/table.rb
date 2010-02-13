@@ -8,7 +8,7 @@ require 'fixtures/frame_fixtures'
 include Polynome
 
 
-table = Table.new
+table = Table.new(:ignore_connection_validity => true)
 table.add_monome(
                  :io_file         => "/dev/tty.usbserial-m64-0790",
                  :device          => "64",
