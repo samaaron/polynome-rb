@@ -170,7 +170,7 @@ module Polynome
     def start
 
       @thread = Thread.new do
-        @monomes.values.each{|monome| monome.listen}
+        @monomes.values.each{|monome| monome.listen if (monome.has_real_communicator? && @ignore_connection_validity)}
         log "READY", "The table is laid. Now listening for button events..."
 
         loop do
