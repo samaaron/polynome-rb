@@ -223,6 +223,7 @@ module Polynome
     end
 
     def update_frame
+      (@frame_buffer.size - 1).times{@frame_buffer.pop} if @frame_buffer.size > 10
       frame_update = @frame_buffer.pop
       monomes.each {|m| m.process_frame_update(frame_update)}
     end

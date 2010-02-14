@@ -57,10 +57,12 @@ module Polynome
         end
       end
 
-      index = 0
-      8.times do |i|
-        puts string[index..(index + 15)]
-        index += 16
+      if Polynome::Defaults.debug?
+        index = 0
+        8.times do |i|
+          puts string[index..(index + 15)]
+          index += 16
+        end
       end
 
       string.gsub(/\s*/, '')

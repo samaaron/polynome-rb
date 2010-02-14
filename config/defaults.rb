@@ -12,7 +12,7 @@ module Polynome
     set :test_table_outport, 9967
     set :test_table_inport, 6799
     set :outhost, 'localhost'
-    set :debug?, true
+    set :debug?, false
     set :frame_buffer_size, 100
     set :log_file, "#{Polynome::Defaults.root}/log/activity.log"
     set :logger, ThreadedLogger::TLogger.new("", Defaults.log_file)

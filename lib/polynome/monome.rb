@@ -91,6 +91,7 @@ module Polynome
     end
 
     def receive_button_event(action, x, y, log=false)
+      log = false
       puts "[MONOME]      receiving #{action} x:#{x}, y:#{y}" if log
 
       x += 1

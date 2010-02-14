@@ -66,15 +66,15 @@ module Polynome
     end
 
     def light_on(x,y)
-      @app_sender.send('action/light/on', x, y)
+      @app_sender.send('action/light/on', x+1, y+1)
     end
 
     def light_off(x,y)
-      @app_sender.send('action/light/off', x, y)
+      @app_sender.send('action/light/off', x+1, y+1 )
     end
 
     def toggle(x,y)
-      @app_sender.send('action/light/toggle', x, y)
+      @app_sender.send('action/light/toggle', x+1, y+1)
     end
 
     def toggle_all
